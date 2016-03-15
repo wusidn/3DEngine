@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-
 const char * windiwTitle = "Hello World";
 
 void init(void);
