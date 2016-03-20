@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include "../Include/Gc.h"
+#include "../Include/File.h"
 
 const char * windiwTitle = "Hello World";
 
@@ -16,7 +18,8 @@ int main(int argc, char ** argv)
     glutInitWindowPosition(200, 100);
     glutCreateWindow(windiwTitle);
 
-    if(glewInit()){
+    if(glewInit())
+    {
         exit(EXIT_FAILURE);
     }
 
@@ -32,6 +35,23 @@ int main(int argc, char ** argv)
 
 void init(void)
 {
+
+    Gc & gc = Gc::getInstance();
+
+
+    Object * a = new Object();
+    Object * b = new Object();
+
+    File * c = File::createWithFilePath("Hello");
+
+    a->autoRelease();
+    b->autoRelease();
+    c->autoRelease();
+
+    b->retain();
+
+    gc.clean();
+    gc.clean();
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
