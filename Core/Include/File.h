@@ -4,6 +4,7 @@
 
 #include "Object.h"
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -11,24 +12,21 @@ class File: public Object
 {
 public:
 
-    enum openType{
-
-    };
+    static string readAllText(const string & filePath);
 
     CREATEFUNC(File);
     static File * createWithFilePath(const string & filePath);
-    static string & readAllText(const string & filePath);
-
+   
+    const bool open(const int mode = ios::in | ios::out);
+    const bool open(const string & filePath, const int mode = ios::in | ios::out);
+    
+protected:
     virtual const bool init(void);
     virtual const bool init(const string & filePath);
-
-    const bool open
-
-private:
-    string * filePath;
-
-protected:
     virtual ~File(void);
+    
+private:
+    string * _filePath;
 };
 
 #endif //__FILE_H__

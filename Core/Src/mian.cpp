@@ -3,6 +3,10 @@
 #include "../Include/Gc.h"
 #include "../Include/File.h"
 
+#include <iostream>
+
+using namespace std;
+
 const char * windiwTitle = "Hello World";
 
 void init(void);
@@ -42,11 +46,17 @@ void init(void)
     Object * a = new Object();
     Object * b = new Object();
 
-    File * c = File::createWithFilePath("Hello");
+    // File * c = File::createWithFilePath("Hello");
+    
+    string & code = * new string(File::readAllText("/media/cc/c98dcb13-a939-49e9-8818-c540d8dad78e/3DEngine/CMakeLists.txt"));
+    
+    cout << "Main -> Code : " << code << endl;
+    
+    // c->open();
 
     a->autoRelease();
     b->autoRelease();
-    c->autoRelease();
+    // c->autoRelease();
 
     b->retain();
 
