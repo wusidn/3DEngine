@@ -21,7 +21,6 @@ void Gc::clean(void)
 {
     for(auto item = objectPool->begin(); item != objectPool->end(); ++item)
     {
-        cout << "foreach: " << *item << ", quoteCount: " << (*item)->quoteCount << endl;
         if((*item)->quoteCount <= 0){
             const Object * temp = (*item);
             delete temp;
