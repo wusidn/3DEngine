@@ -55,14 +55,6 @@ void init(void)
 
 void display(void)
 {
-    static const float expect = 1.0 * 1000 / 60;
-    
-    static int frame = 0;
-    static clock_t _prevScecond = clock(); 
-    static clock_t _last = _prevScecond;
-    
-    frame++;
-    
     glClear(GL_COLOR_BUFFER_BIT);
 
     //渲染
@@ -70,24 +62,6 @@ void display(void)
     
     //垃圾回收
     Gc::getInstance().clean();
-    
-    //当前帧渲染所用时间
-    clock_t _now = clock();
-    float spendTime = float(_now - _last) / CLOCKS_PER_SEC;
-    //当前秒已渲染帧数共用时间
-    float sumSpendTime = float(_now - _prevScecond) / CLOCKS_PER_SEC;
-    // cout << "执行时间:" << spendTime << ", 等待时间:" << expect - spendTime << endl;
-    cout << "sumSpendTime * 1000 : " << sumSpendTime * 1000  << ", frame * expect: " << frame * expect << endl;
-    usleep(expect - spendTime * 1000 - (sumSpendTime * 1000 - frame * expect));
-    
-    //  if(sumSpendTime >= 0.1){
-    //     fps = frame;
-    //     frame = 0;
-    //     _prevScecond = _now;
-    //     cout << "FPS: " << fps << endl;
-    //  }
-    
-    _last = clock();
 }
 
 void idle(void)
