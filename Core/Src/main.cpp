@@ -55,13 +55,48 @@ void init(void)
 
 void display(void)
 {
+    
+    static float hopeFrameCount = 120;
+    static int farmeCount = hopeFrameCount;
+    static time_t prevSecond = 0;
+    static float standardTime = 1000.0 / hopeFrameCount - 1000.0 / 200 * 32 / 200;
+    static float prevFrameTime = 0.0;
+    if(!prevFrameTime){
+        prevFrameTime = clock();
+    }
+    
+    //计算当前帧率
+    if(!prevSecond || time(NULL) - prevSecond >= 1){
+        prevSecond = time(NULL);
+        fps = farmeCount;
+        farmeCount = 0;
+        cout << "FPS: " << fps << endl;
+    }
+    farmeCount++;
+    
+    //清空画布
     glClear(GL_COLOR_BUFFER_BIT);
-
+    
     //渲染
     glFlush();
     
+    
+    for(int i = 0; i < 1000000; ++i){
+        int temp = i >> 5 * 6 << 2 / 3;
+        temp ++;
+    }
+    
     //垃圾回收
     Gc::getInstance().clean();
+    
+    //控制帧率
+    float useTime = 0.0;
+    float currFrameTime = clock();
+    useTime = (currFrameTime - prevFrameTime) / CLOCKS_PER_SEC * 1000;
+    if(useTime < standardTime){
+        usleep((standardTime - useTime) * 1000);
+    }
+    prevFrameTime = currFrameTime;
 }
 
 void idle(void)
