@@ -59,7 +59,7 @@ void display(void)
     static float hopeFrameCount = 120;
     static int farmeCount = hopeFrameCount;
     static time_t prevSecond = 0;
-    static float standardTime = 1000.0 / hopeFrameCount - 1000.0 / 200 * 32 / 200;
+    static float standardTime = 1000.0 / hopeFrameCount;
     static float prevFrameTime = 0.0;
     if(!prevFrameTime){
         prevFrameTime = clock();
