@@ -66,8 +66,9 @@ void display(void)
     }
     
     //计算当前帧率
-    if(!prevSecond || time(NULL) - prevSecond >= 1){
-        prevSecond = time(NULL);
+    time_t tempTime = time(NULL);
+    if(!prevSecond || tempTime - prevSecond >= 1){
+        prevSecond = tempTime;
         fps = farmeCount;
         farmeCount = 0;
         cout << "FPS: " << fps << endl;
