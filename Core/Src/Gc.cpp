@@ -4,7 +4,7 @@ Gc * Gc::instance = nullptr;
 
 Gc & Gc::getInstance(void)
 {
-        if(!instance){
+    if(!instance){
         instance = new Gc();
     }
 

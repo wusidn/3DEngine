@@ -19,11 +19,10 @@ int main(int argc, char ** argv)
     glutInitWindowPosition(200, 100);
     glutCreateWindow(windiwTitle);
 
-    if(glewInit())
-    {
+    if(glewInit()){
         exit(EXIT_FAILURE);
     }
-
+    
     init();
 
     glutDisplayFunc(display);
