@@ -2,7 +2,10 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 #include "Object.h"
+#include <string>
 #include <GL/glew.h>
+
+using namespace std;
 
 enum ShaderType{
     vertex = GL_VERTEX_SHADER,
@@ -24,7 +27,7 @@ public:
     const unsigned int shaderId(void) const;
      
 private:
-    GLuint shaderId;
+    GLuint _shaderId;
     const bool compileIsSuccessful(void) const;
 };
 
