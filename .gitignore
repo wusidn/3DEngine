@@ -15,6 +15,11 @@ Release/
 *.opt
 *.sdf
 *.ipch
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+HTML/
 
 ~*.*
 Build/
