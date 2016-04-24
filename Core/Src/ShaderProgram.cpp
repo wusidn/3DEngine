@@ -1,0 +1,95 @@
+#include "../Include/ShaderProgram.h"
+
+ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)
+{
+    ShaderProgram * result = new ShaderProgram();
+    if(!result->init() || !result->init(shaderList)){
+        delete result;
+        result = nullptr;
+    }
+    return result; 
+}
+
+const bool ShaderProgram::init(void)
+{
+    if(!Object::init()){
+        return false;
+    }
+    return glIsProgram(_programId = glCreateProgram()) == GL_TRUE;
+}
+
+const bool ShaderProgram::init(const list<const Shader *> & shaderList)
+{
+    for(auto item = shaderList.begin(); item != shaderList.end(); ++item){
+        if(!(*item)->compileIsSuccessful()){
+            return false;
+        }
+        if(!attachShader(*(*item))){
+            return false;
+        }
+    }
+    
+    return true;   
+}
+
+const bool ShaderProgram::attachShader(const Shader & shader) const
+{
+    const unsigned int shaderId = shader.shaderId();
+    if(!shaderId){
+        return false;
+    }
+    glAttachShader(_programId, shaderId);
+    return true;
+}
+
+const bool ShaderProgram::detachShader(const Shader & shader) const
+{
+    const unsigned int shaderId = shader.shaderId();
+    if(!shaderId){
+        return false;
+    }
+    glDetachShader(_programId, shaderId);
+    return true;
+}
+
+const bool ShaderProgram::linkProgram(void) const
+{
+    glLinkProgram(_programId);
+    return linkIsSuccessful();
+}
+
+const string ShaderProgram::getErrorInfo(void) const
+{
+    if(linkIsSuccessful()){
+        return "";
+    }
+    
+    if(glIsProgram(_programId) != GL_TRUE){
+        return "Program Create Fail";
+    }
+    
+    GLint info_len = 0;
+    glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &info_len);
+    if(!info_len){
+        return "Not Fined Error Info";
+    }
+    GLchar * buff = new GLchar[info_len];
+    glGetProgramInfoLog(_programId, info_len, nullptr, buff);
+    
+    string result(buff);
+    delete [] buff;
+    return result;
+}
+
+const bool ShaderProgram::linkIsSuccessful(void) const
+{
+    if(glIsProgram(_programId) != GL_TRUE){
+        return false;
+    }
+    GLint linked;
+    glGetProgramiv(_programId, GL_LINK_STATUS, &linked);
+    if(linked != GL_TRUE){
+        return false;
+    }
+    return true;
+}

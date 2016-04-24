@@ -38,14 +38,13 @@ const bool Shader::compile(void) const
 
 const string Shader::getErrorInfo(void) const
 {
-    if(glIsShader(_shaderId) != GL_TRUE){
-        return "ShaderElement Create failed Or Delegated";
+    
+    if(compileIsSuccessful()){
+        return "";
     }
     
-    GLint compiled = 0;
-    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compiled);
-    if(compiled == GL_TRUE){
-        return "Shader Compile Successful";
+    if(glIsShader(_shaderId) != GL_TRUE){
+        return "ShaderElement Create failed Or Delegated";
     }
     
     GLint infoLen = 0;
@@ -54,12 +53,10 @@ const string Shader::getErrorInfo(void) const
         return "Not Fined Error Info";
     }
     GLchar * buff = new GLchar[infoLen];
-    if(!buff){
-        return "Get Error Info Fail";
-    }
     glGetShaderInfoLog(_shaderId, infoLen, nullptr, buff);
+    
     string result(buff);
-    delete buff;
+    delete [] buff;
     return result;
 }
 

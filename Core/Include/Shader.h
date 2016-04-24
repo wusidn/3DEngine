@@ -4,7 +4,6 @@
 
 #include <string>
 #include "Object.h"
-#include <string>
 #include <GL/glew.h>
 
 using namespace std;
@@ -17,6 +16,8 @@ enum ShaderType{
 class Shader : public Object
 {
 public:
+
+    friend class ShaderProgram;
     
     CREATEFUNC(Shader);
     static Shader * create(const string & code, const enum ShaderType type);    

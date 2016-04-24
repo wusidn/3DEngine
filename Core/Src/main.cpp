@@ -40,7 +40,7 @@ void init(void)
     Object * a = new Object();
     Object * b = new Object();
    
-    string & code = * new string(File::readAllText("../../CMakeLists.txt"));
+    string code = File::readAllText("../../CMakeLists.txt");
     
     cout << "Main -> Code : " << code << endl;
     
@@ -50,6 +50,29 @@ void init(void)
     b->retain();
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
+    
+    
+    //test start
+    const float vertices[3][2] = {
+        {-0.5, -0.5},
+        {0.5, -0.5},
+        {0.5, 0.0}
+    };
+    
+    const float colors[] = {
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,  
+    };
+    
+    const GLushort vertex_indies[] = {
+        0, 1, 2
+    };
+    
+    // glGenBuffers
+    
+    //test end
+    
 }
 
 void display(void)
