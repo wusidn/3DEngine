@@ -26,4 +26,4 @@ Build/
 build/
 /tags
 .*.swp
-
+*.autosave
