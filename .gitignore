@@ -1,5 +1,6 @@
 Debug/
 Release/
+.vscode/
 .vs/
 *.log
 *.obj
@@ -27,4 +28,3 @@ build/
 /tags
 .*.swp
 *.autosave
-*.VC.db*
