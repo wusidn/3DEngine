@@ -27,3 +27,4 @@ build/
 /tags
 .*.swp
 *.autosave
+*.VC.db*

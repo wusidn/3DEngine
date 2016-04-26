@@ -8,7 +8,7 @@
 			"launchOptionType": "Local",
 			"miDebuggerPath": "/usr/bin/gdb",
 			"targetArchitecture": "x64",
-			"program": "enter program name, for example ${workspaceRoot}/a.out",
+			"program": "${workspaceRoot}/Build/bin/3D_Engine",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceRoot}",
