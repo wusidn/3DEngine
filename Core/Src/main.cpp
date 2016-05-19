@@ -3,6 +3,7 @@
 #include "main.h"
 #include "../Include/Gc.h"
 #include "../Include/File.h"
+#include "../Include/Node.h"
 #include <ctime>
 #include <unistd.h>
 
@@ -37,37 +38,44 @@ void init(void)
 {
 
     
-    Object * a = new Object();
-    Object * b = new Object();
+    // Object * a = new Object();
+    // Object * b = new Object();
+    
+    File * file = File::create();
+    file->autoRelease();
    
     string code = File::readAllText("../../CMakeLists.txt");
     
     cout << "Main -> Code : " << code << endl;
     
-    a->autoRelease();
-    b->autoRelease();
+    // a->autoRelease();
+    // b->autoRelease();
 
-    b->retain();
+    // b->retain();
+    
+    Node * item = Node::create();
+    item->autoRelease();
+    
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     
     
     //test start
-    const float vertices[3][2] = {
-        {-0.5, -0.5},
-        {0.5, -0.5},
-        {0.5, 0.0}
-    };
+    // const float vertices[3][2] = {
+    //     {-0.5, -0.5},
+    //     {0.5, -0.5},
+    //     {0.5, 0.0}
+    // };
     
-    const float colors[] = {
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,  
-    };
+    // const float colors[] = {
+    //     1.0, 0.0, 0.0, 1.0,
+    //     0.0, 1.0, 0.0, 1.0,
+    //     0.0, 0.0, 1.0, 1.0,  
+    // };
     
-    const GLushort vertex_indies[] = {
-        0, 1, 2
-    };
+    // const GLushort vertex_indies[] = {
+    //     0, 1, 2
+    // };
     
     // glGenBuffers
     

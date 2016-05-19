@@ -12,6 +12,7 @@ class File: public Object
 {
 public:
 
+    //以文本格式读取所有字符
     static string readAllText(const string & filePath);
 
     CREATEFUNC(File);
@@ -26,6 +27,7 @@ protected:
     virtual ~File(void);
     
 private:
+    File(void){}
     string * _filePath;
 };
 

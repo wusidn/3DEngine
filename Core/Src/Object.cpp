@@ -22,8 +22,3 @@ const bool Object::init(void)
     quoteCount = 0;
     return true;
 }
-
-Object::~Object(void)
-{
-
-}

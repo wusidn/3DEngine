@@ -22,16 +22,25 @@ public:
     virtual const bool init(void);
     const bool init(const list<const Shader *> & shaderList);
     
+    //添加shader
     const bool attachShader(const Shader & shader) const;
+    //删除shader
     const bool detachShader(const Shader & shader) const;
     
+    //链接shader程序
     const bool linkProgram(void) const;
+    
+    //获取错误信息
     const string getErrorInfo(void) const;
     
+    //获取shader程序id
     const unsigned int programId(void) const;
     
 private:
     unsigned int _programId;
+    ShaderProgram(void){}
+    
+    //链接是否成功
     const bool linkIsSuccessful(void) const;
 
 };

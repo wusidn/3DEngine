@@ -4,9 +4,10 @@
 
 class Struct
 {
-public:
+    
+protected:
       Struct(void);
-      ~Struct(void);
+      virtual ~Struct(void);
 };
 
 #endif //__STRUCT_H__

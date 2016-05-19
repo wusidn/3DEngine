@@ -17,18 +17,19 @@ class Object
 {
     friend class Gc;
 private:
-    //
+    //引用次数
     int quoteCount;
 public:
-    //
+    //持久
     void retain(void);
-    //
+    //释放
     void release(void);
-    //
+    //自动管理
     void autoRelease(void);
 protected:
     virtual const bool init(void);
-    virtual ~Object(void);
+    Object(void){}
+    virtual ~Object(void){}
 };
 
 #endif //__OBJECT_H__

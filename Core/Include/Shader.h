@@ -24,14 +24,22 @@ public:
     virtual const bool init(void);
     virtual const bool init(const string & code, const enum ShaderType type);
     
+    //编译shader
     const bool compile(void) const;
+    
+    //获取编译错误信息
     const string getErrorInfo(void) const;
     
+    //获取shaderId
     const unsigned int shaderId(void) const;
      
 private:
     GLuint _shaderId;
+    Shader(void){}
+    
+    //编译是否成功
     const bool compileIsSuccessful(void) const;
+    
 };
 
 #endif //__SHADER_H__

@@ -21,3 +21,8 @@ Vec2::Vec2(const Vec2 & copy)
     x = copy.x;
     y = copy.y;
 }
+
+Vec2::~Vec2(void)
+{
+    
+}
