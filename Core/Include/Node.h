@@ -15,7 +15,7 @@ public:
     Vec4 position, rotate, scale;
         
     CREATEFUNC(Node);   
-    virtual const bool init(void);
+    
     
     Node * parent(void) const;
     vector<Node *> & chidren(void);
@@ -27,6 +27,8 @@ public:
     
 protected:
     Node(void);
+    
+    virtual const bool init(void);
 private:
     Node * _parent;
     vector<Node *> _chidren;

@@ -24,10 +24,10 @@ public:
 protected:
     virtual const bool init(void);
     virtual const bool init(const string & filePath);
+    
     virtual ~File(void);
     
 private:
-    File(void){}
     string * _filePath;
 };
 

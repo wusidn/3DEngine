@@ -21,8 +21,6 @@ public:
     
     CREATEFUNC(Shader);
     static Shader * create(const string & code, const enum ShaderType type);    
-    virtual const bool init(void);
-    virtual const bool init(const string & code, const enum ShaderType type);
     
     //编译shader
     const bool compile(void) const;
@@ -32,10 +30,16 @@ public:
     
     //获取shaderId
     const unsigned int shaderId(void) const;
+    
+protected:
+
+    Shader(void){}
+    virtual const bool init(void);
+    virtual const bool init(const string & code, const enum ShaderType type);
      
 private:
     GLuint _shaderId;
-    Shader(void){}
+    
     
     //编译是否成功
     const bool compileIsSuccessful(void) const;

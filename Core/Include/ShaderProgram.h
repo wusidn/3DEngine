@@ -19,9 +19,6 @@ public:
     CREATEFUNC(ShaderProgram);
     static ShaderProgram * create(const list<const Shader *> & shaderList);
     
-    virtual const bool init(void);
-    const bool init(const list<const Shader *> & shaderList);
-    
     //添加shader
     const bool attachShader(const Shader & shader) const;
     //删除shader
@@ -36,9 +33,15 @@ public:
     //获取shader程序id
     const unsigned int programId(void) const;
     
+protected:
+
+    ShaderProgram(void){}
+    
+    virtual const bool init(void);
+    const bool init(const list<const Shader *> & shaderList);
+    
 private:
     unsigned int _programId;
-    ShaderProgram(void){}
     
     //链接是否成功
     const bool linkIsSuccessful(void) const;

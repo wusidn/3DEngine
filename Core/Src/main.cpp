@@ -41,12 +41,12 @@ void init(void)
     // Object * a = new Object();
     // Object * b = new Object();
     
-    File * file = File::create();
-    file->autoRelease();
+    // File * file = File::create();
+    // file->autoRelease();
    
-    string code = File::readAllText("../../CMakeLists.txt");
+    // string code = File::readAllText("../../CMakeLists.txt");
     
-    cout << "Main -> Code : " << code << endl;
+    // cout << "Main -> Code : " << code << endl;
     
     // a->autoRelease();
     // b->autoRelease();
