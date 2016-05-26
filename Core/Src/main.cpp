@@ -4,7 +4,7 @@
 #include "../Include/Gc.h"
 #include "../Include/File.h"
 #include "../Include/Node.h"
-#include "../Include/Vec3.h"
+#include "../Include/Vec4.h"
 
 #include <ctime>
 #include <unistd.h>
@@ -52,8 +52,14 @@ void init(void)
     cout << "Main -> Code : " << code << endl;
     
     
-    cout << "Vec3(1, 2, 3).dot(Vec3(1, 2, 3)) = " << Vec3(1, 2, 3).dot(Vec3(1, 2, 3)) << endl;
+    cout << "Vec3(0, 1, 0).modulo() = " << Vec3(0, 1, 0).modulo() << endl;
+    cout << "Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = " << Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) << endl;
     
+    cout << "Vec4(1, 0, 0, 1).modulo() = " << Vec4(1, 0, 0, 1).modulo() << endl;
+    
+    
+    cout << "Vec3(1, 2, 3).modulo() = " << Vec3(1, 2, 3).modulo() << endl;
+    cout << "Vec4(1, 2, 3, 1).modulo() = " << Vec4(1, 2, 3, 1).modulo() << endl;
     
     // a->autoRelease();
     // b->autoRelease();

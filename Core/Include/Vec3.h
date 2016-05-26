@@ -17,8 +17,22 @@ public:
     
     ~Vec3(void);
     
+    //重载运算符
+    const Vec3 operator+(const Vec3 & param) const;
+    const Vec3 operator-(const Vec3 & param) const;
+    const Vec3 operator*(const float param) const;
+    const Vec3 operator/(const float param) const;
+    
+    friend const Vec3 operator*(const float param_left, const Vec3 & param_right);
+    
+    //点积
     const float dot(const Vec3 & param) const;
+    
+    //叉积
     const Vec3 cross(const Vec3 & param) const;
+    
+    //模
+    const float modulo(void) const; 
     
     float z;
 };

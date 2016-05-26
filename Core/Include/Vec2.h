@@ -14,14 +14,24 @@ public:
     
     ~Vec2(void);
     
-    Vec2 operator+(const Vec2 & param) const;
-    Vec2 operator-(const Vec2 & param) const;
     
-    Vec2 operator*(const float param) const;
-    Vec2 operator/(const float param) const;
+    //重载运算符
+    const Vec2 operator+(const Vec2 & param) const;
+    const Vec2 operator-(const Vec2 & param) const;
     
+    const Vec2 operator*(const float param) const;
+    const Vec2 operator/(const float param) const;
     
-    const float modulo(const Vec2 & param) const;
+    friend const Vec2 operator*(const float param_left, const Vec2 & param_right);
+    
+    //点积
+    const float dot(const Vec2 & param) const;
+    
+    //模
+    const float modulo(void) const;
+    
+    //角度
+    const float angle(const Vec2 & param) const;
     
     float x, y;
 };

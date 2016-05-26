@@ -1,5 +1,6 @@
 #include "../Include/Vec3.h"
 
+#include <cmath>
 
 Vec3::Vec3(void) : Vec2()
 {
@@ -33,6 +34,31 @@ Vec3::Vec3(const Vec3 & copy)
     z = copy.z;
 }
 
+const Vec3 Vec3::operator+(const Vec3 & param) const
+{
+    return Vec3(x + param.x, y + param.y, z + param.z);
+}
+
+const Vec3 Vec3::operator-(const Vec3 & param) const
+{
+    return Vec3(x - param.x, y - param.y, z - param.z);
+}
+
+const Vec3 Vec3::operator*(const float param) const
+{
+    return Vec3(x * param, y * param, z * param);
+}
+
+const Vec3 Vec3::operator/(const float param) const
+{
+    return Vec3(x / param, y / param, z / param);
+}
+
+const Vec3 operator*(const float param_left, const Vec3 & param_right)
+{
+    return Vec3(param_right.x * param_left, param_right.y * param_left, param_right.z * param_left);
+}
+
 const float Vec3::dot(const Vec3 & param) const
 {
     return x * param.x + y * param.y + z * param.z;
@@ -41,6 +67,11 @@ const float Vec3::dot(const Vec3 & param) const
 const Vec3 Vec3::cross(const Vec3 & param) const
 {
     return Vec3(y * param.z - z * param.y, z * param.x - x * param.z, x * param.y - y * param.x);
+}
+
+const float Vec3::modulo(void) const
+{
+    return sqrt(dot(*this));
 }
 
 Vec3::~Vec3(void)
