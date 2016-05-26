@@ -4,7 +4,7 @@
 
 #include "Vec2.h"
 
-class Vec3 : public Vec2
+struct Vec3 : public Vec2
 {
 public:
     Vec3(void);
@@ -16,6 +16,9 @@ public:
     Vec3(const Vec3 & copy);
     
     ~Vec3(void);
+    
+    const float dot(const Vec3 & param) const;
+    const Vec3 cross(const Vec3 & param) const;
     
     float z;
 };

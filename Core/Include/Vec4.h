@@ -4,7 +4,7 @@
 
 #include "Vec3.h"
 
-class Vec4 : public Vec3
+struct Vec4 : public Vec3
 {
 public:
     Vec4(void);

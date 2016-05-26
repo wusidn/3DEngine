@@ -2,12 +2,12 @@
 #ifndef __STRUCT_H__
 #define __STRUCT_H__
 
-class Struct
+struct Struct
 {
     
 protected:
       Struct(void);
-      virtual ~Struct(void);
+      ~Struct(void);
 };
 
 #endif //__STRUCT_H__

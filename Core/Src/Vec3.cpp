@@ -33,6 +33,16 @@ Vec3::Vec3(const Vec3 & copy)
     z = copy.z;
 }
 
+const float Vec3::dot(const Vec3 & param) const
+{
+    return x * param.x + y * param.y + z * param.z;
+}
+
+const Vec3 Vec3::cross(const Vec3 & param) const
+{
+    return Vec3(y * param.z - z * param.y, z * param.x - x * param.z, x * param.y - y * param.x);
+}
+
 Vec3::~Vec3(void)
 {
     
