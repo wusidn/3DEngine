@@ -51,7 +51,17 @@ const void Node::clear(void)
     _chidren.clear();
 }
 
-const bool Node::_render(void) const
+const Vec4 Node::convertToWorldSpace(void) const
+{
+    return 0.0;
+}
+
+const Vec4 Node::convertToNodeSpace(const Node * node) const
+{
+    return 0.0;
+}
+
+const bool Node::render(void)
 {
     return true;
 }

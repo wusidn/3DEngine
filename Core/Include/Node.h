@@ -25,6 +25,9 @@ public:
     
     const void clear(void);
     
+    const Vec4 convertToWorldSpace(void) const;
+    const Vec4 convertToNodeSpace(const Node *) const;
+    
 protected:
     Node(void);
     
@@ -33,7 +36,7 @@ private:
     Node * _parent;
     vector<Node *> _chidren;
     
-    virtual const bool _render(void) const;
+    virtual const bool render(void);
 };
 
 #endif //__NODE_H__
