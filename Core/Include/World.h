@@ -17,7 +17,7 @@ public:
     
 protected:
     World();
-    ~Wrold();
+    ~World();
     virtual const bool init();
     
 private:

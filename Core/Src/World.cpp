@@ -1,4 +1,5 @@
 #include "../Include/World.h"
+#include <algorithm>
 
 vector<World *> World::worldPool;
 
@@ -8,15 +9,15 @@ const vector<World *> & World::getWorldPool()
 }
 
 
-Wrold::World()
+World::World()
 {
     
 }
 
 World::~World()
 {
-    auto index = find(worldPool.begin(), worldPool.end(), this);
-    if(index !== worldPool.end())
+    auto index = std::find(worldPool.begin(), worldPool.end(), this);
+    if(index != worldPool.end())
     {
         worldPool.erase(index);
     }
