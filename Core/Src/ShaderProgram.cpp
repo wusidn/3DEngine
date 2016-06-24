@@ -1,4 +1,4 @@
-#include "../Include/ShaderProgram.h"
+#include "ShaderProgram.h"
 
 
 ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)

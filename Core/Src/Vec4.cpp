@@ -1,4 +1,4 @@
-#include "../Include/Vec4.h"
+#include "Vec4.h"
 
 Vec4::Vec4(void) : Vec3()
 {

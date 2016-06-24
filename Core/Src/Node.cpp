@@ -1,4 +1,4 @@
-#include "../Include/Node.h"
+#include "Node.h"
 
 
 Node::Node(void)

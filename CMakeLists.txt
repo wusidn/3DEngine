@@ -12,8 +12,11 @@ PROJECT (Test VERSION 0.0.0)
 #子项目
 ADD_SUBDIRECTORY(Core)
 
-#所有文件
+#读取Src目录
 AUX_SOURCE_DIRECTORY(Src DIR_SRCS)
+
+#指定头文件路径
+include_directories(${PROJECT_SOURCE_DIR}/Core/Include ${PROJECT_SOURCE_DIR}/Include)
 
 #输出文件
 ADD_EXECUTABLE(${PROJECT_NAME} ${DIR_SRCS})

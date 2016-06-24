@@ -1,5 +1,5 @@
-#include "../Include/Object.h"
-#include "../Include/Gc.h"
+#include "Object.h"
+#include "Gc.h"
 
 
 void Object::retain(void)

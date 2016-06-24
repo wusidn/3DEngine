@@ -1,4 +1,4 @@
-#include "../Include/Gc.h"
+#include "Gc.h"
 
 Gc * Gc::instance = nullptr;
 

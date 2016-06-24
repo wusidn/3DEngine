@@ -1,10 +1,10 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "main.h"
-#include "../Include/Gc.h"
-#include "../Include/File.h"
-#include "../Include/Node.h"
-#include "../Include/Vec4.h"
+#include "Gc.h"
+#include "File.h"
+#include "Node.h"
+#include "Vec4.h"
 
 #include <ctime>
 #include <unistd.h>

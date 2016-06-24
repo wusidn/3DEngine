@@ -1,4 +1,4 @@
-#include "../Include/Shader.h"
+#include "Shader.h"
 
 Shader * Shader::create(const string & code, const enum ShaderType type)
 {

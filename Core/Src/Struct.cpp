@@ -1,4 +1,4 @@
-#include "../Include/Struct.h"
+#include "Struct.h"
 
 Struct::Struct(void)
 {

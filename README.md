@@ -1,5 +1,5 @@
 # 3DEngine
-
+-> 相关插件 cmake global 
 ->  安装global tags
 ->  在项目跟目录运行 gtags htags
 ->  使用vsCode编辑项目
