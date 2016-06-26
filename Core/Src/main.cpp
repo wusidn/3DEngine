@@ -9,6 +9,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <string.h>
+#include "Tool/Console.h"
 
 #include <iostream>
 
@@ -60,6 +61,11 @@ void init(void)
     
     cout << "Vec3(1, 2, 3).modulo() = " << Vec3(1, 2, 3).modulo() << endl;
     cout << "Vec4(1, 2, 3, 1).modulo() = " << Vec4(1, 2, 3, 1).modulo() << endl;
+
+
+    cout << "----------------------------------------------" << endl;
+    console.log("hsdgfhsdg\\{sdf{0:D\\}shd}f {1}{2:d}g", "", 1, 2, 3, "...");
+    cout << "----------------------------------------------" << endl;
     
     // a->autoRelease();
     // b->autoRelease();
@@ -71,6 +77,7 @@ void init(void)
     
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
+    
     
     
     //test start

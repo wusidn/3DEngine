@@ -23,7 +23,7 @@ protected:
 private:
     static vector<World * > worldPool;
     
-    virtual const bool render(void); 
+    virtual const bool render(void) const; 
 };
 
 #endif //__WORLD_H__

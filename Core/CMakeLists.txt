@@ -8,6 +8,7 @@ PROJECT (3DEngine VERSION 0.0.0)
 
 #读取Src目录
 AUX_SOURCE_DIRECTORY(Src DIR_SRCS)
+AUX_SOURCE_DIRECTORY(Src/Tool DIR_SRCS)
 
 #指定头文件路径
 include_directories(${PROJECT_SOURCE_DIR}/Include)

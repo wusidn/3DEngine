@@ -31,3 +31,8 @@ const bool World::init()
     worldPool.push_back(this);
     return true;
 }
+
+const bool World::render(void) const
+{
+    return true;
+}
