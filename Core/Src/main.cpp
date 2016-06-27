@@ -64,7 +64,7 @@ void init(void)
 
 
     cout << "----------------------------------------------" << endl;
-    console.log("hsdgfhsdg\\{sdf{0:D\\}shd}f {1}{2:d}g", "", 1, 2, 3, "...");
+    console.log("hsdgf{1}hsdg\\{sdf{0:D\\}shd}f {1}{2:d}{1}g", 1, 2, 3, "...");
     cout << "----------------------------------------------" << endl;
     
     // a->autoRelease();
