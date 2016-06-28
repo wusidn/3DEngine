@@ -87,11 +87,8 @@ public:
         _log(level::EMERG, str, args...);
     }
 
-    //设置状态机级别 log函数使用此级别
-    void setLevel(const level para);
-
     //设置过滤级别　　低于过滤级别的信息不被输出
-    void setFilterLevel(const level para);
+    void setFilterLevel(const level _level);
 
 protected:
     virtual const bool init(void);
@@ -111,9 +108,9 @@ private:
 
     //解析参数
     template<typename... Arguments>
-    void _log(const level l, string str, const Arguments & ... args) const
+    void _log(const level _level, string str, const Arguments & ... args) const
     {
-        if(l < _filter) return;
+        if(_level < _filter) return;
 
         //存储解析后的占位符
         vector<placeholder> placeholders;
@@ -143,8 +140,9 @@ private:
                 if(exist) continue;
 
                 //检查参数是否合法
-                if(temp.paraIndex >= parameterCount){
-                    cout << "Error: Can not find the parameters with the [" << temp.str << "] matching." << endl;
+                if(temp.paraIndex >= parameterCount)
+                {
+                    error("Error: Can not find the parameters with the [{0}] matching.", temp.str);
                     assert(temp.paraIndex < parameterCount);
                 }
                 
@@ -156,7 +154,9 @@ private:
         _log(str, placeholders, parameterCount, args...);
 
         //输出打印信息
-        cout << "[" << _levelName[l] << "]: " << str << endl;
+        stringstream sstr;
+        sstr << "[" << _levelName[_level] << "] " << str;
+        printLog(sstr.str());
     }
 
     //处理动态参数
@@ -198,8 +198,11 @@ private:
     {
           stringstream strs;
           strs << source;
-          return string(strs.str());
+          return strs.str();
     }
+
+    //输出日志
+    void printLog(const string & log) const;
 
 };
 

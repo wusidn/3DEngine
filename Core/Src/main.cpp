@@ -63,7 +63,7 @@ void init(void)
 
     log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
-    log.info("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
+    // log.info("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
     
     // a->autoRelease();
     // b->autoRelease();
@@ -144,7 +144,7 @@ void display(void)
     float currFrameTime = clock();
     useTime = (currFrameTime - prevFrameTime) / CLOCKS_PER_SEC * 1000;
     if(useTime < standardTime){
-        usleep((standardTime - useTime) * 1000);
+        // usleep((standardTime - useTime) * 1000);
     }
     prevFrameTime = currFrameTime;
 }

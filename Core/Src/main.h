@@ -3,7 +3,7 @@
 #define __MAIN_H__
 
 
-const char * windiwTitle = "Hello World";
+const char * windiwTitle = "3DEngine";
 static int fps = 60;
 
 void init(void);
