@@ -50,22 +50,21 @@ void init(void)
    
     string code = File::readAllText("../CMakeLists.txt");
     
-    cout << "Main -> Code : " << code << endl;
-    
-    
-    cout << "Vec3(0, 1, 0).modulo() = " << Vec3(0, 1, 0).modulo() << endl;
-    cout << "Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = " << Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) << endl;
-    
-    cout << "Vec4(1, 0, 0, 1).modulo() = " << Vec4(1, 0, 0, 1).modulo() << endl;
-    
-    
-    cout << "Vec3(1, 2, 3).modulo() = " << Vec3(1, 2, 3).modulo() << endl;
-    cout << "Vec4(1, 2, 3, 1).modulo() = " << Vec4(1, 2, 3, 1).modulo() << endl;
+    console.setFilterLevel(Console::level::INFO);
 
+    console.info("Main -> Code : {0}", code);
+    
+    
+    console.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
+    console.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    console.info("Vec4(1, 0, 0, 1).modulo() = {0}", Vec4(1, 0, 0, 1).modulo());
+    
+    
 
-    cout << "----------------------------------------------" << endl;
-    console.log("hsdgf{1}hsdg\\{sdf{0:D\\}shd}f {1}{2:d}{1}g", 1, 2, 3, "...");
-    cout << "----------------------------------------------" << endl;
+    console.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
+
+    console.setLevel(Console::level::WARN);
+    console.log("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
     
     // a->autoRelease();
     // b->autoRelease();
@@ -121,7 +120,8 @@ void display(void)
         prevSecond = tempTime;
         fps = farmeCount;
         farmeCount = 0;
-        cout << "FPS: " << fps << endl;
+
+        console.info("FPS: {0}", fps);
     }
     farmeCount++;
     
