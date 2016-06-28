@@ -9,7 +9,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <string.h>
-#include "Tool/Console.h"
+#include "Tool/Log.h"
 
 #include <iostream>
 
@@ -50,21 +50,20 @@ void init(void)
    
     string code = File::readAllText("../CMakeLists.txt");
     
-    console.setFilterLevel(Console::level::INFO);
+    log.setFilterLevel(Log::level::INFO);
 
-    console.info("Main -> Code : {0}", code);
+    log.info("Main -> Code : {0}", code);
     
     
-    console.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-    console.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-    console.info("Vec4(1, 0, 0, 1).modulo() = {0}", Vec4(1, 0, 0, 1).modulo());
+    log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
+    log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    log.info("Vec4(1, 0, 0, 1).modulo() = {0}", Vec4(1, 0, 0, 1).modulo());
     
     
 
-    console.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
+    log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
-    console.setLevel(Console::level::WARN);
-    console.log("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
+    log.info("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
     
     // a->autoRelease();
     // b->autoRelease();
@@ -121,7 +120,7 @@ void display(void)
         fps = farmeCount;
         farmeCount = 0;
 
-        console.info("FPS: {0}", fps);
+        log.info("FPS: {0}", fps);
     }
     farmeCount++;
     

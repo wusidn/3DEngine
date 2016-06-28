@@ -1,7 +1,7 @@
-#include "Tool/Console.h"
+#include "Tool/Log.h"
 #include <vector>
 
-string Console::_levelName[]  = {
+string Log::_levelName[]  = {
         "DEBUG",
         "INFO",
         "NOTICE",
@@ -12,7 +12,7 @@ string Console::_levelName[]  = {
         "EMERG"
     };
 
-const bool Console::init(void)
+const bool Log::init(void)
 {
     if(!Object::init()){
         return false;
@@ -21,14 +21,9 @@ const bool Console::init(void)
     return true;
 }
 
-void Console::setLevel(const level para)
-{
-    _level = para;
-}
-
-void Console::setFilterLevel(const level para)
+void Log::setFilterLevel(const level para)
 {
     _filter = para;
 }
 
-Console & console = *Console::create();
+Log & log = *Log::create();

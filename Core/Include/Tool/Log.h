@@ -1,5 +1,5 @@
-#ifndef __CONSOLE_H__
-#define __CONSOLE_H__
+#ifndef __LOG_H__
+#define __LOG_H__
 
 #include <iostream>
 #include <string>
@@ -14,11 +14,11 @@
 
 using namespace std;
 
-class Console : Object
+class Log : Object
 {
 public:
 
-    CREATEFUNC(Console);
+    CREATEFUNC(Log);
 
     enum level{
         DEBUG = 0,
@@ -87,13 +87,6 @@ public:
         _log(level::EMERG, str, args...);
     }
 
-    //使用状态机错误级别
-    template<typename... Arguments>
-    void log(string str, const Arguments & ... args) const
-    {
-        _log(_level, str, args...);
-    }
-
     //设置状态机级别 log函数使用此级别
     void setLevel(const level para);
 
@@ -115,8 +108,6 @@ private:
     static string _levelName[];
     //过滤级别
     level _filter = level::DEBUG;
-    //状态机级别
-    level _level = level::DEBUG;
 
     //解析参数
     template<typename... Arguments>
@@ -212,6 +203,6 @@ private:
 
 };
 
-extern Console & console;
+extern Log & log;
 
-#endif //__CONSOLE_H__
+#endif //__LOG_H__
