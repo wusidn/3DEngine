@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class Log : Object
+class Log : public Object
 {
 public:
 
@@ -91,8 +91,9 @@ public:
     void setFilterLevel(const level _level);
 
 protected:
+    Log(){}
     virtual const bool init(void);
-
+        
     struct placeholder
     {
         unsigned paraIndex;
@@ -119,16 +120,18 @@ private:
         if(parameterCount){
 
             //匹配占位符:{index[:format]}
-            regex reg("([^\\\\\\{]*((\\\\\\{)|\\\\)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*((\\\\\\})|\\\\)?)*?))?\\})");
+            //js 可用: /([^\\{]*(\\.)?)*({(\d)([\s]*,[\s]*(([^\\}]*(\\.)?)*))?})/ig;
+            regex reg("([^\\\\\\{]*(\\\\.)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*(\\\\.)?)*))?\\})");
 
-            auto matchBegin = sregex_iterator(str.cbegin(), str.cend(), reg);
+            auto matchBegin = sregex_iterator(str.begin(), str.end(), reg);
             auto matchEnd = sregex_iterator();
 
             for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
+
                 placeholder temp = {
-                    .paraIndex = (unsigned)atoi(string(item->str(5)).c_str()),
-                    .str = item->str(4),
-                    .format = item->str(7)
+                    .paraIndex = (unsigned)atoi(string(item->str(4)).c_str()),
+                    .str = item->str(3),
+                    .format = item->str(6)
                 };
 
                 bool exist = false;
@@ -148,11 +151,18 @@ private:
                 
                 placeholders.push_back(temp);
             }
+
+            //处理打印信息
+            _log(str, placeholders, parameterCount, args...);
         }
 
-        //处理打印信息
-        _log(str, placeholders, parameterCount, args...);
+        //输出打印信息
+        _log(_level, str);
+    }
 
+    //没有额外参数
+    void _log(const level _level, const string & str) const
+    {
         //输出打印信息
         stringstream sstr;
         sstr << "[" << _levelName[_level] << "] " << str;
@@ -183,6 +193,7 @@ private:
             if(item.paraIndex != parameterIndex) continue;
 
             auto index = string::npos;
+            
             while((index = str.find(item.str)) != string::npos){
                 
                 string temp_left = str.substr(0, index);
@@ -203,7 +214,6 @@ private:
 
     //输出日志
     void printLog(const string & log) const;
-
 };
 
 extern Log & log;

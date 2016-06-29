@@ -9,7 +9,10 @@
 #include <ctime>
 #include <unistd.h>
 #include <string.h>
+// #include <uuid/uuid.h>
+
 #include "Tool/Log.h"
+#include "Tool/Uuid.h"
 
 #include <iostream>
 
@@ -41,7 +44,12 @@ int main(int argc, char ** argv)
 void init(void)
 {
 
-    
+    log.info("..........................");
+
+    Uuid * uuid = Uuid::create();
+    // log.info("{0}", *uuid);
+    log.info(Uuid::create(*uuid)->toString());
+   
     // Object * a = new Object();
     // Object * b = new Object();
     
@@ -52,12 +60,12 @@ void init(void)
     
     log.setFilterLevel(Log::level::INFO);
 
-    log.info("Main -> Code : {0}", code);
+    // log.info("Main -> Code : {0}", code);
     
     
-    log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-    log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-    log.info("Vec4(1, 0, 0, 1).modulo() = {0}", Vec4(1, 0, 0, 1).modulo());
+    // log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
+    // log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0}", Vec4(1, 0, 0, 1).modulo());
     
     
 
@@ -103,6 +111,14 @@ void init(void)
 
 void display(void)
 {
+
+    // for(unsigned i = 0; i < 10000; ++i)
+    // {
+    //     Uuid * uuid = Uuid::create();
+    //     uuid->toString();
+    // }
+    
+    // log.info(uuid->toString());
     
     static float hopeFrameCount = 120;
     static int farmeCount = hopeFrameCount;
@@ -131,10 +147,10 @@ void display(void)
     glFlush();
     
     
-    for(int i = 0; i < 1000000; ++i){
-        int temp = i >> 5 * 6 << 2 / 3;
-        temp ++;
-    }
+    // for(int i = 0; i < 1000000; ++i){
+    //     int temp = i >> 5 * 6 << 2 / 3;
+    //     temp ++;
+    // }
     
     //垃圾回收
     Gc::getInstance().clean();
