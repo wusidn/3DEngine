@@ -117,45 +117,65 @@ private:
         vector<placeholder> placeholders;
         unsigned parameterCount = sizeof...(Arguments);
 
+
         if(parameterCount){
 
-            //匹配占位符:{index[:format]}
-            //js 可用: /([^\\{]*(\\.)?)*({(\d)([\s]*,[\s]*(([^\\}]*(\\.)?)*))?})/ig;
-            regex reg("([^\\\\\\{]*(\\\\.)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*(\\\\.)?)*))?\\})");
 
-            auto matchBegin = sregex_iterator(str.begin(), str.end(), reg);
+            //正则匹配不到占位符的情况会报错
+            //容错代码 去掉转义字符后是否匹配到占位符--------------------------------------------
+            static regex temp_reg("\\\\.");
+            string temp_str = regex_replace(str, temp_reg, "");
+
+            static regex simplifyReg("\\{\\d[\\s]*(,[\\s]*[^\\}]*)?\\}");
+
+            auto tempMatchBegin = sregex_iterator(temp_str.begin(), temp_str.end(), simplifyReg);
+            //容错代码----------------------------------------------------------------------
+
             auto matchEnd = sregex_iterator();
+            if(tempMatchBegin != matchEnd){
 
-            for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
+                //匹配占位符:{index[:format]}
+                //js 可用: /([^\\{]*(\\.)?)*({(\d)([\s]*,[\s]*(([^\\}]*(\\.)?)*))?})/ig;
 
-                placeholder temp = {
-                    .paraIndex = (unsigned)atoi(string(item->str(4)).c_str()),
-                    .str = item->str(3),
-                    .format = item->str(6)
-                };
+                static regex reg("([^\\\\\\{]*(\\\\.)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*(\\\\.)?)*))?\\})");
 
-                bool exist = false;
-                for(auto item : placeholders){
-                    if(item.str != temp.str) continue; 
-                    exist = true;
-                    break;
-                }
-                if(exist) continue;
-
-                //检查参数是否合法
-                if(temp.paraIndex >= parameterCount)
-                {
-                    error("Error: Can not find the parameters with the [{0}] matching.", temp.str);
-                    assert(temp.paraIndex < parameterCount);
-                }
+                auto matchBegin = sregex_iterator(str.begin(), str.end(), reg);
                 
-                placeholders.push_back(temp);
-            }
 
-            //处理打印信息
-            _log(str, placeholders, parameterCount, args...);
+                for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
+
+                    placeholder temp = {
+                        .paraIndex = (unsigned)atoi(string(item->str(4)).c_str()),
+                        .str = item->str(3),
+                        .format = item->str(6)
+                    };
+
+                    bool exist = false;
+                    for(auto item : placeholders){
+                        if(item.str != temp.str) continue; 
+                        exist = true;
+                        break;
+                    }
+                    if(exist) continue;
+
+                    //检查参数是否合法
+                    if(temp.paraIndex >= parameterCount)
+                    {
+                        error("Error: Can not find the parameters with the [{0}] matching.", temp.str);
+                        assert(temp.paraIndex < parameterCount);
+                    }
+                    
+                    placeholders.push_back(temp);
+                }
+
+                //处理打印信息
+                _log(str, placeholders, parameterCount, args...);
+            }
         }
 
+        //对转义字符进行转义
+        static regex escapeReg("\\\\([\\{\\}])");
+        str = regex_replace(str, escapeReg, "$1");
         //输出打印信息
         _log(_level, str);
     }

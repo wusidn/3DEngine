@@ -65,7 +65,7 @@ void init(void)
     
     // log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
     // log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-    log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0}", Vec4(1, 0, 0, 1).modulo());
+    log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{{0}", Vec4(1, 0, 0, 1).modulo());
     
     
 
