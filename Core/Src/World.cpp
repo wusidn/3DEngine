@@ -9,11 +9,6 @@ const vector<World *> & World::getWorldPool()
 }
 
 
-World::World()
-{
-    
-}
-
 World::~World()
 {
     auto index = std::find(worldPool.begin(), worldPool.end(), this);

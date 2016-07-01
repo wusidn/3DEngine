@@ -14,10 +14,8 @@ public:
     CREATEFUNC(World);
     static const vector<World *> & getWorldPool();
     
-    
-    
 protected:
-    World();
+    World(){}
     ~World();
     virtual const bool init();
     
