@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Log.h"
 
 Shader * Shader::create(const string & code, const enum ShaderType type)
 {
@@ -22,42 +23,41 @@ const bool Shader::init(void)
 
 const bool Shader::init(const string & code, const enum ShaderType type)
 {
-    if(glIsShader(_shaderId = glCreateShader(type)) != GL_TRUE){
-        return false;
-    }
+
+    _shaderId = glCreateShader(type);
+    assert(_shaderId == GL_TRUE);
+
     const GLchar * source = code.c_str();
     glShaderSource(_shaderId, 1, &source, nullptr);
+
     return true;
 }
 
 const bool Shader::compile(void) const
 {
     glCompileShader(_shaderId);
-    return compileIsSuccessful();
-}
 
-const string Shader::getErrorInfo(void) const
-{
-    
-    if(compileIsSuccessful()){
-        return "";
+    GLint compiled = 0;
+    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compiled);
+    if(compiled == GL_TRUE){
+        return true;
     }
-    
-    if(glIsShader(_shaderId) != GL_TRUE){
-        return "ShaderElement Create failed Or Delegated";
-    }
-    
+
     GLint infoLen = 0;
     glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &infoLen);
+
     if(infoLen == 0){
-        return "Not Fined Error Info";
+        log.error("# Shader::compile #  Not Fined Error Info");
+        return false;
     }
+
     GLchar * buff = new GLchar[infoLen];
     glGetShaderInfoLog(_shaderId, infoLen, nullptr, buff);
-    
-    string result(buff);
+
+    log.error("# Shader::compile #  {0}", buff);
     delete [] buff;
-    return result;
+
+    return false;
 }
 
 const unsigned int Shader::shaderId(void) const

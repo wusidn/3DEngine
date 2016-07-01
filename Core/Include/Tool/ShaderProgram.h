@@ -26,10 +26,7 @@ public:
     
     //链接shader程序
     const bool linkProgram(void) const;
-    
-    //获取错误信息
-    const string getErrorInfo(void) const;
-    
+
     //获取shader程序id
     const unsigned int programId(void) const;
     

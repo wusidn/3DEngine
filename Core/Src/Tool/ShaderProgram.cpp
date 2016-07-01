@@ -1,5 +1,5 @@
 #include "ShaderProgram.h"
-
+#include "Log.h"
 
 ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)
 {
@@ -16,13 +16,17 @@ const bool ShaderProgram::init(void)
     if(!Object::init()){
         return false;
     }
-    return glIsProgram(_programId = glCreateProgram()) == GL_TRUE;
+    _programId = glCreateProgram();
+    assert(_programId == GL_TRUE);
+
+    return true;
 }
 
 const bool ShaderProgram::init(const list<const Shader *> & shaderList)
 {
     for(auto item = shaderList.begin(); item != shaderList.end(); ++item){
         if(!(*item)->compileIsSuccessful()){
+            log.error("ShaderProgram::init Shader Is Not Compiled!");
             return false;
         }
         if(!attachShader(*(*item))){
@@ -37,6 +41,7 @@ const bool ShaderProgram::attachShader(const Shader & shader) const
 {
     const unsigned int shaderId = shader.shaderId();
     if(!shaderId){
+        log.error("# ShaderProgram::attachShader #  Shader Is Not legitimate!");
         return false;
     }
     glAttachShader(_programId, shaderId);
@@ -47,6 +52,7 @@ const bool ShaderProgram::detachShader(const Shader & shader) const
 {
     const unsigned int shaderId = shader.shaderId();
     if(!shaderId){
+        log.error("# ShaderProgram::detachShader #  Shader Is Not legitimate!");
         return false;
     }
     glDetachShader(_programId, shaderId);
@@ -56,30 +62,25 @@ const bool ShaderProgram::detachShader(const Shader & shader) const
 const bool ShaderProgram::linkProgram(void) const
 {
     glLinkProgram(_programId);
-    return linkIsSuccessful();
-}
 
-const string ShaderProgram::getErrorInfo(void) const
-{
-    if(linkIsSuccessful()){
-        return "";
+    GLint linked;
+    glGetProgramiv(_programId, GL_LINK_STATUS, &linked);
+    if(linked == GL_TRUE){
+        return true;
     }
-    
-    if(glIsProgram(_programId) != GL_TRUE){
-        return "Program Create Fail";
-    }
-    
+
     GLint info_len = 0;
     glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &info_len);
     if(!info_len){
-        return "Not Fined Error Info";
+        log.error("# ShaderProgram::linkProgram #  Not Fined Error Info");
     }
+
     GLchar * buff = new GLchar[info_len];
     glGetProgramInfoLog(_programId, info_len, nullptr, buff);
-    
-    string result(buff);
+    log.error("# ShaderProgram::linkProgram #  {0}", buff);
     delete [] buff;
-    return result;
+
+    return false;
 }
 
 const bool ShaderProgram::linkIsSuccessful(void) const

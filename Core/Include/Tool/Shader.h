@@ -25,9 +25,6 @@ public:
     //编译shader
     const bool compile(void) const;
     
-    //获取编译错误信息
-    const string getErrorInfo(void) const;
-    
     //获取shaderId
     const unsigned int shaderId(void) const;
     

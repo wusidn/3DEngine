@@ -151,7 +151,7 @@ private:
             //js 可用: /([^\\{]*(\\.)?)*({(\d)([\s]*,[\s]*(([^\\}]*(\\.)?)*))?})/ig;
             //static regex reg("([^\\\\\\{]*(\\\\.)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*(\\\\.)?)*))?\\})");
 
-            static regex reg("\\{(\\d*)\\s*(,\\s*([^\\}]*?\\s*))?\\}");
+            static regex reg("\\{(\\d*)\\s*(,\\s*([^\\}]*?)\\s*)?\\}");
             matchBegin = sregex_iterator(str.begin(), str.end(), reg);
             
             for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
@@ -234,9 +234,43 @@ private:
     template<typename Argument>
     string _format(const string & format, const Argument & source) const
     {
-          stringstream strs;
-          strs << source;
-          return strs.str();
+        
+        cout << "format: \"" << format << "\", source: " << source << endl;
+
+        stringstream strs;
+        bool needFormat = format.length() > 0;
+        if(!needFormat){
+            strs << source;
+        }
+
+        while(needFormat){
+
+            //D[number]
+            static regex format_D("^[dD](\\d*)$");
+            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
+            auto matchEnd = sregex_iterator();
+            if(matchBegin != matchEnd){
+                cout << matchBegin->str() << ", " << typeid(source).name() << endl;
+
+                // switch(typeid(source).name()){
+                //     case "i":
+
+                //     break;
+
+                //     default:
+                //         log.error("# Log::_format #  Unsupported type");
+                //     break
+                // }
+                break;
+            }
+
+            //C[number]
+
+            break;
+        }
+
+        return strs.str();
+          
     }
 
     //输出日志
