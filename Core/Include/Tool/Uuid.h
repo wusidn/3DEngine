@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __UUID_H__
 #define __UUID_H__
 

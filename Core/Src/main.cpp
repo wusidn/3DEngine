@@ -11,8 +11,8 @@
 #include <string.h>
 // #include <uuid/uuid.h>
 
-#include "Tool/Log.h"
-#include "Tool/Uuid.h"
+#include "Log.h"
+#include "Uuid.h"
 
 #include <iostream>
 
