@@ -62,6 +62,7 @@ void init(void)
 
     log.info("Main -> Code : {0}", code);
     
+    log.info("{0, d3}", 2222);
     
     log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
     log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
@@ -70,8 +71,6 @@ void init(void)
     
 
     log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
-
-    log.info("hsdgf{1}hsdg\\{sdf{0   ,D\\}shd}f {1}{2,d}{1}g{3 , 00-00-00}", 1, 2, 3, "...");
     
     // a->autoRelease();
     // b->autoRelease();

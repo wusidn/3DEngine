@@ -245,25 +245,9 @@ private:
 
         while(needFormat){
 
-            //D[number]
-            static regex format_D("^[dD](\\d*)$");
-            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
-            auto matchEnd = sregex_iterator();
-            if(matchBegin != matchEnd){
-                cout << matchBegin->str() << ", " << typeid(source).name() << endl;
-
-                // switch(typeid(source).name()){
-                //     case "i":
-
-                //     break;
-
-                //     default:
-                //         log.error("# Log::_format #  Unsupported type");
-                //     break
-                // }
+            if(_format_D(strs, format, source)){
                 break;
             }
-
             //C[number]
 
             break;
@@ -271,6 +255,39 @@ private:
 
         return strs.str();
           
+    }
+
+    //格式化数字类型
+    template<typename Argument>
+    bool _format_D(stringstream & strs, const string & format, const Argument & source) const
+    {
+        static regex format_D("^[dD](\\d*)$");
+        auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
+        auto matchEnd = sregex_iterator();
+        if(matchBegin == matchEnd){
+            return false;
+        }
+
+        int minCount = atoi(matchBegin->str(1).c_str());
+
+        string typeName = typeid(source).name();
+        stringstream tempsstr; 
+        tempsstr << source;
+        string stringSourceData = tempsstr.str();
+
+        // int outData = 0;
+
+        if(typeName == "i"){
+            
+        }else if(typeName == "f"){
+
+        }
+        for(auto i = 0; i < minCount - (int)stringSourceData.length(); ++i){
+                strs << "0";
+        }
+        strs << stringSourceData;
+        // strs << outData;
+        return true;
     }
 
     //输出日志
