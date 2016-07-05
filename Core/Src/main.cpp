@@ -11,7 +11,7 @@
 #include <string.h>
 // #include <uuid/uuid.h>
 
-#include "Log.h"
+#include "LogManager.h"
 #include "Uuid.h"
 
 #include <iostream>
@@ -44,11 +44,11 @@ int main(int argc, char ** argv)
 void init(void)
 {
 
-    log.info("..........................");
+    Log.info("..........................");
 
     Uuid * uuid = Uuid::create();
-    log.info("{0}", *uuid);
-    log.info(Uuid::create(*uuid)->toString());
+    Log.info("{0}", *uuid);
+    Log.info(Uuid::create(*uuid)->toString());
    
     // Object * a = new Object();
     // Object * b = new Object();
@@ -58,19 +58,19 @@ void init(void)
    
     string code = File::readAllText("../CMakeLists.txt");
     
-    log.setFilterLevel(Log::level::INFO);
+    Log.setFilterLevel(LogManager::level::INFO);
 
-    log.info("Main -> Code : {0}", code);
+    Log.info("Main -> Code : {0}", code);
     
-    log.info("{0, d3}", 2222);
+    Log.info("------{0, d3}", "1.5d");
     
-    log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-    log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-    log.info("Vec4(1, 0, 0, 1).modulo() = \\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
+    Log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
+    Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    Log.info("Vec4(1, 0, 0, 1).modulo() = \\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
     
     
 
-    log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
+    Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
     
     // a->autoRelease();
     // b->autoRelease();
@@ -135,7 +135,8 @@ void display(void)
         fps = farmeCount;
         farmeCount = 0;
 
-        log.info("FPS: {0}", fps);
+        Log.info("FPS: {0}", fps);
+        
     }
     farmeCount++;
     

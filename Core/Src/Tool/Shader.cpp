@@ -1,5 +1,5 @@
 #include "Shader.h"
-#include "Log.h"
+#include "LogManager.h"
 
 Shader * Shader::create(const string & code, const enum ShaderType type)
 {
@@ -47,14 +47,14 @@ const bool Shader::compile(void) const
     glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &infoLen);
 
     if(infoLen == 0){
-        log.error("# Shader::compile #  Not Fined Error Info");
+        Log.error("# Shader::compile #  Not Fined Error Info");
         return false;
     }
 
     GLchar * buff = new GLchar[infoLen];
     glGetShaderInfoLog(_shaderId, infoLen, nullptr, buff);
 
-    log.error("# Shader::compile #  {0}", buff);
+    Log.error("# Shader::compile #  {0}", buff);
     delete [] buff;
 
     return false;

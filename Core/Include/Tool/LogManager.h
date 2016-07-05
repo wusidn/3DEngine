@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __LOG_H__
-#define __LOG_H__
+#ifndef __LOG_MANAGER_H__
+#define __LOG_MANAGER_H__
 
 #include <iostream>
 #include <string>
@@ -12,16 +12,16 @@
 #include <sstream>
 #include <map>
 #include "Uuid.h"
-
+#include <cmath>
 #include "Object.h"
 
 using namespace std;
 
-class Log : public Object
+class LogManager : public Object
 {
 public:
 
-    CREATEFUNC(Log);
+    CREATEFUNC(LogManager);
 
     enum level{
         DEBUG = 0,
@@ -94,7 +94,7 @@ public:
     void setFilterLevel(const level _level);
 
 protected:
-    Log(){}
+    LogManager(){}
     virtual const bool init(void);
         
     struct placeholder
@@ -273,20 +273,26 @@ private:
         string typeName = typeid(source).name();
         stringstream tempsstr; 
         tempsstr << source;
-        string stringSourceData = tempsstr.str();
+        
+        string strSourceData = tempsstr.str();
+        string strOutData = format;
 
         // int outData = 0;
 
-        if(typeName == "i"){
-            
-        }else if(typeName == "f"){
+        cout << typeName << endl;
 
+        if(typeName == "i"){
+            strOutData = strSourceData;
+        }else if(typeName == "f" || typeName == "d"){
+            stringstream temp;
+            temp << roundf(atof(strSourceData.c_str()));
+            strOutData = temp.str();
         }
-        for(auto i = 0; i < minCount - (int)stringSourceData.length(); ++i){
+
+        for(auto i = 0; i < minCount - (int)strOutData.length(); ++i){
                 strs << "0";
         }
-        strs << stringSourceData;
-        // strs << outData;
+        strs << strOutData;
         return true;
     }
 
@@ -294,6 +300,6 @@ private:
     void printLog(const level _level, const string & log) const;
 };
 
-extern Log & log;
+extern LogManager & Log;
 
-#endif //__LOG_H__
+#endif //__LOG_MANAGER_H__

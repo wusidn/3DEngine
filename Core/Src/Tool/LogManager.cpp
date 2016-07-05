@@ -1,8 +1,8 @@
-#include "Tool/Log.h"
+#include "LogManager.h"
 #include "Tool/Uuid.h"
 #include <vector>
 
-string Log::_levelName[]  = {
+string LogManager::_levelName[]  = {
         "DEBUG",
         "INFO",
         "NOTICE",
@@ -13,9 +13,9 @@ string Log::_levelName[]  = {
         "EMERG"
     };
 
-map<string, string> Log::escapes;
+map<string, string> LogManager::escapes;
 
-const bool Log::init(void)
+const bool LogManager::init(void)
 {
     if(!Object::init()){
         return false;
@@ -24,15 +24,15 @@ const bool Log::init(void)
     return true;
 }
 
-void Log::setFilterLevel(const level _level)
+void LogManager::setFilterLevel(const level _level)
 {
     _filter = _level;
 }
 
-void Log::printLog(const level _level, const string & log) const
+void LogManager::printLog(const level _level, const string & log) const
 {
     //暂时只有输出到终端功能
     cout << "[" << _levelName[_level] << "] " << log << endl;
 }
 
-Log & log = *Log::create();
+LogManager & Log = *LogManager::create();

@@ -1,5 +1,5 @@
 #include "ShaderProgram.h"
-#include "Log.h"
+#include "LogManager.h"
 
 ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)
 {
@@ -26,7 +26,7 @@ const bool ShaderProgram::init(const list<const Shader *> & shaderList)
 {
     for(auto item = shaderList.begin(); item != shaderList.end(); ++item){
         if(!(*item)->compileIsSuccessful()){
-            log.error("ShaderProgram::init Shader Is Not Compiled!");
+            Log.error("ShaderProgram::init Shader Is Not Compiled!");
             return false;
         }
         if(!attachShader(*(*item))){
@@ -41,7 +41,7 @@ const bool ShaderProgram::attachShader(const Shader & shader) const
 {
     const unsigned int shaderId = shader.shaderId();
     if(!shaderId){
-        log.error("# ShaderProgram::attachShader #  Shader Is Not legitimate!");
+        Log.error("# ShaderProgram::attachShader #  Shader Is Not legitimate!");
         return false;
     }
     glAttachShader(_programId, shaderId);
@@ -52,7 +52,7 @@ const bool ShaderProgram::detachShader(const Shader & shader) const
 {
     const unsigned int shaderId = shader.shaderId();
     if(!shaderId){
-        log.error("# ShaderProgram::detachShader #  Shader Is Not legitimate!");
+        Log.error("# ShaderProgram::detachShader #  Shader Is Not legitimate!");
         return false;
     }
     glDetachShader(_programId, shaderId);
@@ -72,12 +72,12 @@ const bool ShaderProgram::linkProgram(void) const
     GLint info_len = 0;
     glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &info_len);
     if(!info_len){
-        log.error("# ShaderProgram::linkProgram #  Not Fined Error Info");
+        Log.error("# ShaderProgram::linkProgram #  Not Fined Error Info");
     }
 
     GLchar * buff = new GLchar[info_len];
     glGetProgramInfoLog(_programId, info_len, nullptr, buff);
-    log.error("# ShaderProgram::linkProgram #  {0}", buff);
+    Log.error("# ShaderProgram::linkProgram #  {0}", buff);
     delete [] buff;
 
     return false;
