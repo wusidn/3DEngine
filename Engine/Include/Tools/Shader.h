@@ -9,7 +9,7 @@
 using namespace std;
 
 
-namespace engine::tool{
+namespace engine::tools{
 
     enum ShaderType{
         vertex = GL_VERTEX_SHADER,

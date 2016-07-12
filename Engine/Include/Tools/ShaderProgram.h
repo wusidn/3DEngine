@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace engine::tool{
+namespace engine::tools{
 
     class ShaderProgram : public Object
     {

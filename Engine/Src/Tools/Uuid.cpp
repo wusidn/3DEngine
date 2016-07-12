@@ -2,7 +2,7 @@
 #include <cstring>
 
 
-namespace engine::tool{
+namespace engine::tools{
 
     Uuid * Uuid::create(const Uuid & _uuid)
     {

@@ -18,7 +18,7 @@
 
 using namespace std;
 using namespace engine;
-using namespace engine::tool;
+using namespace engine::tools;
 
 int main(int argc, char ** argv)
 {
@@ -64,11 +64,11 @@ void init(void)
 
     Log.info("Main -> Code : {0}", code);
     
-    Log.info("------{0, d3}", "1.5d");
+    Log.info("------{0, d3}", "1.4");
     
     Log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-    Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-    Log.info("Vec4(1, 0, 0, 1).modulo() = \\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
+    Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0,5}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    Log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
     
     
 

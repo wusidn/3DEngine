@@ -2,7 +2,7 @@
 #include "LogManager.h"
 
 
-namespace engine::tool{
+namespace engine::tools{
 
     Shader * Shader::create(const string & code, const enum ShaderType type)
     {

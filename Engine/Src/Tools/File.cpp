@@ -5,7 +5,7 @@
 using namespace std;
 
 
-namespace engine::tool{
+namespace engine::tools{
 
     string File::readAllText(const string & filePath)
     {

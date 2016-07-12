@@ -14,10 +14,11 @@
 #include "Uuid.h"
 #include <cmath>
 #include "Object.h"
+#include "Tool.h"
 
 using namespace std;
 
-namespace engine::tool{
+namespace engine::tools{
     class LogManager : public Object
     {
     public:
@@ -236,26 +237,17 @@ namespace engine::tool{
         string _format(const string & format, const Argument & source) const
         {
             
-            cout << "format: \"" << format << "\", source: " << source << endl;
+            // cout << "format: \"" << format << "\", source: " << source << endl;
 
             stringstream strs;
             bool needFormat = format.length() > 0;
             if(!needFormat){
                 strs << source;
+            }else{
+                _format_aline(strs, format, source) || _format_D(strs, format, source) || _format_C(strs, format, source);
             }
 
-            while(needFormat){
-
-                if(_format_D(strs, format, source)){
-                    break;
-                }
-                //C[number]
-
-                break;
-            }
-
-            return strs.str();
-            
+            return strs.str();;
         }
 
         //格式化数字类型
@@ -268,32 +260,119 @@ namespace engine::tool{
             if(matchBegin == matchEnd){
                 return false;
             }
-
+            
             int minCount = atoi(matchBegin->str(1).c_str());
 
-            string typeName = typeid(source).name();
-            stringstream tempsstr; 
-            tempsstr << source;
+            stringstream ss_source;
+            ss_source << source;
+            string tempStr = ss_source.str();
+            static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
+            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
+
+            if(matchBegin == matchEnd){
+                error("尝试格式化失败");
+                strs << format;
+                return true;
+            }
             
-            string strSourceData = tempsstr.str();
-            string strOutData = format;
-
-            // int outData = 0;
-
-            cout << typeName << endl;
-
-            if(typeName == "i"){
-                strOutData = strSourceData;
-            }else if(typeName == "f" || typeName == "d"){
-                stringstream temp;
-                temp << roundf(atof(strSourceData.c_str()));
-                strOutData = temp.str();
+            string sourceData = matchBegin->str();
+            int convertData;
+            
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
             }
 
-            for(auto i = 0; i < minCount - (int)strOutData.length(); ++i){
-                    strs << "0";
+            if(sourceData.find('.') != string::npos){
+                convertData = (int)roundf(atof(sourceData.c_str()));
+            }else{
+                convertData = atoi(sourceData.c_str());
             }
-            strs << strOutData;
+
+            stringstream tempSStr;
+            tempSStr << convertData;
+
+            for(int i = tempSStr.str().length(); i < minCount; ++i){
+                strs << "0";
+            }
+            strs << convertData;
+
+            return true;
+        }
+
+
+        //格式化钱币类型
+        template<typename Argument>
+        bool _format_C(stringstream & strs, const string & format, const Argument & source) const
+        {
+            static regex format_D("^[cC](\\d*)$");
+            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
+            auto matchEnd = sregex_iterator();
+            if(matchBegin == matchEnd){
+                return false;
+            }
+
+            int decimalDigits = 2;
+            if(matchBegin->str(1).length() > 0){
+                decimalDigits = atoi(matchBegin->str(1).c_str());
+            }
+
+            stringstream ss_source;
+            ss_source << source;
+            string tempStr = ss_source.str();
+            static regex checkNumber("^(.?)((\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?)$");
+            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
+
+            if(matchBegin == matchEnd){
+                error("尝试格式化失败");
+                strs << format;
+                return true;
+            }
+
+            string unit = matchBegin->str(1).length() > 0 ? matchBegin->str(1) : "￥";
+
+            string sourceData = matchBegin->str(2);
+
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
+            }
+
+            float convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
+
+            stringstream tempSStr;
+            tempSStr << convertData;
+
+            strs << unit << convertData;
+
+            if(tempSStr.str().find('.') == string::npos){
+                strs << ".";
+            }
+
+            for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
+                strs << "0";
+            }
+                        
+            return true;
+        }
+
+        //对齐格式
+        template<typename Argument>
+        bool _format_aline(stringstream & strs, const string & format, const Argument & source) const
+        {
+            static regex format_D("^([-]?)(\\d*)$");
+            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
+            auto matchEnd = sregex_iterator();
+            if(matchBegin == matchEnd){
+                return false;
+            }
+
+            // int minCount = atoi(matchBegin->str(2).c_str());
+
+            string temp("sd哈fsdf哈哈1");
+            cout << temp << ": " << temp.size() << endl;
+
+            wstring aa = sTOWs(temp);
+            cout << aa.c_str() << ": " << aa.length() << endl;
+
             return true;
         }
 

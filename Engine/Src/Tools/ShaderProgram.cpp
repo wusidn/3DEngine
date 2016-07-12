@@ -1,7 +1,7 @@
 #include "ShaderProgram.h"
 #include "LogManager.h"
 
-namespace engine::tool{
+namespace engine::tools{
 
     ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)
     {

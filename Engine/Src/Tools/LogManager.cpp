@@ -2,7 +2,7 @@
 #include "Uuid.h"
 #include <vector>
 
-namespace engine::tool{
+namespace engine::tools{
 
     string LogManager::_levelName[]  = {
             "DEBUG",
