@@ -367,11 +367,12 @@ namespace engine::tools{
 
             // int minCount = atoi(matchBegin->str(2).c_str());
 
-            string temp("sd哈fsdf哈哈1");
+            string temp("a中国文化博大精深，尔等岂止其底蕴何其绵长乎");
             cout << temp << ": " << temp.size() << endl;
 
-            wstring aa = sTOWs(temp);
-            cout << aa.c_str() << ": " << aa.length() << endl;
+            for(size_t i = 0; i < temp.length(); ++i){
+                cout << " " << (unsigned)temp.at(i) << endl;
+            }
 
             return true;
         }
