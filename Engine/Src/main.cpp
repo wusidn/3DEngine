@@ -67,9 +67,19 @@ void init(void)
     Log.info("------{0, d3}", "1.4");
     
     Log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-    Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0,5}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
+    Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0,-5}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
     Log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
     
+    Log.info("{0, -20}", "一");
+    Log.info("{0, -20}", "一二");
+    Log.info("{0, -20}", "一二三");
+    Log.info("{0, -20}", "一二三四");
+    Log.info("{0, -20}", "一二三四五");
+    Log.info("{0, -20}", "1一");
+    Log.info("{0, -20}", "12一二");
+    Log.info("{0, -20}", "123一二三");
+    Log.info("{0, -20}", "1234一二三四");
+    Log.info("{0, -20}", "12345一二三四五");
     
 
     Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());

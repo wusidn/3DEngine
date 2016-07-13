@@ -5,8 +5,24 @@
 using namespace std;
 
 namespace engine::tools{
-    unsigned getStringLength(const string & str){
-        return 0;
+    
+    const unsigned getStringLength(const string & str, const string & coding){
+        unsigned result = 0;
+        if(coding == "utf-8"){
+            for(size_t i = 0; i < str.length();){
+                int length = 0;
+                unsigned short temp = str.at(i) & 0x00FF;
+                while((temp << length & 0x00FF) > 1 << 7){
+                    length ++;
+                }
+                result += temp < 0x80 ? 1 : 2;
+                length = length < 1 ? 1 : length;
+                i += length;
+            }
+        }else{
+            result = str.length();
+        }
+        return result;
     }
 
     string wsToS(const wstring & ws)

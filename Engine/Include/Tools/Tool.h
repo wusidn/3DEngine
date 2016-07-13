@@ -8,7 +8,9 @@
 using namespace std;
 
 namespace engine::tools{
-    unsigned getStringLength(const string & str);
+
+    //计算字符串字符数 
+    const unsigned getStringLength(const string & str, const string & coding = "utf-8");
     string wsToS(const wstring & ws);
     wstring sTOWs(const string & s);
 }

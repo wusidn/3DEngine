@@ -244,7 +244,7 @@ namespace engine::tools{
             if(!needFormat){
                 strs << source;
             }else{
-                _format_aline(strs, format, source) || _format_D(strs, format, source) || _format_C(strs, format, source);
+                _format_aline(strs, format, source) || _format_D(strs, format, source) || _format_C(strs, format, source) || _format_F(strs, format, source);
             }
 
             return strs.str();;
@@ -354,6 +354,57 @@ namespace engine::tools{
             return true;
         }
 
+        //格式化钱币类型
+        template<typename Argument>
+        bool _format_F(stringstream & strs, const string & format, const Argument & source) const
+        {
+            static regex format_D("^[fF](\\d*)$");
+            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
+            auto matchEnd = sregex_iterator();
+            if(matchBegin == matchEnd){
+                return false;
+            }
+
+            int decimalDigits = 2;
+            if(matchBegin->str(1).length() > 0){
+                decimalDigits = atoi(matchBegin->str(1).c_str());
+            }
+
+            stringstream ss_source;
+            ss_source << source;
+            string tempStr = ss_source.str();
+            static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
+            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
+
+            if(matchBegin == matchEnd){
+                error("尝试格式化失败");
+                strs << format;
+                return true;
+            }
+
+            string sourceData = matchBegin->str();
+
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
+            }
+
+            float convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
+
+            stringstream tempSStr;
+            tempSStr << convertData;
+
+            strs << convertData;
+
+            if(tempSStr.str().find('.') == string::npos){
+                strs << ".";
+            }
+
+            for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
+                strs << "0";
+            }
+            return true;
+        }
+
         //对齐格式
         template<typename Argument>
         bool _format_aline(stringstream & strs, const string & format, const Argument & source) const
@@ -365,17 +416,29 @@ namespace engine::tools{
                 return false;
             }
 
-            // int minCount = atoi(matchBegin->str(2).c_str());
+            int minCount = atoi(matchBegin->str(2).c_str());
 
-            string temp("a中国文化博大精深，尔等岂止其底蕴何其绵长乎");
-            cout << temp << ": " << temp.size() << endl;
+            stringstream ss_source;
+            ss_source << source;
 
-            for(size_t i = 0; i < temp.length(); ++i){
-                cout << " " << (unsigned)temp.at(i) << endl;
+            if(matchBegin->str(1).c_str() == string("-")){
+                for(int i = getStringLength(ss_source.str()); i < minCount; ++i){
+                    strs << " ";
+                }
+            }
+
+            strs << ss_source.str();
+
+            if(matchBegin->str(1).c_str() != string("-")){
+                for(int i = getStringLength(ss_source.str()); i < minCount; ++i){
+                    strs << " ";
+                }
             }
 
             return true;
         }
+
+
 
         //输出日志
         void printLog(const level _level, const string & log) const;
