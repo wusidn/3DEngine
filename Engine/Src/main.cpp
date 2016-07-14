@@ -13,6 +13,7 @@
 
 #include "LogManager.h"
 #include "Uuid.h"
+#include "NetWork.h"
 
 #include <iostream>
 
@@ -47,6 +48,8 @@ void init(void)
 {
 
     Log.info("..........................");
+
+    NetWork * netWork = NetWork::create("127.0.0.1", 3000);
 
     Uuid * uuid = Uuid::create();
     Log.info("{0}", *uuid);

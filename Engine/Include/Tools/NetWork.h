@@ -4,7 +4,7 @@
 
 #include "Object.h"
 #include <string>
-#include <socket.h>
+#include <sys/socket.h>
 
 using namespace std;
 
@@ -15,33 +15,34 @@ namespace engine::tools
     public:
         static NetWork * create(const string & address, const unsigned port);
     protected:
-        NetWork();
-        virtual const bool init();
+        NetWork(){}
         virtual const bool init(const string & address, const unsigned port);
     private:
-
+        int socket_id;
     };
 
-    class TcpServer: public Object
+    class TcpServer: public NetWork
     {
     public:
-        TcpServer * create(const string & address, const unsigned port);
-
+        static TcpServer * create(const string & address, const unsigned port);
+    protected:
+        TcpServer();
+        virtual const bool init(const string & address, const unsigned port);
     };
 
-    class TcpClient: public Object
-    {
-    public:
-        TcpClient * create(const string & address, const unsigned port);
+    // class TcpClient: public Object
+    // {
+    // public:
+    //     TcpClient * create(const string & address, const unsigned port);
 
-    };
+    // };
 
-    class UdpClient: public Object
-    {
-    public:
-        UdpClient * create(const string & address, const unsigned port);
+    // class UdpClient: public Object
+    // {
+    // public:
+    //     UdpClient * create(const string & address, const unsigned port);
 
-    };
+    // };
 }
 
 #endif //__NET_WORK__
