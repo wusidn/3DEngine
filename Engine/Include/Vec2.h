@@ -4,8 +4,8 @@
 
 #include "Struct.h"
 
-namespace engine{
-
+namespace engine
+{
     struct Vec2 : public Struct
     {
     public:

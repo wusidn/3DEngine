@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-namespace engine{
-        
+namespace engine
+{        
     Vec2::Vec2(void)
     {
         x = y = 0;

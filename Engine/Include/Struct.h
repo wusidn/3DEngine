@@ -3,8 +3,8 @@
 #define __STRUCT_H__
 
 
-namespace engine{
-
+namespace engine
+{
       #define PI 3.1415926
 
       struct Struct

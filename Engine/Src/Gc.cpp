@@ -1,8 +1,8 @@
 #include "Gc.h"
 
 
-namespace engine{
-
+namespace engine
+{
     Gc * Gc::instance = nullptr;
 
     Gc & Gc::getInstance(void)

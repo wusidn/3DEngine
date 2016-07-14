@@ -7,8 +7,8 @@
 #include "Object.h"
 using namespace std;
 
-namespace engine{
-    
+namespace engine
+{    
     class Gc
     {
     private:

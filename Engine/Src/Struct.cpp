@@ -1,8 +1,8 @@
 #include "Struct.h"
 
 
-namespace engine{
-        
+namespace engine
+{        
     Struct::Struct(void)
     {
         

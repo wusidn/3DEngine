@@ -9,8 +9,8 @@
 using namespace std;
 
 
-namespace engine::tools{
-
+namespace engine::tools
+{
     enum ShaderType{
         vertex = GL_VERTEX_SHADER,
         fragment = GL_FRAGMENT_SHADER

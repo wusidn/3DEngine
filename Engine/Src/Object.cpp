@@ -1,8 +1,8 @@
 #include "Object.h"
 #include "Gc.h"
 
-namespace engine{
-
+namespace engine
+{
     void Object::retain(void)
     {
         this->quoteCount++;

@@ -9,8 +9,8 @@
 
 using namespace std;
 
-namespace engine{
-
+namespace engine
+{
     class Node : public Object
     {
     public:

@@ -1,7 +1,7 @@
 #include "Vec4.h"
 
-namespace engine{
-        
+namespace engine
+{        
     Vec4::Vec4(void) : Vec3()
     {
         w = 0;

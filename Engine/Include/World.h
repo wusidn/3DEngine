@@ -7,8 +7,8 @@
 
 using namespace std;
 
-namespace engine{
-
+namespace engine
+{
     class World : public Node
     {
     public:

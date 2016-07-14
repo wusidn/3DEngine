@@ -2,8 +2,8 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
-namespace engine{
-
+namespace engine
+{
     #define CREATEFUNC(class) static class * create(void)\
     {\
     class * result = new class();\

@@ -4,30 +4,40 @@
 
 #include "Object.h"
 #include <string>
+#include <socket.h>
 
 using namespace std;
 
-namespace engine::tools{
-
-    class NetWork: public Object{
+namespace engine::tools
+{
+    class NetWork: public Object
+    {
     public:
-        NetWork * create(const string & address, const unsigned port);
+        static NetWork * create(const string & address, const unsigned port);
+    protected:
+        NetWork();
+        virtual const bool init();
+        virtual const bool init(const string & address, const unsigned port);
+    private:
 
     };
 
-    class TcpServer: public Object{
+    class TcpServer: public Object
+    {
     public:
         TcpServer * create(const string & address, const unsigned port);
 
     };
 
-    class TcpClient: public Object{
+    class TcpClient: public Object
+    {
     public:
         TcpClient * create(const string & address, const unsigned port);
 
     };
 
-    class UdpClient: public Object{
+    class UdpClient: public Object
+    {
     public:
         UdpClient * create(const string & address, const unsigned port);
 

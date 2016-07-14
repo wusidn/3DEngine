@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-namespace engine{
-
+namespace engine
+{
     Vec3::Vec3(void) : Vec2()
     {
         z = 0;

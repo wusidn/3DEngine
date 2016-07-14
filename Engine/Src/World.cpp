@@ -2,8 +2,8 @@
 #include <algorithm>
 
 
-namespace engine{
-
+namespace engine
+{
     vector<World *> World::worldPool;
 
     const vector<World *> & World::getWorldPool()

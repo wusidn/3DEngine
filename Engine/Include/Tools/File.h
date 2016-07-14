@@ -8,7 +8,8 @@
 
 using namespace std;
 
-namespace engine::tools{
+namespace engine::tools
+{
     class File: public Object
     {
     public:

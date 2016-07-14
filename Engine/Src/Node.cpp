@@ -1,8 +1,8 @@
 #include "Node.h"
 
 
-namespace engine{
-
+namespace engine
+{
     Node::Node(void)
     {
         _parent = nullptr;

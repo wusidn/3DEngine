@@ -12,8 +12,8 @@
 
 using namespace std;
 
-namespace engine::tools{
-
+namespace engine::tools
+{
     class ShaderProgram : public Object
     {
     public:
