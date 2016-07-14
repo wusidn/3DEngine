@@ -49,7 +49,7 @@ void init(void)
 
     Log.info("..........................");
 
-    NetWork * netWork = NetWork::create("127.0.0.1", 3000);
+    NetWork * netWork = NetWork::create();
 
     Uuid * uuid = Uuid::create();
     Log.info("{0}", *uuid);

@@ -14,7 +14,7 @@ namespace engine::tools
 
     const bool TcpServer::init(const string & address, const unsigned port)
     {
-        if(!NetWork::init(address, port)){
+        if(!NetWork::init()){
             return false;
         }
 

@@ -5,6 +5,14 @@
 #include "Object.h"
 #include <string>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <functional>
+
+
+#define DEFAULT_ADDR ""
+#define DEFAULT_PORT 5432
+#define DEFAULT_POOL_SIZE 200
+#define DEFAULT_ACCEPT_INTERVAL 1000
 
 using namespace std;
 
@@ -13,12 +21,16 @@ namespace engine::tools
     class NetWork: public Object
     {
     public:
-        static NetWork * create(const string & address, const unsigned port);
+        CREATEFUNC(NetWork);
+        const bool bind(const string & address = DEFAULT_ADDR, const unsigned port = DEFAULT_PORT) const;
+        const bool listen(const unsigned poolSize = DEFAULT_POOL_SIZE) const;
+        const bool accept(const function<void (const struct sockaddr_in clientAddr)> & callBack, const unsigned acceptInterval = DEFAULT_ACCEPT_INTERVAL);
     protected:
         NetWork(){}
-        virtual const bool init(const string & address, const unsigned port);
+        virtual const bool init();
     private:
         int socket_id;
+        // function<void (struct sockaddr_in clientAddr)> acceptCallBack = nullptr;
     };
 
     class TcpServer: public NetWork
@@ -28,6 +40,7 @@ namespace engine::tools
     protected:
         TcpServer();
         virtual const bool init(const string & address, const unsigned port);
+    private:
     };
 
     // class TcpClient: public Object
