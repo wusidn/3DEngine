@@ -150,7 +150,7 @@ void display(void)
         fps = farmeCount;
         farmeCount = 0;
 
-        Log.info("FPS: {0}", fps);
+        // Log.info("FPS: {0}", fps);
         
     }
     farmeCount++;

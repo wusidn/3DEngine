@@ -26,18 +26,29 @@ namespace engine::tools
         int flag = fcntl(socket_id, F_GETFL, 0);
         fcntl(socket_id, F_SETFL, flag | O_NONBLOCK);
 
-        bind();
-        listen();
-        accept([](const struct sockaddr_in clientAddr){
-            cout << "accepted" << endl;
+        connect();
+        // listen();
+        accept([this](const int client){
+            Log.info("{0}: accepted", client);
+            send("connected", client);
         });
 
+        close([](const int client){
+            Log.info("{0}: closed", client);
+        });
+
+        recv([](const int client, const string & str){
+            Log.info("{0}: recv->{1}", client, str);
+        });
+
+        
         return true;
     }
 
     const bool NetWork::bind(const string & address, const unsigned port) const
     {
         struct sockaddr_in net_sockaddr;
+        memset(&net_sockaddr, 0, sizeof(net_sockaddr));
         net_sockaddr.sin_family = AF_INET;
         net_sockaddr.sin_port = htons(port);
 
@@ -53,34 +64,177 @@ namespace engine::tools
         }
         return true;
     }
+
+    const bool NetWork::connect(const string & address, const unsigned port, const unsigned loopInterval)
+    {
+        struct sockaddr_in net_sockaddr;
+        memset(&net_sockaddr, 0, sizeof(net_sockaddr));
+        net_sockaddr.sin_family = AF_INET;
+        net_sockaddr.sin_port = htons(port);
+
+        if(address.length() <= 0){
+            net_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+        }else{
+            net_sockaddr.sin_addr.s_addr = inet_addr(address.c_str());
+        }
+
+        if(::connect(socket_id, (struct sockaddr * )&net_sockaddr, sizeof(net_sockaddr)) == -1){
+            Log.error("connect {0}:({1}) failed", address, port);
+            return false;
+        }
+
+        struct sockaddr_in * temp = new struct sockaddr_in();
+        memcpy(temp, &net_sockaddr, sizeof(struct sockaddr_in));
+        clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
+        if(acceptCallBack) {acceptCallBack(socket_id);}
+
+        send("hello body", socket_id);
+
+        thread clientThread([this](const unsigned loopInterval){
+            listenRunning = true;
+            while(listenRunning){
+                static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+                ssize_t recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                if(recvLen < 0){
+                    //无信息
+                    continue;
+                }else if(recvLen == 0 && errno != EINTR){
+                    //断开链接
+                    ::close(socket_id);
+                    if(closeCallBack){ closeCallBack(socket_id); }
+                    continue;
+                }
+
+                //处理信息
+                stringstream sstr;
+                sstr << recvBuffer;
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+                while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
+                    recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                    sstr << recvBuffer;
+                    memset(recvBuffer, 0, sizeof(recvBuffer));
+                }
+                if(recvCallBack){
+                    recvCallBack(socket_id, sstr.str());
+                }
+            }
+        }, loopInterval);
+        clientThread.detach();
+
+        return true;
+    }
     
-    const bool NetWork::listen(const unsigned poolSize) const
+    const bool NetWork::listen(const unsigned poolSize, const unsigned loopInterval)
     {
         if(::listen(socket_id, 1) == -1){
             Log.error("listen({0}) failed", poolSize);
             return false;
         }
+        listenRunning = true;
+
+        thread listenThread([this](const unsigned loopInterval){
+            while(listenRunning){
+                
+                ///监听客户端链接
+                static struct sockaddr_in client_addr;
+                static socklen_t length = sizeof(client_addr);
+
+                int conn = ::accept(socket_id, (struct sockaddr*)&client_addr, &length);
+                if(conn >= 0 && acceptCallBack){
+
+                    int flag = fcntl(conn, F_GETFL, 0);
+                    fcntl(conn, F_SETFL, flag | O_NONBLOCK);
+
+                    struct sockaddr_in * temp = new struct sockaddr_in();
+                    memcpy(temp, &client_addr, sizeof(struct sockaddr_in));
+                    clientList.insert(pair<const int, struct sockaddr_in *>(conn, temp));
+                    acceptCallBack(conn);
+                }
+
+                //监听客户端信息
+                for(auto item = clientList.begin(); item != clientList.end(); ++item){
+                    static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
+                    memset(recvBuffer, 0, sizeof(recvBuffer));
+                    ssize_t recvLen = ::recv(item->first, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                    if(recvLen < 0){
+                        //无信息
+                        continue;
+                    }else if(recvLen == 0 && errno != EINTR){
+                        //断开链接
+                        delete item->second;
+                        ::close(item->first);
+                        if(closeCallBack){ closeCallBack(item->first); }
+                        clientList.erase(item--);
+                        continue;
+                    }
+
+                    //处理信息
+                    stringstream sstr;
+                    sstr << recvBuffer;
+                    memset(recvBuffer, 0, sizeof(recvBuffer));
+                    while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
+                        recvLen = ::recv(item->first, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                        sstr << recvBuffer;
+                        memset(recvBuffer, 0, sizeof(recvBuffer));
+                    }
+                    if(recvCallBack){
+                        recvCallBack(item->first, sstr.str());
+                    }
+                }
+               
+                usleep(loopInterval * 1000);
+            }
+        }, loopInterval);
+
+        listenThread.detach();
+
         return true;
     }
 
-    const bool NetWork::accept(const function<void(const struct sockaddr_in clientAddr)> & callBack, const unsigned acceptInterval)
+    void NetWork::unlisten()
     {
-        thread acceptThread([this](const function<void(const struct sockaddr_in clientAddr)> callBack, const unsigned acceptInterval){
-            while(true){
-                ///客户端套接字
-                struct sockaddr_in client_addr;
-                socklen_t length = sizeof(client_addr);
+        listenRunning = false;
+    }
 
-                int conn = ::accept(socket_id, (struct sockaddr*)&client_addr, &length);
-                if(conn >= 0){
-                    callBack(client_addr);
+    void NetWork::accept(const function<void(const int client)> & callBack)
+    {
+        acceptCallBack = callBack;
+    }
+
+    void NetWork::close(const function<void (const int client)> & callBack)
+    {
+        closeCallBack = callBack;
+    }
+
+    void NetWork::recv(const function<void (const int client, const string & str)> & callBack)
+    {
+        recvCallBack = callBack;
+    }
+    
+    const bool NetWork::send(const string & str, const int client) const
+    {
+        
+        if(client != -1){
+            bool findClient = false;
+            for(auto item : clientList){
+                if(item.first == client){
+                    findClient = true;
+                    break;
                 }
-                cout << "no accept" << endl;
-                usleep(acceptInterval * 1000);
             }
-        }, callBack, acceptInterval);
+            if(!findClient){
+                Log.error("not fined client:{0}", client);
+                return false;
+            }
 
-        acceptThread.detach();
+            ::send(client, str.c_str(), str.length(), 0);
+            return true;
+        }
+
+        for(auto item : clientList){
+            ::send(item.first, str.c_str(), str.length(), 0);
+        }
 
         return true;
     }
