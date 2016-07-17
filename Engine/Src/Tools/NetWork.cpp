@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <cassert>
 #include <thread>
@@ -78,21 +79,55 @@ namespace engine::tools
             net_sockaddr.sin_addr.s_addr = inet_addr(address.c_str());
         }
 
-        if(::connect(socket_id, (struct sockaddr * )&net_sockaddr, sizeof(net_sockaddr)) == -1){
+        if(::connect(socket_id, (struct sockaddr * )&net_sockaddr, sizeof(net_sockaddr)) == -1 && errno != EINPROGRESS){
             Log.error("connect {0}:({1}) failed", address, port);
             return false;
         }
 
+        // int error;
+        // ::getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, sizeof(int)); 
+        // if(error){
+        //     Log.error("connect {0}:({1}) error: {2}", address, port, error);
+        //     return false;
+        // }
+
         struct sockaddr_in * temp = new struct sockaddr_in();
         memcpy(temp, &net_sockaddr, sizeof(struct sockaddr_in));
         clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
-        if(acceptCallBack) {acceptCallBack(socket_id);}
+        // if(acceptCallBack) {acceptCallBack(socket_id);}
 
-        send("hello body", socket_id);
+        // send("hello body", socket_id);
 
         thread clientThread([this](const unsigned loopInterval){
             listenRunning = true;
             while(listenRunning){
+
+                fd_set fdread;
+                FD_ZERO(&fdread);
+
+                FD_SET(socket_id, &fdread);
+                struct timeval outTime;
+                outTime.tv_sec = 0;
+                outTime.tv_usec = loopInterval * 1000;
+
+                switch(select(socket_id + 1, &fdread, nullptr, nullptr, &outTime))
+                {
+                case -1:
+                    //异常
+                    break;
+                case 0:
+                    //超时
+                    break;
+                default:
+                    int error;
+                    socklen_t len;
+                    getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, (socklen_t *)&len);
+                    if(error){
+                        //没链接成功
+                        Log.error("connect socket[{0}] error: {2}", socket_id, error);
+                        return;
+                    }
+                }
                 static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
                 memset(recvBuffer, 0, sizeof(recvBuffer));
                 ssize_t recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);

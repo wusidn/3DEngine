@@ -15,6 +15,7 @@
 #include <cmath>
 #include "Object.h"
 #include "Tool.h"
+#include <mutex>
 
 using namespace std;
 
@@ -106,6 +107,8 @@ namespace engine::tools
             string str;
             string format;
         };
+
+        static mutex mtx;
     private:
 
         //级别名称
