@@ -27,20 +27,20 @@ namespace engine::tools
         int flag = fcntl(socket_id, F_GETFL, 0);
         fcntl(socket_id, F_SETFL, flag | O_NONBLOCK);
 
-        connect();
-        // listen();
-        accept([this](const int client){
-            Log.info("{0}: accepted", client);
-            send("connected", client);
-        });
+        // connect();
+        // // listen();
+        // accept([this](const int client){
+        //     Log.info("{0}: accepted", client);
+        //     send("connected", client);
+        // });
 
-        close([](const int client){
-            Log.info("{0}: closed", client);
-        });
+        // close([](const int client){
+        //     Log.info("{0}: closed", client);
+        // });
 
-        recv([](const int client, const string & str){
-            Log.info("{0}: recv->{1}", client, str);
-        });
+        // recv([](const int client, const string & str){
+        //     Log.info("{0}: recv->{1}", client, str);
+        // });
 
         
         return true;
@@ -84,19 +84,10 @@ namespace engine::tools
             return false;
         }
 
-        // int error;
-        // ::getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, sizeof(int)); 
-        // if(error){
-        //     Log.error("connect {0}:({1}) error: {2}", address, port, error);
-        //     return false;
-        // }
-
         struct sockaddr_in * temp = new struct sockaddr_in();
         memcpy(temp, &net_sockaddr, sizeof(struct sockaddr_in));
         clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
-        // if(acceptCallBack) {acceptCallBack(socket_id);}
-
-        // send("hello body", socket_id);
+        if(acceptCallBack) {acceptCallBack(socket_id, *temp);}
 
         thread clientThread([this](const unsigned loopInterval){
             listenRunning = true;
@@ -128,6 +119,7 @@ namespace engine::tools
                         return;
                     }
                 }
+
                 static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
                 memset(recvBuffer, 0, sizeof(recvBuffer));
                 ssize_t recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
@@ -171,6 +163,39 @@ namespace engine::tools
         thread listenThread([this](const unsigned loopInterval){
             while(listenRunning){
                 
+                fd_set fdread;
+                FD_ZERO(&fdread);
+
+                FD_SET(socket_id, &fdread);
+                int maxSocketId = socket_id;
+                for(auto item : clientList){
+                    FD_SET(item.first, &fdread);
+                    maxSocketId = item.first > maxSocketId ? item.first : maxSocketId;
+                }
+
+                struct timeval outTime;
+                outTime.tv_sec = 0;
+                outTime.tv_usec = loopInterval * 1000;
+
+                switch(select(maxSocketId + 1, &fdread, nullptr, nullptr, &outTime))
+                {
+                case -1:
+                    //异常
+                    break;
+                case 0:
+                    //超时
+                    break;
+                default:
+                    int error;
+                    socklen_t len;
+                    getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, (socklen_t *)&len);
+                    if(error){
+                        //没链接成功
+                        Log.error("connect socket[{0}] error: {2}", socket_id, error);
+                        return;
+                    }
+                }
+
                 ///监听客户端链接
                 static struct sockaddr_in client_addr;
                 static socklen_t length = sizeof(client_addr);
@@ -184,7 +209,7 @@ namespace engine::tools
                     struct sockaddr_in * temp = new struct sockaddr_in();
                     memcpy(temp, &client_addr, sizeof(struct sockaddr_in));
                     clientList.insert(pair<const int, struct sockaddr_in *>(conn, temp));
-                    acceptCallBack(conn);
+                    acceptCallBack(conn, *temp);
                 }
 
                 //监听客户端信息
@@ -217,8 +242,6 @@ namespace engine::tools
                         recvCallBack(item->first, sstr.str());
                     }
                 }
-               
-                usleep(loopInterval * 1000);
             }
         }, loopInterval);
 
@@ -232,7 +255,7 @@ namespace engine::tools
         listenRunning = false;
     }
 
-    void NetWork::accept(const function<void(const int client)> & callBack)
+    void NetWork::accept(const function<void(const int client, const struct sockaddr_in & clientInfo)> & callBack)
     {
         acceptCallBack = callBack;
     }

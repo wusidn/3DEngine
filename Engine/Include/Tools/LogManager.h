@@ -16,6 +16,7 @@
 #include "Object.h"
 #include "Tool.h"
 #include <mutex>
+#include <TcpServer.h>
 
 using namespace std;
 
@@ -118,6 +119,8 @@ namespace engine::tools
         //过滤级别
         level _filter = level::DEBUG;
 
+        //
+        TcpServer * netOutPut;
         //解析参数
         template<typename... Arguments>
         void _log(const level _level, string str, const Arguments & ... args) const
@@ -201,11 +204,7 @@ namespace engine::tools
         }
 
         //没有额外参数
-        void _log(const level _level, const string & str) const
-        {
-            //输出打印信息
-            printLog(_level, str);
-        }
+        void _log(const level _level, const string & str) const;
 
         //处理动态参数
         template<typename Argument, typename... Arguments>
@@ -240,209 +239,30 @@ namespace engine::tools
         template<typename Argument>
         string _format(const string & format, const Argument & source) const
         {
-            
-            // cout << "format: \"" << format << "\", source: " << source << endl;
-
             stringstream strs;
             bool needFormat = format.length() > 0;
             if(!needFormat){
                 strs << source;
             }else{
-                _format_aline(strs, format, source) || _format_D(strs, format, source) || _format_C(strs, format, source) || _format_F(strs, format, source);
+                stringstream ss_source;
+                ss_source << source;
+                _format_aline(strs, format, ss_source.str()) || _format_D(strs, format, ss_source.str()) || _format_C(strs, format, ss_source.str()) || _format_F(strs, format, ss_source.str());
             }
 
             return strs.str();;
         }
 
         //格式化数字类型
-        template<typename Argument>
-        bool _format_D(stringstream & strs, const string & format, const Argument & source) const
-        {
-            static regex format_D("^[dD](\\d*)$");
-            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
-            auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
-            
-            int minCount = atoi(matchBegin->str(1).c_str());
-
-            stringstream ss_source;
-            ss_source << source;
-            string tempStr = ss_source.str();
-            static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
-            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
-
-            if(matchBegin == matchEnd){
-                error("尝试格式化失败");
-                strs << format;
-                return true;
-            }
-            
-            string sourceData = matchBegin->str();
-            int convertData;
-            
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
-                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
-            }
-
-            if(sourceData.find('.') != string::npos){
-                convertData = (int)roundf(atof(sourceData.c_str()));
-            }else{
-                convertData = atoi(sourceData.c_str());
-            }
-
-            stringstream tempSStr;
-            tempSStr << convertData;
-
-            for(int i = tempSStr.str().length(); i < minCount; ++i){
-                strs << "0";
-            }
-            strs << convertData;
-
-            return true;
-        }
-
+        bool _format_D(stringstream & strs, const string & format, const string & source) const;
 
         //格式化钱币类型
-        template<typename Argument>
-        bool _format_C(stringstream & strs, const string & format, const Argument & source) const
-        {
-            static regex format_D("^[cC](\\d*)$");
-            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
-            auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
+        bool _format_C(stringstream & strs, const string & format, const string & source) const;
 
-            int decimalDigits = 2;
-            if(matchBegin->str(1).length() > 0){
-                decimalDigits = atoi(matchBegin->str(1).c_str());
-            }
-
-            stringstream ss_source;
-            ss_source << source;
-            string tempStr = ss_source.str();
-            static regex checkNumber("^(.?)((\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?)$");
-            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
-
-            if(matchBegin == matchEnd){
-                error("尝试格式化失败");
-                strs << format;
-                return true;
-            }
-
-            string unit = matchBegin->str(1).length() > 0 ? matchBegin->str(1) : "￥";
-
-            string sourceData = matchBegin->str(2);
-
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
-                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
-            }
-
-            float convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
-
-            stringstream tempSStr;
-            tempSStr << convertData;
-
-            strs << unit << convertData;
-
-            if(tempSStr.str().find('.') == string::npos){
-                strs << ".";
-            }
-
-            for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
-                strs << "0";
-            }
-                        
-            return true;
-        }
-
-        //格式化钱币类型
-        template<typename Argument>
-        bool _format_F(stringstream & strs, const string & format, const Argument & source) const
-        {
-            static regex format_D("^[fF](\\d*)$");
-            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
-            auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
-
-            int decimalDigits = 2;
-            if(matchBegin->str(1).length() > 0){
-                decimalDigits = atoi(matchBegin->str(1).c_str());
-            }
-
-            stringstream ss_source;
-            ss_source << source;
-            string tempStr = ss_source.str();
-            static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
-            matchBegin = sregex_iterator(tempStr.begin(), tempStr.end(), checkNumber);
-
-            if(matchBegin == matchEnd){
-                error("尝试格式化失败");
-                strs << format;
-                return true;
-            }
-
-            string sourceData = matchBegin->str();
-
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
-                sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
-            }
-
-            float convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
-
-            stringstream tempSStr;
-            tempSStr << convertData;
-
-            strs << convertData;
-
-            if(tempSStr.str().find('.') == string::npos){
-                strs << ".";
-            }
-
-            for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
-                strs << "0";
-            }
-            return true;
-        }
+        //格式化float类型
+        bool _format_F(stringstream & strs, const string & format, const string & source) const;
 
         //对齐格式
-        template<typename Argument>
-        bool _format_aline(stringstream & strs, const string & format, const Argument & source) const
-        {
-            static regex format_D("^([-]?)(\\d*)$");
-            auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
-            auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
-
-            int minCount = atoi(matchBegin->str(2).c_str());
-
-            stringstream ss_source;
-            ss_source << source;
-
-            if(matchBegin->str(1).c_str() == string("-")){
-                for(int i = getStringLength(ss_source.str()); i < minCount; ++i){
-                    strs << " ";
-                }
-            }
-
-            strs << ss_source.str();
-
-            if(matchBegin->str(1).c_str() != string("-")){
-                for(int i = getStringLength(ss_source.str()); i < minCount; ++i){
-                    strs << " ";
-                }
-            }
-
-            return true;
-        }
-
-
+        bool _format_aline(stringstream & strs, const string & format, const string & source) const;
 
         //输出日志
         void printLog(const level _level, const string & log) const;
