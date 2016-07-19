@@ -23,32 +23,40 @@ namespace engine::tools
     class NetWork: public Object
     {
     public:
-        CREATEFUNC(NetWork);
 
+        //绑定本机ip　
         const bool bind(const string & address = DEFAULT_ADDR, const unsigned port = DEFAULT_PORT) const;
 
+        //链接目标ip
         const bool connect(const string & address = DEFAULT_ADDR, const unsigned port = DEFAULT_PORT, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
         
+        //监听绑定的本机ip
         const bool listen(const unsigned poolSize = DEFAULT_POOL_SIZE, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
+        //取消监听
         void unlisten();
 
+        //设置客户端链接回调
         void accept(const function<void (const int client, const struct sockaddr_in & clientInfo)> & callBack);
+        //设置客户端关闭回调
         void close(const function<void (const int client)> & callBack);
+        //接收到消息回调
         void recv(const function<void (const int client, const string & str)> & callBack);
-        const bool send(const string & str, const int client = -1) const;
+        //发送消息
+        const bool send(const string & str) const;
+        const bool send(const int client, const string & str) const;
 
     protected:
         NetWork(){}
-        virtual const bool init();
-    private:
+        virtual const bool init(const int type = SOCK_STREAM);
+
         int socket_id;
         map<const int, struct sockaddr_in *> clientList;
-        
+    private:
+                
         bool listenRunning = false;
         
         function<void (const int client, const struct sockaddr_in & clientInfo)> acceptCallBack = nullptr;
         function<void (const int client)> closeCallBack = nullptr;
-        
         function<void (const int client, const string & str)> recvCallBack = nullptr;
 
     };

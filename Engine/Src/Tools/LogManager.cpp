@@ -26,13 +26,9 @@ namespace engine::tools{
         }
 
         //初始化输出介质
-
-        netOutPut = TcpServer::create(5432);
+        netOutPut = TcpClient::create("", 5432);
         if(netOutPut){
-            netOutPut->accept([](const int client, const struct sockaddr_in & clientInfo){
-                Log.info("accept {0}", client);
-            });
-
+            
             netOutPut->close([](const int client){
                 Log.info("close {0}", client);
             });
@@ -233,9 +229,9 @@ namespace engine::tools{
         lck.lock();
 
         //输出到网络流
-        if(netOutPut){
-            netOutPut->send(sstr.str());
-        }
+        // if(netOutPut){
+        //     netOutPut->send(sstr.str());
+        // }
         
         //输出到终端
         cout << sstr.str() << endl;

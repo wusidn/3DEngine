@@ -18,31 +18,15 @@ using namespace std;
 namespace engine::tools
 {
 
-    const bool NetWork::init()
+    const bool NetWork::init(const int type)
     {
         if(!Object::init()){
             return false;
         }
-        socket_id = socket(AF_INET, SOCK_STREAM, 0);
+        socket_id = socket(AF_INET, type, 0);
         int flag = fcntl(socket_id, F_GETFL, 0);
         fcntl(socket_id, F_SETFL, flag | O_NONBLOCK);
 
-        // connect();
-        // // listen();
-        // accept([this](const int client){
-        //     Log.info("{0}: accepted", client);
-        //     send("connected", client);
-        // });
-
-        // close([](const int client){
-        //     Log.info("{0}: closed", client);
-        // });
-
-        // recv([](const int client, const string & str){
-        //     Log.info("{0}: recv->{1}", client, str);
-        // });
-
-        
         return true;
     }
 
@@ -63,92 +47,6 @@ namespace engine::tools
             Log.error("bind {0}:({1}) failed", address, port);
             return false;
         }
-        return true;
-    }
-
-    const bool NetWork::connect(const string & address, const unsigned port, const unsigned loopInterval)
-    {
-        struct sockaddr_in net_sockaddr;
-        memset(&net_sockaddr, 0, sizeof(net_sockaddr));
-        net_sockaddr.sin_family = AF_INET;
-        net_sockaddr.sin_port = htons(port);
-
-        if(address.length() <= 0){
-            net_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-        }else{
-            net_sockaddr.sin_addr.s_addr = inet_addr(address.c_str());
-        }
-
-        if(::connect(socket_id, (struct sockaddr * )&net_sockaddr, sizeof(net_sockaddr)) == -1 && errno != EINPROGRESS){
-            Log.error("connect {0}:({1}) failed", address, port);
-            return false;
-        }
-
-        struct sockaddr_in * temp = new struct sockaddr_in();
-        memcpy(temp, &net_sockaddr, sizeof(struct sockaddr_in));
-        clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
-        if(acceptCallBack) {acceptCallBack(socket_id, *temp);}
-
-        thread clientThread([this](const unsigned loopInterval){
-            listenRunning = true;
-            while(listenRunning){
-
-                fd_set fdread;
-                FD_ZERO(&fdread);
-
-                FD_SET(socket_id, &fdread);
-                struct timeval outTime;
-                outTime.tv_sec = 0;
-                outTime.tv_usec = loopInterval * 1000;
-
-                switch(select(socket_id + 1, &fdread, nullptr, nullptr, &outTime))
-                {
-                case -1:
-                    //异常
-                    break;
-                case 0:
-                    //超时
-                    break;
-                default:
-                    int error;
-                    socklen_t len;
-                    getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, (socklen_t *)&len);
-                    if(error){
-                        //没链接成功
-                        Log.error("connect socket[{0}] error: {2}", socket_id, error);
-                        return;
-                    }
-                }
-
-                static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
-                memset(recvBuffer, 0, sizeof(recvBuffer));
-                ssize_t recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
-                if(recvLen < 0){
-                    //无信息
-                    continue;
-                }else if(recvLen == 0 && errno != EINTR){
-                    //断开链接
-                    ::close(socket_id);
-                    if(closeCallBack){ closeCallBack(socket_id); }
-                    continue;
-                }
-
-                //处理信息
-                stringstream sstr;
-                sstr << recvBuffer;
-                memset(recvBuffer, 0, sizeof(recvBuffer));
-                while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
-                    recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
-                    sstr << recvBuffer;
-                    memset(recvBuffer, 0, sizeof(recvBuffer));
-                }
-                if(recvCallBack){
-                    recvCallBack(socket_id, sstr.str());
-                }
-            }
-        }, loopInterval);
-        clientThread.detach();
-
         return true;
     }
     
@@ -184,7 +82,7 @@ namespace engine::tools
                     break;
                 case 0:
                     //超时
-                    break;
+                    continue;
                 default:
                     int error;
                     socklen_t len;
@@ -255,6 +153,101 @@ namespace engine::tools
         listenRunning = false;
     }
 
+    const bool NetWork::connect(const string & address, const unsigned port, const unsigned loopInterval)
+    {
+        struct sockaddr_in net_sockaddr;
+        memset(&net_sockaddr, 0, sizeof(net_sockaddr));
+        net_sockaddr.sin_family = AF_INET;
+        net_sockaddr.sin_port = htons(port);
+
+        if(address.length() <= 0){
+            net_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+        }else{
+            net_sockaddr.sin_addr.s_addr = inet_addr(address.c_str());
+        }
+
+        if(::connect(socket_id, (struct sockaddr * )&net_sockaddr, sizeof(net_sockaddr)) == -1 && errno != EINPROGRESS){
+            Log.error("connect {0}:({1}) failed", address, port);
+            return false;
+        }
+
+        struct sockaddr_in * temp = new struct sockaddr_in();
+        memcpy(temp, &net_sockaddr, sizeof(struct sockaddr_in));
+        clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
+
+        thread clientThread([this](const unsigned loopInterval){
+            listenRunning = true;
+            while(listenRunning){
+
+                fd_set fdread;
+                FD_ZERO(&fdread);
+
+                FD_SET(socket_id, &fdread);
+                struct timeval outTime;
+                outTime.tv_sec = 0;
+                outTime.tv_usec = loopInterval * 1000;
+
+                static bool isConnected = false;
+
+                switch(select(socket_id + 1, &fdread, nullptr, nullptr, &outTime))
+                {
+                case -1:
+                    //异常
+                    break;
+                case 0:
+                    //超时
+                    continue;
+                default:
+                    int error;
+                    socklen_t len;
+                    getsockopt(socket_id, SOL_SOCKET, SO_ERROR, &error, (socklen_t *)&len);
+                    if(error){
+                        //没链接成功
+                        Log.error("connect socket[{0}] error: {2}", socket_id, error);
+                        return;
+                    }
+                }
+
+                if(!isConnected){
+                    if(acceptCallBack) {acceptCallBack(socket_id, *clientList.at(socket_id));}
+                    isConnected = true;
+                }
+
+
+                static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+                ssize_t recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                if(recvLen < 0){
+                    //无信息
+                    continue;
+                }else if(recvLen == 0 && errno != EINTR){
+                    //断开链接
+                    ::close(socket_id);
+                    if(closeCallBack){ closeCallBack(socket_id); }
+                    socket_id = -1;
+                    listenRunning = isConnected = false;
+                    continue;
+                }
+
+                //处理信息
+                stringstream sstr;
+                sstr << recvBuffer;
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+                while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
+                    recvLen = ::recv(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0);
+                    sstr << recvBuffer;
+                    memset(recvBuffer, 0, sizeof(recvBuffer));
+                }
+                if(recvCallBack){
+                    recvCallBack(socket_id, sstr.str());
+                }
+            }
+        }, loopInterval);
+        clientThread.detach();
+
+        return true;
+    }
+
     void NetWork::accept(const function<void(const int client, const struct sockaddr_in & clientInfo)> & callBack)
     {
         acceptCallBack = callBack;
@@ -269,8 +262,13 @@ namespace engine::tools
     {
         recvCallBack = callBack;
     }
+
+    const bool NetWork::send(const string & str) const
+    {
+        return send(-1, str);
+    }
     
-    const bool NetWork::send(const string & str, const int client) const
+    const bool NetWork::send(const int client, const string & str) const
     {
         
         if(client != -1){

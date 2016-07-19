@@ -50,8 +50,13 @@ namespace engine::tools
         NetWork::recv(callBack);
     }
 
-    const bool TcpServer::send(const string & str, const int client) const
+    const bool TcpServer::send(const string & str) const
     {
-        return NetWork::send(str, client);
+        return send(-1, str);
+    }
+
+    const bool TcpServer::send(const int client, const string & str) const
+    {
+        return NetWork::send(client, str);
     }
 }
