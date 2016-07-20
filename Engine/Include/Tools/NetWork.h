@@ -35,6 +35,12 @@ namespace engine::tools
         //取消监听
         void unlisten();
 
+        //循环调用recvfrom
+        const bool loopRecvFrom(const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
+
+        //设置接受无连接消息回调
+        void recvFrom(const function<void (const struct sockaddr_in * clientInfo, const string & str)> & callBack);
+
         //设置客户端链接回调
         void accept(const function<void (const int client, const struct sockaddr_in & clientInfo)> & callBack);
         //设置客户端关闭回调
@@ -53,11 +59,12 @@ namespace engine::tools
         map<const int, struct sockaddr_in *> clientList;
     private:
                 
-        bool listenRunning = false;
+        bool running = false;
         
         function<void (const int client, const struct sockaddr_in & clientInfo)> acceptCallBack = nullptr;
         function<void (const int client)> closeCallBack = nullptr;
         function<void (const int client, const string & str)> recvCallBack = nullptr;
+        function<void (const struct sockaddr_in * clientInfo, const string & str)> recvFromCallBack = nullptr;
 
     };
 }

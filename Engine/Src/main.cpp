@@ -14,6 +14,8 @@
 #include "LogManager.h"
 #include "Uuid.h"
 
+#include "UdpServer.h"
+
 #include <iostream>
 
 using namespace std;
@@ -54,6 +56,8 @@ void init(void)
 
     // Object * a = new Object();
     // Object * b = new Object();
+
+    UdpServer * udpServer = UdpServer::create(1234);
     
     File * file = File::create();
     file->autoRelease();

@@ -24,6 +24,9 @@ namespace engine::tools
             return false;
         }
         socket_id = socket(AF_INET, type, 0);
+        if(socket_id < 0){
+            return false;
+        }
         int flag = fcntl(socket_id, F_GETFL, 0);
         fcntl(socket_id, F_SETFL, flag | O_NONBLOCK);
 
@@ -56,10 +59,10 @@ namespace engine::tools
             Log.error("listen({0}) failed", poolSize);
             return false;
         }
-        listenRunning = true;
+        running = true;
 
         thread listenThread([this](const unsigned loopInterval){
-            while(listenRunning){
+            while(running){
                 
                 fd_set fdread;
                 FD_ZERO(&fdread);
@@ -150,7 +153,7 @@ namespace engine::tools
 
     void NetWork::unlisten()
     {
-        listenRunning = false;
+        running = false;
     }
 
     const bool NetWork::connect(const string & address, const unsigned port, const unsigned loopInterval)
@@ -176,18 +179,19 @@ namespace engine::tools
         clientList.insert(pair<const int, struct sockaddr_in *>(socket_id, temp));
 
         thread clientThread([this](const unsigned loopInterval){
-            listenRunning = true;
-            while(listenRunning){
+            running = true;
+            
+            fd_set fdread;
+            struct timeval outTime;
+            outTime.tv_sec = 0;
+            outTime.tv_usec = loopInterval * 1000;
 
-                fd_set fdread;
+            bool isConnected = false;
+
+            while(running){
+
                 FD_ZERO(&fdread);
-
                 FD_SET(socket_id, &fdread);
-                struct timeval outTime;
-                outTime.tv_sec = 0;
-                outTime.tv_usec = loopInterval * 1000;
-
-                static bool isConnected = false;
 
                 switch(select(socket_id + 1, &fdread, nullptr, nullptr, &outTime))
                 {
@@ -225,7 +229,7 @@ namespace engine::tools
                     ::close(socket_id);
                     if(closeCallBack){ closeCallBack(socket_id); }
                     socket_id = -1;
-                    listenRunning = isConnected = false;
+                    running = isConnected = false;
                     continue;
                 }
 
@@ -245,6 +249,57 @@ namespace engine::tools
         }, loopInterval);
         clientThread.detach();
 
+        return true;
+    }
+
+    const bool NetWork::loopRecvFrom(const unsigned loopInterval)
+    {
+        thread loopRecvThread([this](const unsigned loopInterval){
+            running = true;
+            
+            while(running)
+            {
+                //先休息　不然continue会死循环
+                usleep(loopInterval * 1000);
+                
+                static char recvBuffer[DEFAULT_RECV_BUFFER_SIZE];
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+
+                struct sockaddr_in clientAddr;
+                memset(&clientAddr, 0, sizeof(clientAddr));
+                socklen_t clientAddrLen = 0;
+
+                ssize_t recvLen = ::recvfrom(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
+                if(recvLen < 0){
+                    //无信息
+                    continue;
+                }else if(recvLen == 0 && errno != EINTR){
+                    //tcp断开　　udp不清楚
+                    running = false;
+                    continue;
+                }else if(recvLen == 0){
+                    continue;
+                }
+
+                //处理信息
+                stringstream sstr;
+                sstr << recvBuffer;
+                memset(recvBuffer, 0, sizeof(recvBuffer));
+                while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
+                    recvLen = ::recvfrom(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
+                    sstr << recvBuffer;
+                    memset(recvBuffer, 0, sizeof(recvBuffer));
+                }
+
+                Log.info("recvfrom: {0}", sstr.str());
+
+                if(recvFromCallBack){
+                    recvFromCallBack(&clientAddr, sstr.str());
+                }
+            }
+        }, loopInterval);
+
+        loopRecvThread.detach();
         return true;
     }
 
