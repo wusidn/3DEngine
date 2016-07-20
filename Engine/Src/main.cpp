@@ -58,13 +58,16 @@ void init(void)
     // Object * b = new Object();
 
     UdpServer * udpServer = UdpServer::create(1234);
+    udpServer->recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
+        Log.info(str);
+    });
     
     File * file = File::create();
     file->autoRelease();
 
     string code = File::readAllText("../CMakeLists.txt");
     
-    Log.setFilterLevel(LogManager::level::INFO);
+    Log.setFilterLevel(LogManager::level::DEBUG);
 
     Log.info("Main -> Code : {0}", code);
     

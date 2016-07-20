@@ -44,4 +44,9 @@ namespace engine::tools
         
         return true;
     }
+
+    void UdpServer::recvFrom(const function<void (const struct sockaddr_in * clientInfo, const string & str)> & callBack)
+    {
+        NetWork::recvFrom(callBack);
+    }
 }

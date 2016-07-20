@@ -270,6 +270,7 @@ namespace engine::tools
                 socklen_t clientAddrLen = 0;
 
                 ssize_t recvLen = ::recvfrom(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
+                
                 if(recvLen < 0){
                     //无信息
                     continue;
@@ -284,14 +285,6 @@ namespace engine::tools
                 //处理信息
                 stringstream sstr;
                 sstr << recvBuffer;
-                memset(recvBuffer, 0, sizeof(recvBuffer));
-                while(recvLen >= (ssize_t)sizeof(recvBuffer) - 1){
-                    recvLen = ::recvfrom(socket_id, recvBuffer, sizeof(recvBuffer) - 1, 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
-                    sstr << recvBuffer;
-                    memset(recvBuffer, 0, sizeof(recvBuffer));
-                }
-
-                Log.info("recvfrom: {0}", sstr.str());
 
                 if(recvFromCallBack){
                     recvFromCallBack(&clientAddr, sstr.str());
@@ -316,6 +309,11 @@ namespace engine::tools
     void NetWork::recv(const function<void (const int client, const string & str)> & callBack)
     {
         recvCallBack = callBack;
+    }
+
+    void NetWork::recvFrom(const function<void (const struct sockaddr_in * clientInfo, const string & str)> & callBack)
+    {
+        recvFromCallBack = callBack;
     }
 
     const bool NetWork::send(const string & str) const
