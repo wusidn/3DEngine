@@ -62,9 +62,14 @@ namespace engine::tools
         running = true;
 
         thread listenThread([this](const unsigned loopInterval){
+
+            fd_set fdread;
+            struct timeval outTime;
+            outTime.tv_sec = 0;
+            outTime.tv_usec = loopInterval * 1000;
+
             while(running){
                 
-                fd_set fdread;
                 FD_ZERO(&fdread);
 
                 FD_SET(socket_id, &fdread);
@@ -73,10 +78,6 @@ namespace engine::tools
                     FD_SET(item.first, &fdread);
                     maxSocketId = item.first > maxSocketId ? item.first : maxSocketId;
                 }
-
-                struct timeval outTime;
-                outTime.tv_sec = 0;
-                outTime.tv_usec = loopInterval * 1000;
 
                 switch(select(maxSocketId + 1, &fdread, nullptr, nullptr, &outTime))
                 {
