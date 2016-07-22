@@ -16,7 +16,7 @@
 #include "Object.h"
 #include "Tool.h"
 #include <mutex>
-#include <TcpClient.h>
+#include "UdpClient.h"
 
 using namespace std;
 
@@ -120,7 +120,7 @@ namespace engine::tools
         level _filter = level::DEBUG;
 
         //
-        TcpClient * netOutPut;
+        UdpClient * netOutPut;
         //解析参数
         template<typename... Arguments>
         void _log(const level _level, string str, const Arguments & ... args) const

@@ -26,18 +26,10 @@ namespace engine::tools{
         }
 
         //初始化输出介质
-        netOutPut = TcpClient::create("", 5432);
-        if(netOutPut){
-            
-            netOutPut->close([](const int client){
-                Log.info("close {0}", client);
-            });
-
-            netOutPut->recv([](const int client, const string & str){
-                Log.info("{0}: recv->{1}", client, str);
-            });
+        netOutPut = UdpClient::create("192.168.1.255", 5432);
+        if(!netOutPut){
+            Log.error("UdpClient Init Error");
         }
-
         return true;
     }
 
@@ -229,9 +221,9 @@ namespace engine::tools{
         lck.lock();
 
         //输出到网络流
-        // if(netOutPut){
-        //     netOutPut->send(sstr.str());
-        // }
+        if(netOutPut){
+            netOutPut->send(sstr.str());
+        }
         
         //输出到终端
         cout << sstr.str() << endl;

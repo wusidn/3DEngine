@@ -15,6 +15,7 @@
 #include "Uuid.h"
 
 #include "UdpServer.h"
+#include "UdpClient.h"
 
 #include <iostream>
 
@@ -57,9 +58,9 @@ void init(void)
     // Object * a = new Object();
     // Object * b = new Object();
 
-    UdpServer * udpServer = UdpServer::create(1234);
+    UdpServer * udpServer = UdpServer::create(5432);
     udpServer->recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
-        Log.info(str);
+        cout << "haha: " << str << endl;
     });
     
     File * file = File::create();
