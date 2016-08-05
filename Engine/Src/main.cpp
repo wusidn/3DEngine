@@ -16,6 +16,7 @@
 
 #include "UdpServer.h"
 #include "UdpClient.h"
+#include "Zeus.h"
 
 #include <iostream>
 
@@ -30,6 +31,7 @@ int main(int argc, char ** argv)
     glutInitDisplayMode(GLUT_RGBA);
     glutInitWindowSize(800, 600);
     glutInitWindowPosition(200, 100);
+
     glutCreateWindow(windiwTitle);
 
     if(glewInit()){
@@ -37,6 +39,8 @@ int main(int argc, char ** argv)
     }
     
     init();
+
+    Zeus::getInstance().reshapeWindow(300, 200);
 
     glutDisplayFunc(display);
 
@@ -150,7 +154,7 @@ void display(void)
         fps = farmeCount;
         farmeCount = 0;
 
-        // Log.info("FPS: {0}", fps);
+        Log.info("FPS: {0}", fps);
         
     }
     farmeCount++;

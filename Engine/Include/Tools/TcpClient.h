@@ -6,7 +6,7 @@
 
 namespace engine::tools
 {
-    class TcpClient : private NetWork
+    class TcpClient : public NetWork
     {
     public:
         static TcpClient & create(const string & address = DEFAULT_ADDR, const unsigned port = DEFAULT_PORT, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);

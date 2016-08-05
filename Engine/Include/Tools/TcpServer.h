@@ -5,7 +5,7 @@
 
 namespace engine::tools
 {
-    class TcpServer : private NetWork
+    class TcpServer : public NetWork
     {
     public:
 

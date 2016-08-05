@@ -36,6 +36,7 @@ namespace engine::tools
 
     const bool UdpClient::send(const string & str) const
     {
+
         if(::sendto(socket_id, str.c_str(), str.length(), 0, (struct sockaddr * )&sendToAddr, sizeof(sendToAddr)) < 0){
             return false;
         }

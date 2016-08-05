@@ -6,7 +6,7 @@
 
 namespace engine::tools
 {
-    class UdpClient : private NetWork
+    class UdpClient : public NetWork
     {
     public:
         static UdpClient & create(const string & address, const unsigned port);

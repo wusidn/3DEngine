@@ -6,7 +6,7 @@
 
 namespace engine::tools
 {
-    class UdpServer : private NetWork
+    class UdpServer : public NetWork
     {
     public:
         static UdpServer & create(const unsigned port, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
