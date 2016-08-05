@@ -3,19 +3,19 @@
 
 namespace engine::tools
 {
-    TcpServer * TcpServer::create(const unsigned port)
+    TcpServer & TcpServer::create(const unsigned port)
     {
         return create(DEFAULT_ADDR, port);
     }
 
-    TcpServer * TcpServer::create(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
+    TcpServer & TcpServer::create(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
     {
         TcpServer * result = new TcpServer();
         if(!result->init(address, port, poolSize, loopInterval)){
             delete result;
             result = nullptr;
         }
-        return result;
+        return *result;
     }
 
     const bool TcpServer::init(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)

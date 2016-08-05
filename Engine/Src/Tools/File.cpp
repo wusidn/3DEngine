@@ -1,6 +1,7 @@
 #include "File.h"
 
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -30,14 +31,10 @@ namespace engine::tools{
     }
 
 
-    File * File::createWithFilePath(const string & filePath)
+    File & File::createWithFilePath(const string & filePath)
     {
-        File * result = new File();
-        if(!result->init(filePath))
-        {
-            delete result;
-            result = nullptr;
-        }
+        File & result = create();
+        assert(!result.init(filePath));
         return result;
     }
 
@@ -53,9 +50,6 @@ namespace engine::tools{
 
     const bool File::init(const string & filePath)
     {
-        if(!init()){
-            return false;
-        }
         this->_filePath = new string(filePath);
         return true;
     }

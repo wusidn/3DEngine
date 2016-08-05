@@ -26,17 +26,17 @@ namespace engine
         return _chidren;
     }
 
-    const void Node::append(Node * child)
+    const void Node::append(Node & child)
     {
-        _chidren.push_back(child);
-        child->retain();
+        _chidren.push_back(&child);
+        child.retain();
     }
 
-    const void Node::remove(Node * child)
+    const void Node::remove(Node & child)
     {
         auto item = _chidren.begin();
         while(item != _chidren.end()){
-            if(*item == child){
+            if(*item == &child){
                 (*item)->release();
                 item = _chidren.erase(item);
                 continue;
@@ -58,7 +58,7 @@ namespace engine
         return 0.0;
     }
 
-    const Vec4 Node::convertToNodeSpace(const Node * node) const
+    const Vec4 Node::convertToNodeSpace(const Node & node) const
     {
         return 0.0;
     }

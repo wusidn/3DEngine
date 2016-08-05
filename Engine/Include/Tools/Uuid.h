@@ -15,7 +15,7 @@ namespace engine::tools
     {
     public:
         CREATEFUNC(Uuid);
-        static Uuid * create(const Uuid & _uuid);
+        static Uuid & create(const Uuid & _uuid);
 
         const string toString(void) const;
 

@@ -18,7 +18,7 @@ namespace engine::tools
         static string readAllText(const string & filePath);
 
         CREATEFUNC(File);
-        static File * createWithFilePath(const string & filePath);
+        static File & createWithFilePath(const string & filePath);
     
         const bool open(const int mode = ios::in | ios::out);
         const bool open(const string & filePath, const int mode = ios::in | ios::out);

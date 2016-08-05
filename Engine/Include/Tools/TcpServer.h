@@ -9,8 +9,8 @@ namespace engine::tools
     {
     public:
 
-        static TcpServer * create(const unsigned port);
-        static TcpServer * create(const string & address, const unsigned port, const unsigned poolSize = DEFAULT_POOL_SIZE, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
+        static TcpServer & create(const unsigned port);
+        static TcpServer & create(const string & address, const unsigned port, const unsigned poolSize = DEFAULT_POOL_SIZE, const unsigned loopInterval = DEFAULT_LOOP_INTERVAL);
         
         //设置客户端链接回调
         void accept(const function<void (const int client, const struct sockaddr_in & clientInfo)> & callBack);

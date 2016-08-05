@@ -22,13 +22,13 @@ namespace engine
         Node * parent(void) const;
         vector<Node *> & chidren(void);
         
-        const void append(Node * child);
-        const void remove(Node * child);
+        const void append(Node & child);
+        const void remove(Node & child);
         
         const void clear(void);
         
         const Vec4 convertToWorldSpace(void) const;
-        const Vec4 convertToNodeSpace(const Node *) const;
+        const Vec4 convertToNodeSpace(const Node &) const;
         
     protected:
         Node(void);

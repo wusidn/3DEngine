@@ -5,7 +5,7 @@
 
 namespace engine::tools
 {
-    UdpClient * UdpClient::create(const string & address, const unsigned port)
+    UdpClient & UdpClient::create(const string & address, const unsigned port)
     {
         UdpClient * result = new UdpClient();
         if(!result->init(address, port)){
@@ -13,7 +13,7 @@ namespace engine::tools
             result = nullptr;
         }
 
-        return result;
+        return *result;
     }
 
     const bool UdpClient::init(const string & address, const unsigned port)

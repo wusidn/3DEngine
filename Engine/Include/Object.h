@@ -4,7 +4,7 @@
 
 namespace engine
 {
-    #define CREATEFUNC(class) static class * create(void)\
+    #define CREATEFUNC(class) static class & create(void)\
     {\
     class * result = new class();\
     if(!result->init())\
@@ -12,7 +12,8 @@ namespace engine
             delete result;\
             result = nullptr;\
     }\
-    return (class *)result;\
+    result->autoRelease();\
+    return *(class *)result;\
     }\
 
     class Object

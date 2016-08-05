@@ -26,7 +26,7 @@ namespace engine
         void clean(void);
         
         //加入管理对象池
-        void watch(const Object *);
+        void watch(const Object &);
     };
 }
 #endif //__GC_H__

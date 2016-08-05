@@ -8,12 +8,12 @@ using namespace std;
 namespace engine::tools
 {
 
-    UdpServer * UdpServer::create(const unsigned port, const unsigned loopInterval)
+    UdpServer & UdpServer::create(const unsigned port, const unsigned loopInterval)
     {
         return create("", port, loopInterval);
     }
 
-    UdpServer * UdpServer::create(const string & address, const unsigned port, const unsigned loopInterval)
+    UdpServer & UdpServer::create(const string & address, const unsigned port, const unsigned loopInterval)
     {
         UdpServer * result = new UdpServer();
         if(!result->init(address, port, loopInterval)){
@@ -21,7 +21,7 @@ namespace engine::tools
             result = nullptr;
         }
 
-        return result;
+        return *result;
     }
 
     const bool UdpServer::init(const string & address, const unsigned port, const unsigned loopInterval)

@@ -1,15 +1,16 @@
 #include "ShaderProgram.h"
 #include "LogManager.h"
 
+#include <cassert>
+
+using namespace std;
+
 namespace engine::tools{
 
-    ShaderProgram * ShaderProgram::create(const list<const Shader *> & shaderList)
+    ShaderProgram & ShaderProgram::create(const list<const Shader *> & shaderList)
     {
-        ShaderProgram * result = new ShaderProgram();
-        if(!result->init() || !result->init(shaderList)){
-            delete result;
-            result = nullptr;
-        }
+        ShaderProgram & result = create();
+        assert(!result.init(shaderList));
         return result; 
     }
 
@@ -31,7 +32,7 @@ namespace engine::tools{
                 Log.error("ShaderProgram::init Shader Is Not Compiled!");
                 return false;
             }
-            if(!attachShader(*(*item))){
+            if(!attachShader(**item)){
                 return false;
             }
         }

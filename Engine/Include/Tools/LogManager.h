@@ -119,8 +119,9 @@ namespace engine::tools
         //过滤级别
         level _filter = level::DEBUG;
 
-        //
+        //网络输出句柄
         UdpClient * netOutPut;
+        
         //解析参数
         template<typename... Arguments>
         void _log(const level _level, string str, const Arguments & ... args) const
@@ -144,7 +145,7 @@ namespace engine::tools
                     string key = item->str();
                     auto it = escapes.find(key);
                     if(it == escapes.end()){
-                        auto result = escapes.insert(pair<string, string>(key, Uuid::create()->toString()));
+                        auto result = escapes.insert(pair<string, string>(key, Uuid::create().toString()));
                         assert(result.second);
                         
                         it = result.first;

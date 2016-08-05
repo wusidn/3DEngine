@@ -23,7 +23,7 @@ namespace engine::tools
         friend class ShaderProgram;
         
         CREATEFUNC(Shader);
-        static Shader * create(const string & code, const enum ShaderType type);    
+        static Shader & create(const string & code, const enum ShaderType type);    
         
         //编译shader
         const bool compile(void) const;

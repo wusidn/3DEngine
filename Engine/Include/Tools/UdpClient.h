@@ -9,7 +9,7 @@ namespace engine::tools
     class UdpClient : private NetWork
     {
     public:
-        static UdpClient * create(const string & address, const unsigned port);
+        static UdpClient & create(const string & address, const unsigned port);
         const bool send(const string & str) const;
     protected:
         

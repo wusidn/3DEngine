@@ -15,7 +15,7 @@ namespace engine
 
     void Object::autoRelease(void)
     {
-        Gc::getInstance().watch(this);
+        Gc::getInstance().watch(*this);
     }
 
     const bool Object::init(void)

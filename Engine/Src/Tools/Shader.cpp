@@ -1,17 +1,15 @@
 #include "Shader.h"
 #include "LogManager.h"
+#include <cassert>
 
+using namespace std;
 
 namespace engine::tools{
 
-    Shader * Shader::create(const string & code, const enum ShaderType type)
+    Shader & Shader::create(const string & code, const enum ShaderType type)
     {
-        Shader * result = new Shader();
-        if(!result->init() || !result->init(code, type))
-        {
-            delete result;
-            result = nullptr;
-        }
+        Shader & result = create();
+        assert(!result.init(code, type));
         return result;
     }
 

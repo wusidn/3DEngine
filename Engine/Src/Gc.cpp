@@ -33,12 +33,8 @@ namespace engine
         }
     }
 
-    void Gc::watch(const Object * obj)
+    void Gc::watch(const Object & obj)
     {
-        if(!obj){
-            return;
-        }
-
-        objectPool->push_back(obj);
+        objectPool->push_back(&obj);
     }
 }

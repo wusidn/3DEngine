@@ -22,7 +22,7 @@ namespace engine
         virtual const bool init();
         
     private:
-        static vector<World * > worldPool;
+        static vector<World *> worldPool;
         
         virtual const bool render(void) const; 
     };

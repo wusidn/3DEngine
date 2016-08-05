@@ -26,7 +26,7 @@ namespace engine::tools{
         }
 
         //初始化输出介质
-        netOutPut = UdpClient::create("192.168.1.255", 5432);
+        netOutPut = &UdpClient::create("192.168.1.255", 5432);
         if(!netOutPut){
             Log.error("UdpClient Init Error");
         }
@@ -230,5 +230,5 @@ namespace engine::tools{
         lck.unlock();
     }
 
-    LogManager & Log = *LogManager::create();
+    LogManager & Log = LogManager::create();
 }

@@ -51,20 +51,17 @@ void init(void)
 
     Log.info("..........................");
 
-    Uuid * uuid = Uuid::create();
-    Log.info("{0}", *uuid);
-    Log.info(Uuid::create(*uuid)->toString());
+    Uuid & uuid = Uuid::create();
+    Log.info("{0}", uuid);
+    Log.info(Uuid::create(uuid).toString());
 
-    // Object * a = new Object();
-    // Object * b = new Object();
-
-    UdpServer * udpServer = UdpServer::create(5432);
-    udpServer->recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
+    UdpServer & udpServer = UdpServer::create(5432);
+    udpServer.recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
         cout << "haha: " << str << endl;
     });
     
-    File * file = File::create();
-    file->autoRelease();
+    // File & file = File::create();
+    // file.autoRelease();
 
     string code = File::readAllText("../CMakeLists.txt");
     
@@ -97,9 +94,7 @@ void init(void)
 
     // b->retain();
     
-    Node * item = Node::create();
-    item->autoRelease();
-    
+    // Node & item = Node::create();   
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     

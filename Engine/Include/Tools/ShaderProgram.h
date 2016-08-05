@@ -18,7 +18,7 @@ namespace engine::tools
     {
     public:
         CREATEFUNC(ShaderProgram);
-        static ShaderProgram * create(const list<const Shader *> & shaderList);
+        static ShaderProgram & create(const list<const Shader *> & shaderList);
         
         //添加shader
         const bool attachShader(const Shader & shader) const;

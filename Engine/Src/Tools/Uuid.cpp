@@ -4,14 +4,14 @@
 
 namespace engine::tools{
 
-    Uuid * Uuid::create(const Uuid & _uuid)
+    Uuid & Uuid::create(const Uuid & _uuid)
     {
         Uuid * result = new Uuid();
         if(!result->init(_uuid)){
             delete result;
             result = nullptr;
         }
-        return result;
+        return *result;
     }
 
     const bool Uuid::init(void)

@@ -3,15 +3,15 @@
 namespace engine::tools
 {
 
-    TcpClient * TcpClient::create(const string & address, const unsigned port, const unsigned loopInterval)
+    TcpClient & TcpClient::create(const string & address, const unsigned port, const unsigned loopInterval)
     {
         TcpClient * result = new TcpClient();
         if(!result->init(address, port, loopInterval)){
             delete result;
             result = nullptr;
         }
-
-        return result;
+        
+        return *result;
     }
 
     const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
