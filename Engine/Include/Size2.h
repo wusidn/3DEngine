@@ -10,12 +10,18 @@ namespace engine
     {
     public:
 
+        float width, height;
+
         Size2(void);
         Size2(const float v);
         Size2(const float width, const float height);
         Size2(const Size2 & copy);
+
+
+        const Size2 operator+(const Size2 & param) const;
+        const Size2 operator-(const Size2 & param) const;
         
-        float width, height;
+        
     };
 }
 

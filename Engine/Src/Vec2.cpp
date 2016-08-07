@@ -4,14 +4,12 @@
 
 namespace engine
 {        
-    Vec2::Vec2(void)
+    Vec2::Vec2(void) : Vec2(0)
     {
-        x = y = 0;
     }
 
-    Vec2::Vec2(const float v)
+    Vec2::Vec2(const float v) : Vec2(v, v)
     {
-        x = y = v;
     }
 
     Vec2::Vec2(const float x, const float y)
@@ -20,10 +18,8 @@ namespace engine
         this->y = y;
     }
 
-    Vec2::Vec2(const Vec2 & copy)
+    Vec2::Vec2(const Vec2 & copy) : Vec2(copy.x, copy.y)
     {
-        x = copy.x;
-        y = copy.y;
     }
 
     Vec2::~Vec2(void)
