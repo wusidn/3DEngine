@@ -41,12 +41,10 @@ int main(int argc, char ** argv)
     
     init();
 
-    Zeus::getInstance().setWindowSize(Size2(300));
-    Zeus::getInstance().setWindowTitle("haha");
-    Zeus::getInstance().setWindowPosition(Vec2(800, 800));
+    Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
     Zeus::getInstance().fullScreen();
 
-    Size2 screenSize = Zeus::getInstance().getScreenSize();
+    Size2 screenSize = Zeus::getInstance().getWindowSize();
     Log.info("screen.width: {0}, screen.height: {1}", screenSize.width, screenSize.height);
 
     glutDisplayFunc(display);

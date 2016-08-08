@@ -21,18 +21,18 @@ namespace engine
         const Size2 getScreenSize(void) const; 
         
         //改变窗口大小 (只取整数部分)
-        void setWindowSize(const Size2 & _size) const;
+        const Zeus & setWindowSize(const Size2 & _size) const;
         //获取当前窗口大小
         const Size2 getWindowSize(void) const;
 
         //全屏
-        void fullScreen(void) const;
+        const Zeus & fullScreen(void) const;
 
         //设置窗口标题
-        const void setWindowTitle(const string & _title) const;
+        const Zeus & setWindowTitle(const string & _title) const;
 
         //设置窗口位置 (只取整数部分)
-        const void setWindowPosition(const Vec2 & _position) const;
+        const Zeus & setWindowPosition(const Vec2 & _position) const;
 
     protected:
         CREATEFUNC(Zeus);

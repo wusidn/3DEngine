@@ -46,7 +46,7 @@ namespace engine
     }
 
     //改变窗口大小
-    void Zeus::setWindowSize(const Size2 & _size) const
+    const Zeus & Zeus::setWindowSize(const Size2 & _size) const
     {
 
         int width = round(_size.width);
@@ -54,10 +54,11 @@ namespace engine
         if(!(width * height))
         {
             Log.error("Zeus::setWindowSize: width and height Can not be zero");
-            return;
+        }else{
+            glutReshapeWindow(width, height);
         }
-        glutReshapeWindow(width, height);
-
+        
+        return *this;
     }
 
     //获取当前窗口大小
@@ -67,19 +68,21 @@ namespace engine
     }
 
     //全屏
-    void Zeus::fullScreen(void) const
+    const Zeus & Zeus::fullScreen(void) const
     {
         glutFullScreen();
+        return *this;
     }
 
     //设置窗口标题
-    const void Zeus::setWindowTitle(const string & _title) const
+    const Zeus & Zeus::setWindowTitle(const string & _title) const
     {
         glutSetWindowTitle(_title.c_str());
+        return *this;
     }
 
     //设置窗口位置
-    const void Zeus:: setWindowPosition(const Vec2 & _position) const
+    const Zeus & Zeus:: setWindowPosition(const Vec2 & _position) const
     {
         int x = round(_position.x);
         int y = round(_position.y);
@@ -87,5 +90,6 @@ namespace engine
             Log.error("Zeus::setWindowPosition: x and y can not be less than zero");
         }
         glutPositionWindow(x, y);
+        return *this;
     }
 }
