@@ -9,12 +9,15 @@ using namespace std;
 
 namespace engine
 {
-    class World : public Node
+    class World : public Object
     {
     public:
 
         CREATEFUNC(World);
         static const vector<World *> & getWorldPool();
+
+        void append(Node & child);
+        void remove(Node & child);
         
     protected:
         World(){}
@@ -23,7 +26,7 @@ namespace engine
         
     private:
         static vector<World *> worldPool;
-        
+        Node * root;
         virtual const bool render(void) const; 
     };
 }

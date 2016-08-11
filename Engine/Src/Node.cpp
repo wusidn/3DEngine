@@ -26,13 +26,13 @@ namespace engine
         return _chidren;
     }
 
-    const void Node::append(Node & child)
+    void Node::append(Node & child)
     {
         _chidren.push_back(&child);
         child.retain();
     }
 
-    const void Node::remove(Node & child)
+    void Node::remove(Node & child)
     {
         auto item = _chidren.begin();
         while(item != _chidren.end()){
@@ -45,7 +45,7 @@ namespace engine
         }
     }
 
-    const void Node::clear(void)
+    void Node::clear(void)
     {
         for(auto item  = _chidren.begin(); item != _chidren.end(); ++item){
             (*item)->release();
