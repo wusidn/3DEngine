@@ -1,7 +1,6 @@
 #include "World.h"
 #include <algorithm>
 
-
 namespace engine
 {
     vector<World *> World::worldPool;
@@ -28,20 +27,25 @@ namespace engine
         }
         worldPool.push_back(this);
 
-        root = &Node::create();
-        root->retain();
+        _root = &Node::create();
+        _root->retain();
 
         return true;
     }
 
+    const Node & World::root(void) const
+    {
+        return *_root;
+    }
+
     void World::append(Node & child)
     {
-        root->append(child);
+        _root->append(child);
     }
 
     void World::remove(Node & child)
     {
-        root->remove(child);
+        _root->remove(child);
     }
 
     const bool World::render(void) const

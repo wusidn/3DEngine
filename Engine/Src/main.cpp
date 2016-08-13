@@ -44,9 +44,6 @@ int main(int argc, char ** argv)
     Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
     Zeus::getInstance().fullScreen();
 
-    Size2 screenSize = Zeus::getInstance().getWindowSize();
-    Log.info("screen.width: {0}, screen.height: {1}", screenSize.width, screenSize.height);
-
     glutDisplayFunc(display);
 
     glutIdleFunc(idle);
@@ -159,7 +156,10 @@ void display(void)
         fps = farmeCount;
         farmeCount = 0;
 
-        Log.info("FPS: {0}", fps);
+        // Log.info("FPS: {0}", fps);
+        // Size2 screenSize = Zeus::getInstance().getWindowSize();
+        // Log.info("screen.width: {0}, screen.height: {1}", screenSize.width, screenSize.height);
+
         
     }
     farmeCount++;

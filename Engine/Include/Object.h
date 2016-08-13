@@ -2,6 +2,9 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
+#include <cassert>
+using namespace std;
+
 namespace engine
 {
     #define CREATEFUNC(class) static class & create(void)\
@@ -12,6 +15,7 @@ namespace engine
             delete result;\
             result = nullptr;\
     }\
+    assert(result);\
     result->autoRelease();\
     return *(class *)result;\
     }\
