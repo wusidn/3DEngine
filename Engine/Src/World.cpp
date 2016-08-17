@@ -1,5 +1,6 @@
 #include "World.h"
 #include <algorithm>
+#include <Zeus.h>
 
 namespace engine
 {
@@ -33,6 +34,21 @@ namespace engine
         return true;
     }
 
+    void World::render(void)
+    {
+        static double prevStartRenderTime = 0.0;
+        static double startRenderTime = 0.0;
+
+        startRenderTime = Zeus::getInstance().getRunningTime();
+
+        if(startRenderTime > prevStartRenderTime){
+            
+        }
+
+        prevStartRenderTime = startRenderTime;
+        
+    }
+
     const Node & World::root(void) const
     {
         return *_root;
@@ -48,8 +64,4 @@ namespace engine
         _root->remove(child);
     }
 
-    const bool World::render(void) const
-    {
-        return true;
-    }
 }

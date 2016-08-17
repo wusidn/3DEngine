@@ -16,6 +16,8 @@ namespace engine
         CREATEFUNC(World);
         static const vector<World *> & getWorldPool();
 
+        static void render(void);
+
         const Node & root(void) const;
         
         void append(Node & child);
@@ -29,7 +31,6 @@ namespace engine
     private:
         static vector<World *> worldPool;
         Node * _root;
-        virtual const bool render(void) const; 
     };
 }
 

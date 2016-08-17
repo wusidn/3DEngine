@@ -63,7 +63,7 @@ namespace engine
         return 0.0;
     }
 
-    const bool Node::render(void)
+    const bool Node::render(const float dp)
     {
         return true;
     }

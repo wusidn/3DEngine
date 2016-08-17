@@ -4,6 +4,7 @@
 
 #include "Object.h"
 #include "Vec4.h"
+// #include "World.h"
 
 #include <vector>
 
@@ -13,10 +14,11 @@ namespace engine
 {
     class Node : public Object
     {
+        friend class World;
     public:
         Vec4 position, rotate, scale;
             
-        CREATEFUNC(Node);   
+        CREATEFUNC(Node);
         
         
         Node * parent(void) const;
@@ -38,7 +40,7 @@ namespace engine
         Node * _parent;
         vector<Node *> _chidren;
         
-        virtual const bool render(void);
+        virtual const bool render(const float dp);
     };
 }
 

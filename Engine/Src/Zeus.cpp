@@ -45,6 +45,12 @@ namespace engine
         return Size2(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
     }
 
+    //获取程序运行时间
+    const double Zeus::getRunningTime(void) const
+    {
+        return (double)clock() / CLOCKS_PER_SEC * 1000;
+    }
+
     //改变窗口大小
     const Zeus & Zeus::setWindowSize(const Size2 & _size) const
     {

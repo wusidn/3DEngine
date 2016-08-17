@@ -19,6 +19,9 @@ namespace engine
 
         //获取桌面大小
         const Size2 getScreenSize(void) const; 
+
+        //获取程序运行时间
+        const double getRunningTime(void) const;
         
         //改变窗口大小 (只取整数部分)
         const Zeus & setWindowSize(const Size2 & _size) const;
