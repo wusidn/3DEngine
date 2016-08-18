@@ -86,6 +86,11 @@ namespace engine::tools{
         return false;
     }
 
+    const unsigned int ShaderProgram::programId(void) const
+    {
+        return _programId;
+    }
+
     const bool ShaderProgram::linkIsSuccessful(void) const
     {
         if(glIsProgram(_programId) != GL_TRUE){

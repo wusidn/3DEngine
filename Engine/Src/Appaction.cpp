@@ -83,8 +83,8 @@ namespace engine
         initDelegate();
 
 
-        Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
-        Zeus::getInstance().fullScreen();
+        // Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
+        // Zeus::getInstance().fullScreen();
         
         __displayDelegate = displayDelegate;
         glutDisplayFunc(displayPunc);
@@ -178,6 +178,7 @@ namespace engine
             glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
 
 
+
             //加载shader 
             Shader & defaultVertexShader = Shader::create(File::readAllText("Engine/Shader/default.vert"), ShaderType::vertex);
             defaultVertexShader.compile();
@@ -190,6 +191,16 @@ namespace engine
             defaultShaderProgram.attachShader(defaultVertexShader);
             defaultShaderProgram.attachShader(defaultFragmentShader);
             defaultShaderProgram.linkProgram();
+
+
+            glUseProgram(defaultShaderProgram.programId());
+
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+            glEnableVertexAttribArray(0);
+
+            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)sizeof(vertices));
+            glEnableVertexAttribArray(1);
+
             
             //test end
     };
@@ -199,14 +210,6 @@ namespace engine
             static double displayEndTime = 0.0d;
 
             displayStartTime = Zeus::getInstance().getRunningTime();
-            // if(displayStartTime > 1000.0){
-            //     Log.info("HideWindow");
-            //     glutHideWindow();
-            // }
-            // if(displayStartTime > 1200.0){
-            //     Log.info("ShowWindow");
-            //     glutShowWindow();
-            // }
 
             // Log.info("parogram running time = {0}", Zeus::getInstance().getRunningTime());
 
@@ -232,6 +235,12 @@ namespace engine
             
             //清空画布
             glClear(GL_COLOR_BUFFER_BIT);
+
+
+            glBindVertexArray(vertexArrayObject);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
             
             //渲染
             // glFlush();
@@ -253,119 +262,3 @@ namespace engine
             }
     };
 }
-
-// int main(int argc, char ** argv)
-// {
-//     glutInit(&argc, argv);
-
-//     glutInitDisplayMode(GLUT_RGBA);
-//     glutInitWindowSize(800, 600);
-//     glutInitWindowPosition(200, 100);
-
-//     glutCreateWindow(windiwTitle);
-
-//     if(glewInit()){
-//         exit(EXIT_FAILURE);
-//     }
-    
-//     init();
-
-//     Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
-//     // Zeus::getInstance().fullScreen();
- 
-//     glutDisplayFunc(display);
-
-//     glutIdleFunc(idle);
-
-//     glutMainLoop();
-
-// }
-
-// void init(void)
-// {
-
-//     Log.info("..........................");
-
-//     Uuid & uuid = Uuid::create();
-//     Log.info("{0}", uuid);
-//     Log.info(Uuid::create(uuid).toString());
-
-//     UdpServer & udpServer = UdpServer::create(5432);
-//     udpServer.recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
-//         cout << "haha: " << str << endl;
-//     });
-    
-//     // File & file = File::create();
-//     // file.autoRelease();
-
-//     string code = File::readAllText("../CMakeLists.txt");
-    
-//     Log.setFilterLevel(LogManager::level::DEBUG);
-
-//     Log.info("Main -> Code : {0}", code);
-    
-//     Log.info("------{0, d3}", "1.4");
-    
-//     Log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
-//     Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0,-5}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
-//     Log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
-    
-//     Log.info("{0, -20}", "一");
-//     Log.info("{0, -20}", "一二");
-//     Log.info("{0, -20}", "一二三");
-//     Log.info("{0, -20}", "一二三四");
-//     Log.info("{0, -20}", "一二三四五");
-//     Log.info("{0, -20}", "1一");
-//     Log.info("{0, -20}", "12一二");
-//     Log.info("{0, -20}", "123一二三");
-//     Log.info("{0, -20}", "1234一二三四");
-//     Log.info("{0, -20}", "12345一二三四五");
-    
-
-//     Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
-    
-//     // a->autoRelease();
-//     // b->autoRelease();
-
-//     // b->retain();
-    
-//     // Node & item = Node::create();   
-    
-//     glClearColor(0.0, 0.0, 0.0, 1.0);
-    
-    
-    
-//     //test start
-//     // const float vertices[3][2] = {
-//     //     {-0.5, -0.5},
-//     //     {0.5, -0.5},
-//     //     {0.5, 0.0}
-//     // };
-    
-//     // const float colors[] = {
-//     //     1.0, 0.0, 0.0, 1.0,
-//     //     0.0, 1.0, 0.0, 1.0,
-//     //     0.0, 0.0, 1.0, 1.0,  
-//     // };
-    
-//     // const GLushort vertex_indies[] = {
-//     //     0, 1, 2
-//     // };
-    
-//     // glGenBuffers
-    
-//     //test end
-    
-// }
-
-// void display(void)
-// {
-
-    
-// }
-
-// void idle(void)
-// {
-//     display();
-// }
-
