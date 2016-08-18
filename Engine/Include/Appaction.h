@@ -1,8 +1,10 @@
 #pragma once
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __APPACTION_H__
+#define __APPACTION_H__
 #include "Object.h"
 #include <functional>
+
+using namespace std;
 
 namespace engine
 {
@@ -21,15 +23,14 @@ namespace engine
         void run(int argc, char ** argv);
 
 
-        static function<void (void)> displayDelegate;
-        static function<void (void)> initDelegate;
-
     private:
         static Appaction * instance;
+        static function<void (void)> displayDelegate;
+        static function<void (void)> initDelegate;
 
         enum runningState state;
     };
 }
 
 
-#endif //__MAIN_H__
+#endif //__APPACTION_H__

@@ -20,7 +20,7 @@ namespace engine::tools{
             return false;
         }
         _programId = glCreateProgram();
-        assert(_programId == GL_TRUE);
+        assert(glIsProgram(_programId) == GL_TRUE);
 
         return true;
     }

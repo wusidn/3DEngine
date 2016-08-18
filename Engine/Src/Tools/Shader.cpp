@@ -9,7 +9,7 @@ namespace engine::tools{
     Shader & Shader::create(const string & code, const enum ShaderType type)
     {
         Shader & result = create();
-        assert(!result.init(code, type));
+        assert(result.init(code, type));
         return result;
     }
 
@@ -26,7 +26,7 @@ namespace engine::tools{
     {
 
         _shaderId = glCreateShader(type);
-        assert(_shaderId == GL_TRUE);
+        assert(glIsShader(_shaderId) == GL_TRUE);
 
         const GLchar * source = code.c_str();
         glShaderSource(_shaderId, 1, &source, nullptr);
