@@ -139,7 +139,7 @@ namespace engine
             //test start
 
             //准备数据
-            const GLfloat vertices[6][2] =
+            const GLfloat vertices[4][2] =
             {
                 { -0.50,  -0.50 },
                 { 0.50,   -0.50 },
