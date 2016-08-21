@@ -10,3 +10,4 @@ void main()
     color = vColor;
     gl_Position = vPosition;
 }
+

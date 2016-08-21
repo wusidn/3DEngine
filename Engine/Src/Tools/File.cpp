@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 
@@ -19,7 +20,8 @@ namespace engine::tools{
             int length = is.tellg();
             is.seekg (0, is.beg);
             
-            char * temp = new char[length];
+            char * temp = new char[length + 1];
+            temp[length] = 0;
             is.read (temp,length);
             is.close();
             

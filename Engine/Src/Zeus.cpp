@@ -34,6 +34,8 @@ namespace engine
         glutReshapeFunc([](const int _width, const int _height){
             Zeus::getInstance().windowSize.width = _width;
             Zeus::getInstance().windowSize.height = _height;
+
+            glViewport(0,0,_width,_height);
         });
 
         return true;
@@ -48,7 +50,8 @@ namespace engine
     //获取程序运行时间
     const double Zeus::getRunningTime(void) const
     {
-        return (double)clock() / CLOCKS_PER_SEC * 1000;
+        // return (double)clock() / CLOCKS_PER_SEC * 1000;
+        return glutGet(GLUT_ELAPSED_TIME);
     }
 
     //改变窗口大小
@@ -77,6 +80,7 @@ namespace engine
     const Zeus & Zeus::fullScreen(void) const
     {
         glutFullScreen();
+        glutPostRedisplay();
         return *this;
     }
 
@@ -88,7 +92,7 @@ namespace engine
     }
 
     //设置窗口位置
-    const Zeus & Zeus:: setWindowPosition(const Vec2 & _position) const
+    const Zeus & Zeus::setWindowPosition(const Vec2 & _position) const
     {
         int x = round(_position.x);
         int y = round(_position.y);

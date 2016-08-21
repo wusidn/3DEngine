@@ -6,11 +6,17 @@
 #include "Size2.h"
 #include "Vec2.h"
 #include <string>
+#include <functional>
 
 using namespace std;
 
 namespace engine
 {
+
+    enum ZeusFunctionType{
+        fullScreen, reshapeWindow
+    };
+
     class Zeus : public Object
     {
     public:

@@ -70,7 +70,7 @@ namespace engine
 
         glutInit(&argc, argv);
 
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
         glutInitWindowSize(800, 600);
         glutInitWindowPosition(200, 100);
 
@@ -82,10 +82,10 @@ namespace engine
 
         initDelegate();
 
+        Zeus::getInstance().setWindowTitle("haha");
+        Zeus::getInstance().fullScreen();
 
-        // Zeus::getInstance().setWindowSize(Size2(300)).setWindowTitle("haha").setWindowPosition(Vec2(800, 800));
-        // Zeus::getInstance().fullScreen();
-        
+
         __displayDelegate = displayDelegate;
         glutDisplayFunc(displayPunc);
 
@@ -134,11 +134,10 @@ namespace engine
             // Node & item = Node::create();   
             
             glClearColor(0.0, 0.0, 0.0, 1.0);
-            
-            
-            //test start
 
-            //准备数据
+                        //test start
+
+            // 准备数据
             const GLfloat vertices[4][2] =
             {
                 { -0.50,  -0.50 },
@@ -203,49 +202,20 @@ namespace engine
 
             
             //test end
+            
     };
 
     function<void (void)> Appaction::displayDelegate = [](void){
-            static double displayStartTime = 0.0d;
-            static double displayEndTime = 0.0d;
 
-            displayStartTime = Zeus::getInstance().getRunningTime();
-
-            // Log.info("parogram running time = {0}", Zeus::getInstance().getRunningTime());
-
-            
-            static float hopeFrameCount = 60;
-            static float standardTime = 1000.0 / hopeFrameCount;
-
-            // static int farmeCount = hopeFrameCount;
-            // static time_t prevSecond = 0;
-            
-            // //计算当前帧率
-            // time_t tempTime = time(NULL);
-            // if(!prevSecond || tempTime - prevSecond >= 1){
-            //     prevSecond = tempTime;
-            //     int fps = farmeCount;
-            //     farmeCount = 0;
-
-            //     Log.info("FPS: {0}", fps);
-            //     // Size2 screenSize = Zeus::getInstance().getWindowSize();
-            //     // Log.info("screen.width: {0}, screen.height: {1}", screenSize.width, screenSize.height);
-            // }
-            // farmeCount++;
-            
             //清空画布
-            glClear(GL_COLOR_BUFFER_BIT);
-
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glBindVertexArray(vertexArrayObject);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
             
-            //渲染
-            // glFlush();
-            glutSwapBuffers();
-            
+           
             
             for(int i = 0; i < 1000000; ++i){
                 int temp = i >> 5 * 6 << 2 / 3;
@@ -255,10 +225,7 @@ namespace engine
             //垃圾回收
             Gc::getInstance().clean();
             
-            displayEndTime = Zeus::getInstance().getRunningTime();
-            //控制帧率
-            if(displayEndTime - displayStartTime < standardTime){
-                usleep((standardTime + displayStartTime - displayEndTime) * 1000 - 50);
-            }
+            //渲染
+            glutSwapBuffers();
     };
 }
