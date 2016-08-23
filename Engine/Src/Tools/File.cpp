@@ -1,7 +1,6 @@
 #include "File.h"
 
 #include <iostream>
-#include <cassert>
 #include <cstring>
 
 using namespace std;
@@ -36,7 +35,15 @@ namespace engine::tools{
     File & File::createWithFilePath(const string & filePath)
     {
         File & result = create();
-        assert(!result.init(filePath));
+        bool fileInit = result.init(filePath);
+
+        assert(fileInit);
+
+        //出错了
+        if(!fileInit){
+            result._state = 1;
+        }
+
         return result;
     }
 

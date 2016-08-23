@@ -10,20 +10,22 @@ namespace engine::tools
 
     TcpServer & TcpServer::create(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
     {
-        TcpServer * result = new TcpServer();
-        if(!result->init(address, port, poolSize, loopInterval)){
-            delete result;
-            result = nullptr;
-        }
-        return *result;
+        TcpServer & result = create();
+        result.init(address, port, poolSize, loopInterval);
+        return result;
     }
 
-    const bool TcpServer::init(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
+    const bool TcpServer::init(void)
     {
         if(!NetWork::init()){
             return false;
         }
 
+        return true;
+    }
+
+    const bool TcpServer::init(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
+    {
         if(!bind(address, port)){
             return false;
         }

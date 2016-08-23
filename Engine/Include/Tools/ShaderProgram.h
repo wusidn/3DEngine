@@ -19,6 +19,7 @@ namespace engine::tools
     public:
         CREATEFUNC(ShaderProgram);
         static ShaderProgram & create(const list<const Shader *> & shaderList);
+        static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
         
         //添加shader
         const bool attachShader(const Shader & shader) const;
@@ -28,8 +29,8 @@ namespace engine::tools
         //链接shader程序
         const bool linkProgram(void) const;
 
-        //获取shader程序id
-        const unsigned int programId(void) const;
+        //启用着色器
+        const bool use(void) const;
         
     protected:
 
@@ -37,6 +38,7 @@ namespace engine::tools
         
         virtual const bool init(void);
         const bool init(const list<const Shader *> & shaderList);
+        const bool init(const string & vShaderPath, const string & fShaderPath);
         
     private:
         unsigned int _programId;

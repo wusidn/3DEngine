@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include <cassert>
 #include <thread>
 #include <unistd.h>
 

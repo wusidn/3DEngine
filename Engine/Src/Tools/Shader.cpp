@@ -9,7 +9,13 @@ namespace engine::tools{
     Shader & Shader::create(const string & code, const enum ShaderType type)
     {
         Shader & result = create();
-        assert(result.init(code, type));
+        bool shaderInit = result.init(code, type);
+
+        assert(shaderInit);
+
+        if(shaderInit){
+            result._state = 1;
+        }
         return result;
     }
 
@@ -26,7 +32,9 @@ namespace engine::tools{
     {
 
         _shaderId = glCreateShader(type);
-        assert(glIsShader(_shaderId) == GL_TRUE);
+        if(glIsShader(_shaderId) != GL_TRUE){
+            return false;
+        }
 
         const GLchar * source = code.c_str();
         glShaderSource(_shaderId, 1, &source, nullptr);
@@ -77,5 +85,12 @@ namespace engine::tools{
         GLint compiled = 0;
         glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compiled);
         return compiled == GL_TRUE;
+    }
+
+    Shader::~Shader(void)
+    {
+        if(glIsShader(_shaderId) == GL_TRUE){
+            glDeleteShader(_shaderId);
+        }
     }
 }

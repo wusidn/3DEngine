@@ -5,12 +5,12 @@ namespace engine
 {
     void Object::retain(void)
     {
-        this->quoteCount++;
+        this->_quoteCount++;
     }
 
     void Object::release(void)
     {
-        this->quoteCount--;
+        this->_quoteCount--;
     }
 
     void Object::autoRelease(void)
@@ -18,9 +18,20 @@ namespace engine
         Gc::getInstance().watch(*this);
     }
 
+    const bool Object::ready(void) const
+    {
+        return !_state;
+    }
+
+    const unsigned short Object::fault(void) const
+    {
+        return _state;
+    }
+
     const bool Object::init(void)
     {
-        quoteCount = 0;
+        _quoteCount = 0;
+        _state = 0;
         return true;
     }
 }

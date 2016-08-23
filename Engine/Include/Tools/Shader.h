@@ -34,12 +34,12 @@ namespace engine::tools
     protected:
 
         Shader(void){}
+        virtual ~Shader(void);
         virtual const bool init(void);
         virtual const bool init(const string & code, const enum ShaderType type);
         
     private:
         GLuint _shaderId;
-        
         
         //编译是否成功
         const bool compileIsSuccessful(void) const;

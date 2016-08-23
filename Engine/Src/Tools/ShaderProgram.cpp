@@ -1,16 +1,32 @@
 #include "ShaderProgram.h"
 #include "LogManager.h"
-
-#include <cassert>
-
-using namespace std;
+#include "File.h"
 
 namespace engine::tools{
 
     ShaderProgram & ShaderProgram::create(const list<const Shader *> & shaderList)
     {
         ShaderProgram & result = create();
-        assert(!result.init(shaderList));
+        bool shaderProgramInit = result.init(shaderList);
+
+        assert(shaderProgramInit);
+
+        if(!shaderProgramInit){
+            result._state = 1;
+        }
+        return result;
+    }
+
+    ShaderProgram & ShaderProgram::create(const string & vShaderPath, const string & fShaderPath)
+    {
+        ShaderProgram & result = create();
+        bool shaderProgramInit = result.init(vShaderPath, fShaderPath);
+
+        assert(shaderProgramInit);
+
+        if(!shaderProgramInit){
+            result._state = 1;
+        }
         return result; 
     }
 
@@ -20,7 +36,9 @@ namespace engine::tools{
             return false;
         }
         _programId = glCreateProgram();
-        assert(glIsProgram(_programId) == GL_TRUE);
+        if(glIsProgram(_programId) != GL_TRUE){
+            return false;
+        }
 
         return true;
     }
@@ -38,6 +56,33 @@ namespace engine::tools{
         }
         
         return true;   
+    }
+
+    const bool ShaderProgram::init(const string & vShaderPath, const string & fShaderPath)
+    {
+     
+        Shader & vertexShader = Shader::create(File::readAllText(vShaderPath), ShaderType::vertex);
+        if(!vertexShader.compile()){
+            return false;
+        }
+
+        Shader & fragmentShader = Shader::create(File::readAllText(fShaderPath), ShaderType::fragment);
+        if(!fragmentShader.compile()){
+            return false;
+        }
+
+        attachShader(vertexShader);
+        attachShader(fragmentShader);
+        linkProgram();
+
+        vertexShader.release();
+        fragmentShader.release();
+
+        if(!linkIsSuccessful()){
+            return false;
+        }
+        
+        return true;
     }
 
     const bool ShaderProgram::attachShader(const Shader & shader) const
@@ -86,9 +131,13 @@ namespace engine::tools{
         return false;
     }
 
-    const unsigned int ShaderProgram::programId(void) const
+    const bool ShaderProgram::use(void) const
     {
-        return _programId;
+        if(!linkIsSuccessful()){
+            return false;
+        }
+        glUseProgram(_programId);
+        return true;
     }
 
     const bool ShaderProgram::linkIsSuccessful(void) const

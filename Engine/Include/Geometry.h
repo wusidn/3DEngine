@@ -16,6 +16,7 @@ namespace engine
         const unsigned int getIndiesBufferObject(void) const;
     protected:
         virtual ~Geometry();
+        virtual const bool init(void);
     private:
 
         Geometry(){}

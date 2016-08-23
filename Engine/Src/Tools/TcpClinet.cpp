@@ -5,21 +5,22 @@ namespace engine::tools
 
     TcpClient & TcpClient::create(const string & address, const unsigned port, const unsigned loopInterval)
     {
-        TcpClient * result = new TcpClient();
-        if(!result->init(address, port, loopInterval)){
-            delete result;
-            result = nullptr;
-        }
-        
-        return *result;
+        TcpClient & result = create();
+        result.init(address, port, loopInterval);
+        return result;
     }
 
-    const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
+    const bool TcpClient::init(void)
     {
         if(!NetWork::init()){
             return false;
         }
+        
+        return true;
+    }
 
+    const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
+    {
         if(!connect(address, port, loopInterval)){
             return false;
         }

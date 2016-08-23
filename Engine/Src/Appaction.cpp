@@ -1,3 +1,4 @@
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "Appaction.h"
@@ -46,13 +47,8 @@ namespace engine
     Appaction & Appaction::getInstance(void)
     {
         if(!instance){
-            instance = new Appaction();
-            if(!instance->init()){
-                delete instance;
-                instance = nullptr;
-            }
+            instance = &create();
         }
-        assert(instance);
         return *instance;
     }
 
@@ -100,8 +96,10 @@ namespace engine
             Log.info("..........................");
 
             Uuid & uuid = Uuid::create();
-            Log.info("{0}", uuid);
-            Log.info(Uuid::create(uuid).toString());
+            if(uuid.ready()){
+                Log.info("{0}", uuid);
+                Log.info(Uuid::create(uuid).toString());
+            }
 
             // UdpServer & udpServer = UdpServer::create(5432);
             // udpServer.recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
@@ -185,21 +183,31 @@ namespace engine
 
 
 
-            //加载shader 
-            Shader & defaultVertexShader = Shader::create(File::readAllText("Engine/Shader/default.vert"), ShaderType::vertex);
-            defaultVertexShader.compile();
+            // //加载shader 
+            // Shader & defaultVertexShader = Shader::create(File::readAllText("Engine/Shader/default.vert"), ShaderType::vertex);
+            // defaultVertexShader.compile();
 
-            Shader & defaultFragmentShader = Shader::create(File::readAllText("Engine/Shader/default.frag"), ShaderType::fragment);
-            defaultFragmentShader.compile();
+            // Shader & defaultFragmentShader = Shader::create(File::readAllText("Engine/Shader/default.frag"), ShaderType::fragment);
+            // defaultFragmentShader.compile();
 
-            //链接ShaderProgram
-            ShaderProgram & defaultShaderProgram = ShaderProgram::create();
-            defaultShaderProgram.attachShader(defaultVertexShader);
-            defaultShaderProgram.attachShader(defaultFragmentShader);
-            defaultShaderProgram.linkProgram();
+            // //链接ShaderProgram
+            // ShaderProgram & defaultShaderProgram = ShaderProgram::create();
+            // defaultShaderProgram.attachShader(defaultVertexShader);
+            // defaultShaderProgram.attachShader(defaultFragmentShader);
+            // defaultShaderProgram.linkProgram();
 
+            // //删除Shader
+            // defaultVertexShader.release();
+            // defaultFragmentShader.release();
 
-            glUseProgram(defaultShaderProgram.programId());
+            //高度封装版本
+            ShaderProgram & defaultShaderProgram = ShaderProgram::create("Engine/Shader/default.vert", "Engine/Shader/default.frag");
+            if(defaultShaderProgram.fault()){
+                Log.error("defaultShaderProgram create fault");
+            }
+
+            //启用着色器程序
+            defaultShaderProgram.use();
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
             glEnableVertexAttribArray(0);

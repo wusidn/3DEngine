@@ -23,10 +23,11 @@ namespace engine::tools
         const bool send(const int client, const string & str) const;
         
     protected:
+        virtual const bool init(void);
         virtual const bool init(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval);
 
     private:
-
+        CREATEFUNC(TcpServer);
     };
 }
 

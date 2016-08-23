@@ -24,6 +24,7 @@ namespace engine
 
 
     private:
+        CREATEFUNC(Appaction);
         static Appaction * instance;
         static function<void (void)> displayDelegate;
         static function<void (void)> initDelegate;

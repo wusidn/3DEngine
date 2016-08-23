@@ -6,12 +6,15 @@ namespace engine::tools{
 
     Uuid & Uuid::create(const Uuid & _uuid)
     {
-        Uuid * result = new Uuid();
-        if(!result->init(_uuid)){
-            delete result;
-            result = nullptr;
+        Uuid & result = create();
+        bool uuidInit = result.init(_uuid);
+
+        assert(uuidInit);
+
+        if(!uuidInit){
+            result._state = 1;
         }
-        return *result;
+        return result;
     }
 
     const bool Uuid::init(void)
@@ -25,10 +28,6 @@ namespace engine::tools{
 
     const bool Uuid::init(const Uuid & _uuid)
     {
-        if(!Object::init()){
-            return false;
-        }
-
         memcpy(data, _uuid.data, sizeof(_uuid.data));
 
         return true;

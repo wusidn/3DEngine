@@ -14,9 +14,7 @@ namespace engine
         return * instance;
     }
 
-
-    Gc::Gc(void)
-    {
+    Gc::Gc(void){
         this->objectPool = new list<const Object *>();
     }
 
@@ -24,7 +22,7 @@ namespace engine
     {
         for(auto item = objectPool->begin(); item != objectPool->end(); ++item)
         {
-            if((*item)->quoteCount <= 0){
+            if((*item)->_quoteCount <= 0){
                 const Object * temp = (*item);
                 delete temp;
                 item--;
