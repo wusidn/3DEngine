@@ -48,7 +48,7 @@ namespace engine
     }
 
     //获取程序运行时间
-    const double Zeus::getRunningTime(void) const
+    const int Zeus::getRunningTime(void) const
     {
         // return (double)clock() / CLOCKS_PER_SEC * 1000;
         return glutGet(GLUT_ELAPSED_TIME);

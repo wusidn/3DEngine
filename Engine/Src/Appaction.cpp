@@ -146,11 +146,18 @@ namespace engine
                 { -0.50,  0.50 }
             };
 
+            // const GLfloat colors[] = {
+            //     1.0, 0.0, 0.0, 1.0,
+            //     0.0, 1.0, 0.0, 1.0,
+            //     0.0, 0.0, 1.0, 1.0,
+            //     1.0, 1.0, 0.0, 1.0,
+            // };
+
             const GLfloat colors[] = {
                 1.0, 0.0, 0.0, 1.0,
                 0.0, 1.0, 0.0, 1.0,
-                0.0, 0.0, 1.0, 1.0,
-                1.0, 1.0, 0.0, 1.0,
+                0.0, 1.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0
             };
 
 
@@ -224,6 +231,10 @@ namespace engine
             
             //垃圾回收
             Gc::getInstance().clean();
+
+            //计算fps
+            // static int prevCallTime = 0;
+            // int curTime Zeus::getRunningTime(); 
             
             //渲染
             glutSwapBuffers();

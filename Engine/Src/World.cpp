@@ -36,8 +36,8 @@ namespace engine
 
     void World::render(void)
     {
-        static double prevStartRenderTime = 0.0;
-        static double startRenderTime = 0.0;
+        static int prevStartRenderTime = 0.0;
+        static int startRenderTime = 0.0;
 
         startRenderTime = Zeus::getInstance().getRunningTime();
 
