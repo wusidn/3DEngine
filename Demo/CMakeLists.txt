@@ -1,0 +1,21 @@
+CMAKE_MINIMUM_REQUIRED (VERSION 3.4)
+
+PROJECT (Test VERSION 0.0.0)
+
+#读取Src目录
+AUX_SOURCE_DIRECTORY(Src DIR_SRCS)
+
+#指定头文件路径
+include_directories(${PROJECT_SOURCE_DIR}/Include ${ROOT}/Engine/Include ${ROOT}/Engine/Include/Tools)
+
+#输出文件
+ADD_EXECUTABLE(${PROJECT_NAME} ${DIR_SRCS})
+
+#输入路径
+SET(EXECUTABLE_OUTPUT_PATH ${ROOT}/bin)
+
+#链接库
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} Engine)
+
+#设置编译参数
+#set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")

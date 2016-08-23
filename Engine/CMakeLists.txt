@@ -2,10 +2,6 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.4)
 
 PROJECT (Engine VERSION 0.0.0)
 
-#项目名　软件版本
-#set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-#set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-
 #读取Src目录
 AUX_SOURCE_DIRECTORY(Src DIR_SRCS)
 AUX_SOURCE_DIRECTORY(Src/Tools DIR_SRCS)
@@ -17,14 +13,11 @@ include_directories(${PROJECT_SOURCE_DIR}/Include/Tools)
 #输出文件
 ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})
 
-#输入路径
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+#输出路径
+SET(LIBRARY_OUTPUT_PATH ${ROOT}/bin)
 
 #链接库
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
 
 #设置编译参数
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
-
-#加密
-#include(CPack)
+#set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")

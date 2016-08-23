@@ -1,34 +1,10 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 3.4)
 
-PROJECT (Test VERSION 0.0.0)
+PROJECT (All VERSION 0.0.0)
 
-#include(CTest)
-#enable_testing()
-
-#项目名　软件版本
-#set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-#set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+#根目录
+SET(ROOT ${PROJECT_SOURCE_DIR})
 
 #子项目
+ADD_SUBDIRECTORY(Demo)
 ADD_SUBDIRECTORY(Engine)
-
-#读取Src目录
-AUX_SOURCE_DIRECTORY(Demo DIR_SRCS)
-
-#指定头文件路径
-include_directories(${PROJECT_SOURCE_DIR}/Engine/Include ${PROJECT_SOURCE_DIR}/Include)
-
-#输出文件
-ADD_EXECUTABLE(${PROJECT_NAME} ${DIR_SRCS})
-
-#输入路径
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-
-#链接库
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} Engine)
-
-#设置编译参数
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
-
-#加密
-#include(CPack)
