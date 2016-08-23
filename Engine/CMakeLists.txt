@@ -14,7 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Include/Tools)
 ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})
 
 #输出路径
-SET(LIBRARY_OUTPUT_PATH ${ROOT}/bin)
+SET(LIBRARY_OUTPUT_PATH ${ROOT}/build/bin)
 
 #链接库
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
