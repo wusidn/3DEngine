@@ -53,12 +53,42 @@ namespace engine
         _chidren.clear();
     }
 
-    const Vec4 Node::convertToWorldSpace(void) const
+    void Node::position(const Vec4 & vSource)
+    {
+        _position = vSource;
+    }
+
+    const Vec4 & Node::position(void) const
+    {
+        return _position;
+    }
+
+    void Node::rotate(const Vec4 & vSource)
+    {
+        _rotate = vSource;
+    }
+
+    const Vec4 & Node::rotate(void) const
+    {
+        return _rotate;
+    }
+
+    void Node::scale(const Vec4 & vSource)
+    {
+        _scale = vSource;
+    }
+
+    const Vec4 & Node::scale(void) const
+    {
+        return _scale;
+    }
+
+    const Vec4 Node::convertToWorldSpace(const Vec4 & vSource) const
     {
         return 0.0;
     }
 
-    const Vec4 Node::convertToNodeSpace(const Node & node) const
+    const Vec4 Node::convertToNodeSpace(const Vec4 & vSource) const
     {
         return 0.0;
     }

@@ -11,15 +11,13 @@ namespace engine
     class Geometry : public Node
     {
     public:
-        const unsigned int getVertexArrayObject(void) const;
-        const unsigned int getVertexBufferObject(void) const;
-        const unsigned int getIndiesBufferObject(void) const;
+
     protected:
         virtual ~Geometry();
         virtual const bool init(void);
     private:
 
-        Geometry(){}
+        Geometry(void){}
 
         Vec3 * vertices;
         Vec4 * colors;

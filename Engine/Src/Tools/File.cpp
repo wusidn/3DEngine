@@ -1,4 +1,5 @@
 #include "File.h"
+#include "LogManager.h"
 
 #include <iostream>
 #include <cstring>
@@ -12,6 +13,10 @@ namespace engine::tools{
     {
         string result;
         ifstream is(filePath);
+
+        if(!is){
+            Log.error("# File::readAllText # filePath is not legal");
+        }
 
         if(is){
             
