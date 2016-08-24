@@ -13,6 +13,7 @@ namespace engine
         if(!Object::init()){
             return false;
         }
+        compileWCFlag = false;
         return true;
     }
 
@@ -68,7 +69,7 @@ namespace engine
         _rotate = vSource;
     }
 
-    const Vec4 & Node::rotate(void) const
+    const Vec4 Node::rotate(void) const
     {
         return _rotate;
     }
@@ -78,7 +79,7 @@ namespace engine
         _scale = vSource;
     }
 
-    const Vec4 & Node::scale(void) const
+    const Vec4 Node::scale(void) const
     {
         return _scale;
     }
@@ -91,6 +92,27 @@ namespace engine
     const Vec4 Node::convertToNodeSpace(const Vec4 & vSource) const
     {
         return 0.0;
+    }
+
+    const Vec4 Node::worldCoordinate(void)
+    {
+        if(_compileWCFlag){
+            return _worldCoordinate;
+        }
+
+        Vec4 tempPosition = _position;
+        Node * tempNode = parent();
+
+        while(tempNode){
+
+            //-----------------------------待续
+
+            tempPosition.x = tempPosition.x * tempNode->scale().x;
+            tempPosition.y = tempPosition.y * tempNode->scale().y;
+            tempPosition.z = tempPosition.z * tempNode->scale().z;
+
+            tempNode = tempNode->parent();
+        }
     }
 
     const bool Node::render(const float dp)

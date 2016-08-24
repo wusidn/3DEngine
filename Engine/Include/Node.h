@@ -35,15 +35,15 @@ namespace engine
 
         //位置
         void position(const Vec4 & vSource);
-        const Vec4 & position(void) const;
+        const Vec4 position(void) const;
 
         //旋转
         void rotate(const Vec4 & vSource);
-        const Vec4 & rotate(void) const;
+        const Vec4 rotate(void) const;
 
         //缩放
         void scale(const Vec4 & vSource);
-        const Vec4 & scale(void) const;
+        const Vec4 scale(void) const;
         
         //将当前坐标转为世界坐标
         const Vec4 convertToWorldSpace(const Vec4 & vSource) const;
@@ -52,8 +52,8 @@ namespace engine
         
     protected:
         Node(void);
-        
         virtual const bool init(void);
+        const Vec4 worldCoordinate(void);
     private:
         //父元素
         Node * _parent;
@@ -63,6 +63,10 @@ namespace engine
 
         //矩阵变换
         Vec4 _position, _rotate, _scale;
+
+        //世界坐标
+        Vec4 _worldCoordinate;
+        bool _compileWCFlag;
         
         virtual const bool render(const float dp);
     };
