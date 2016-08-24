@@ -13,7 +13,7 @@ namespace engine
         if(!Object::init()){
             return false;
         }
-        compileWCFlag = false;
+        _compileWCFlag = false;
         return true;
     }
 
@@ -59,7 +59,7 @@ namespace engine
         _position = vSource;
     }
 
-    const Vec4 & Node::position(void) const
+    const Vec4 Node::position(void) const
     {
         return _position;
     }
@@ -113,6 +113,7 @@ namespace engine
 
             tempNode = tempNode->parent();
         }
+        return tempPosition;
     }
 
     const bool Node::render(const float dp)
