@@ -46,7 +46,7 @@ namespace engine::tools{
 
         //出错了
         if(!fileInit){
-            result._state = 1;
+            result.initializeError(1);
         }
 
         return result;

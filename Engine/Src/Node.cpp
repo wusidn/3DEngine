@@ -13,7 +13,7 @@ namespace engine
         if(!Object::init()){
             return false;
         }
-        _compileWCFlag = false;
+        worldCoordinateInvalid();
         return true;
     }
 
@@ -54,70 +54,84 @@ namespace engine
         _chidren.clear();
     }
 
-    void Node::position(const Vec4 & vSource)
+    void Node::position(const Vec3 & vSource)
     {
         _position = vSource;
     }
 
-    const Vec4 Node::position(void) const
+    const Vec3 Node::position(void) const
     {
         return _position;
     }
 
-    void Node::rotate(const Vec4 & vSource)
+    void Node::rotate(const Vec3 & vSource)
     {
         _rotate = vSource;
     }
 
-    const Vec4 Node::rotate(void) const
+    const Vec3 Node::rotate(void) const
     {
         return _rotate;
     }
 
-    void Node::scale(const Vec4 & vSource)
+    void Node::scale(const Vec3 & vSource)
     {
         _scale = vSource;
     }
 
-    const Vec4 Node::scale(void) const
+    const Vec3 Node::scale(void) const
     {
         return _scale;
     }
 
-    const Vec4 Node::convertToWorldSpace(const Vec4 & vSource) const
+    const Vec3 Node::convertToWorldSpace(const Vec3 & vSource)
     {
-        return 0.0;
+        return worldCoordinate() + vSource;
     }
 
-    const Vec4 Node::convertToNodeSpace(const Vec4 & vSource) const
+    const Vec3 Node::convertToNodeSpace(const Vec3 & vSource)
     {
-        return 0.0;
+        return vSource - worldCoordinate();
     }
 
-    const Vec4 Node::worldCoordinate(void)
+    const Vec3 Node::worldCoordinate(void)
     {
-        if(_compileWCFlag){
+        if(_worldCoordinateInvalid){
             return _worldCoordinate;
         }
 
-        Vec4 tempPosition = _position;
+        Vec3 tempPosition = _position;
         Node * tempNode = parent();
-
-        while(tempNode){
-
-            //-----------------------------待续
-
-            tempPosition.x = tempPosition.x * tempNode->scale().x;
-            tempPosition.y = tempPosition.y * tempNode->scale().y;
-            tempPosition.z = tempPosition.z * tempNode->scale().z;
-
-            tempNode = tempNode->parent();
+        if(!tempNode){
+            return 0.0f;
         }
+        //旋转
+
+        //缩放
+
+        //平移
+        tempPosition += tempNode->worldCoordinate();
+        //当前世界坐标有效
+        _worldCoordinateInvalid = true;
         return tempPosition;
     }
 
-    const bool Node::render(const float dp)
+    void Node::worldCoordinateInvalid(void)
     {
+        _worldCoordinateInvalid = false;
+        posterityWorldCoordinateInvalid();
+    }
+
+    void Node::posterityWorldCoordinateInvalid(void)
+    {
+        for(auto node : _chidren){
+            node->worldCoordinateInvalid();
+        }
+    }
+
+    const bool Node::render(const int dp)
+    {
+        worldCoordinate();
         return true;
     }
 }

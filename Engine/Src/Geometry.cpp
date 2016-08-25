@@ -2,7 +2,6 @@
 
 namespace engine
 {
-
     const bool Geometry::init(void)
     {
         if(!Node::init()){

@@ -17,8 +17,6 @@ namespace engine
         virtual const bool init(void);
     private:
 
-        Geometry(void){}
-
         Vec3 * vertices;
         Vec4 * colors;
         unsigned short * vertexIndies;

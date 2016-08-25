@@ -12,7 +12,7 @@ namespace engine::tools{
         assert(shaderProgramInit);
 
         if(!shaderProgramInit){
-            result._state = 1;
+            result.initializeError(1);
         }
         return result;
     }
@@ -25,7 +25,7 @@ namespace engine::tools{
         assert(shaderProgramInit);
 
         if(!shaderProgramInit){
-            result._state = 1;
+            result.initializeError(1);
         }
         return result; 
     }

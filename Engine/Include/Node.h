@@ -34,26 +34,32 @@ namespace engine
         void clear(void);
 
         //位置
-        void position(const Vec4 & vSource);
-        const Vec4 position(void) const;
+        void position(const Vec3 & vSource);
+        const Vec3 position(void) const;
 
         //旋转
-        void rotate(const Vec4 & vSource);
-        const Vec4 rotate(void) const;
+        void rotate(const Vec3 & vSource);
+        const Vec3 rotate(void) const;
 
         //缩放
-        void scale(const Vec4 & vSource);
-        const Vec4 scale(void) const;
+        void scale(const Vec3 & vSource);
+        const Vec3 scale(void) const;
         
         //将当前坐标转为世界坐标
-        const Vec4 convertToWorldSpace(const Vec4 & vSource) const;
+        const Vec3 convertToWorldSpace(const Vec3 & vSource);
         //将世界坐标转换为当前坐标
-        const Vec4 convertToNodeSpace(const Vec4 & vSource) const;
+        const Vec3 convertToNodeSpace(const Vec3 & vSource);
         
     protected:
         Node(void);
         virtual const bool init(void);
-        const Vec4 worldCoordinate(void);
+        //获取节点位置的世界坐标
+        const Vec3 worldCoordinate(void);
+        //标记世界坐标无效
+        void worldCoordinateInvalid(void);
+
+        //计算所有顶点的世界坐标系
+        virtual const bool render(const int dp);
     private:
         //父元素
         Node * _parent;
@@ -62,13 +68,16 @@ namespace engine
         vector<Node *> _chidren;
 
         //矩阵变换
-        Vec4 _position, _rotate, _scale;
+        Vec3 _position, _rotate, _scale;
 
         //世界坐标
-        Vec4 _worldCoordinate;
-        bool _compileWCFlag;
+        Vec3 _worldCoordinate;
+        //世界坐标是否有效
+        bool _worldCoordinateInvalid;
+
+        //所有后代的世界坐标设为无效
+        void posterityWorldCoordinateInvalid(void);
         
-        virtual const bool render(const float dp);
     };
 }
 

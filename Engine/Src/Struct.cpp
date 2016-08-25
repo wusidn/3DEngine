@@ -1,15 +1,12 @@
 #include "Struct.h"
-
+#include <cmath>
+using namespace std;
 
 namespace engine
 {        
-    Struct::Struct(void)
+    const bool equal(const float & param_left, const float & param_right)
     {
-        
-    }
-
-    Struct::~Struct(void)
-    {
-        
+        static float tolerance = pow(1.0f, -6.0f);
+        return abs(param_left - param_right) < tolerance;
     }
 }

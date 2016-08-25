@@ -20,18 +20,26 @@ namespace engine
 
     const bool Object::ready(void) const
     {
-        return !_state;
+        return !_initializeErrorCode;
     }
 
     const unsigned short Object::fault(void) const
     {
-        return _state;
+        return _initializeErrorCode;
     }
 
     const bool Object::init(void)
     {
         _quoteCount = 0;
-        _state = 0;
+        _initializeErrorCode = 0;
         return true;
+    }
+
+    void Object::initializeError(const unsigned short errorCode)
+    {
+        if(!errorCode){
+            return;
+        }
+        _initializeErrorCode = errorCode;
     }
 }

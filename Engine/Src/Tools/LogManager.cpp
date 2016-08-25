@@ -57,7 +57,7 @@ namespace engine::tools{
         
         int minCount = atoi(matchBegin->str(1).c_str());
 
-        static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
+        static regex checkNumber("^(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
         if(matchBegin == matchEnd){
@@ -104,7 +104,7 @@ namespace engine::tools{
             decimalDigits = atoi(matchBegin->str(1).c_str());
         }
 
-        static regex checkNumber("^(.?)((\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?)$");
+        static regex checkNumber("^(.?)(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
         if(matchBegin == matchEnd){
@@ -126,13 +126,17 @@ namespace engine::tools{
         stringstream tempSStr;
         tempSStr << convertData;
 
+        if(tempSStr.str().find("e+") != string::npos){
+
+        }
+
         strs << unit << convertData;
 
         if(tempSStr.str().find('.') == string::npos){
             strs << ".";
         }
 
-        for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
+        for(int i = tempSStr.str().length() - tempSStr.str().find('.') - 1; i < decimalDigits; ++i){
             strs << "0";
         }
                     
@@ -153,9 +157,8 @@ namespace engine::tools{
             decimalDigits = atoi(matchBegin->str(1).c_str());
         }
 
-        static regex checkNumber("^(\\d+(\\.\\d+)?)$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?$");
+        static regex checkNumber("^(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
-
         if(matchBegin == matchEnd){
             error("尝试格式化失败");
             strs << format;
@@ -168,7 +171,7 @@ namespace engine::tools{
             sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
         }
 
-        float convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
+        double convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
 
         stringstream tempSStr;
         tempSStr << convertData;
@@ -179,7 +182,7 @@ namespace engine::tools{
             strs << ".";
         }
 
-        for(size_t i = 0; i < tempSStr.str().length() - tempSStr.str().find('.'); ++i){
+        for(int i = tempSStr.str().length() - tempSStr.str().find('.') - 1; i < decimalDigits; ++i){
             strs << "0";
         }
         return true;

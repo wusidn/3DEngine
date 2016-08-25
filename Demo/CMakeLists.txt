@@ -18,3 +18,6 @@ SET(EXECUTABLE_OUTPUT_PATH ${ROOT}/build/bin)
 
 #链接库
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} Engine)
+
+#设置编译选项
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall")

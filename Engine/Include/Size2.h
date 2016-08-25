@@ -21,7 +21,6 @@ namespace engine
         const Size2 operator+(const Size2 & param) const;
         const Size2 operator-(const Size2 & param) const;
         
-        
     };
 }
 

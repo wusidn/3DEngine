@@ -95,20 +95,13 @@ namespace engine
     function<void (void)> Appaction::initDelegate = [](void){
             Log.info("..........................");
 
-            Vec4 p(100);
-            Vec4 pp = p;
-            
-            pp.x = 12;
-            Log.info("pp.x: {0}, p.x: {1}", pp.x, p.x);
-            Log.info("pp.y: {0}, p.y: {1}", pp.y, p.y);
-            Log.info("pp.z: {0}, p.z: {1}", pp.z, p.z);
-            Log.info("pp.w: {0}, p.w: {1}", pp.w, p.w);
-
             Uuid & uuid = Uuid::create();
             if(uuid.ready()){
                 Log.info("{0}", uuid);
                 Log.info(Uuid::create(uuid).toString());
             }
+            Log.info("1.0d / 3 = {0, F10}", 987654321.123456789d);
+            Log.debug("equal(1.0, {1, F}) = {0}", equal(1.0, (1.0f / 3.0f - 1.0f / 6.0f) * 6.0f), (1.0 / 3.0f - 1.0 / 6.0f));
 
             // UdpServer & udpServer = UdpServer::create(5432);
             // udpServer.recvFrom([](const struct sockaddr_in * clientInfo, const string & str){

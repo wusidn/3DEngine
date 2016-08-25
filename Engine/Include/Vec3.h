@@ -21,11 +21,20 @@ namespace engine
         
         //重载运算符
         const Vec3 operator+(const Vec3 & param) const;
+        const Vec3 & operator+=(const Vec3 & param);
         const Vec3 operator-(const Vec3 & param) const;
+        const Vec3 & operator-=(const Vec3 & param);
         const Vec3 operator*(const float param) const;
+        const Vec3 & operator*=(const float param);
         const Vec3 operator/(const float param) const;
+        const Vec3 & operator/=(const float param);
+
+        const Vec3 operator-(void) const;
+        const bool operator==(const Vec3 & param) const;
         
+        //这个乘法好像没意义  暂留
         friend const Vec3 operator*(const float param_left, const Vec3 & param_right);
+        
         
         //点积
         const float dot(const Vec3 & param) const;

@@ -18,7 +18,7 @@ namespace engine
     \
     if(!initRes)\
     {\
-        result->_state = 1;\
+        result->initializeError(1);\
     }\
     result->autoRelease();\
     return *(class *)result;\
@@ -44,11 +44,14 @@ namespace engine
         Object(void){}
         virtual ~Object(void){}
 
-        //状态
-        unsigned short _state;
+        void initializeError(const unsigned short errorCode);
+
     private:
         //引用次数
         int _quoteCount;
+
+        //初始化错误码
+        unsigned short _initializeErrorCode;
     };
 }
 

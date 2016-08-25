@@ -14,7 +14,7 @@ namespace engine::tools{
         assert(shaderInit);
 
         if(shaderInit){
-            result._state = 1;
+            result.initializeError(1);
         }
         return result;
     }
