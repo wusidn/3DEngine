@@ -28,16 +28,7 @@ namespace engine::tools
 
         CREATEFUNC(LogManager);
 
-        enum level{
-            DEBUG = 0,
-            INFO,
-            NOTICE,
-            WARN,
-            ERR,
-            CRIT,
-            ALERT,
-            EMERG
-        };
+        enum level{ DEBUG = 0, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG };
 
         // 调试: 调试信息
         template<typename... Arguments>
@@ -236,7 +227,7 @@ namespace engine::tools
             }
         }
 
-        //格式化参数
+        //格式化参数     double有精度丢失问题
         template<typename Argument>
         string _format(const string & format, const Argument & source) const
         {
@@ -267,6 +258,9 @@ namespace engine::tools
 
         //输出日志
         void printLog(const level _level, const string & log) const;
+
+        //科学计数法转换
+        string scientificToDefault(const string & source) const;
     };
     extern LogManager & Log;
 }

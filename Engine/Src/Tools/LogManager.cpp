@@ -57,11 +57,11 @@ namespace engine::tools{
         
         int minCount = atoi(matchBegin->str(1).c_str());
 
-        static regex checkNumber("^(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
+        static regex checkNumber("^[+-]?(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^[+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
         if(matchBegin == matchEnd){
-            error("尝试格式化失败");
+            error("格式化数据不匹配");
             strs << format;
             return true;
         }
@@ -104,7 +104,7 @@ namespace engine::tools{
             decimalDigits = atoi(matchBegin->str(1).c_str());
         }
 
-        static regex checkNumber("^(.?)(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
+        static regex checkNumber("^([^-+]?)([+-]?\\d+(\\.\\d+)?(e\\+\\d+)?)$|^([^-+]?)([+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?)$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
         if(matchBegin == matchEnd){
@@ -126,17 +126,17 @@ namespace engine::tools{
         stringstream tempSStr;
         tempSStr << convertData;
 
-        if(tempSStr.str().find("e+") != string::npos){
+        //科学计数法转换
+        string tempStr = scientificToDefault(tempSStr.str());
+        strs << unit << tempStr;
 
-        }
-
-        strs << unit << convertData;
-
-        if(tempSStr.str().find('.') == string::npos){
+        auto dotIndex = tempStr.find('.');
+        if(dotIndex == string::npos){
             strs << ".";
+            dotIndex = tempStr.length() - 1;
         }
 
-        for(int i = tempSStr.str().length() - tempSStr.str().find('.') - 1; i < decimalDigits; ++i){
+        for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){
             strs << "0";
         }
                     
@@ -157,7 +157,7 @@ namespace engine::tools{
             decimalDigits = atoi(matchBegin->str(1).c_str());
         }
 
-        static regex checkNumber("^(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
+        static regex checkNumber("^([+-]?\\d+(\\.\\d+)?)(e[\\+-]\\d+)?$|^[+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e[\\+-]\\d+)?$");
         matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
         if(matchBegin == matchEnd){
             error("尝试格式化失败");
@@ -171,18 +171,22 @@ namespace engine::tools{
             sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
         }
 
-        double convertData = roundf(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
+        double convertData = round(atof(sourceData.c_str()) * pow(10, decimalDigits)) / pow(10, decimalDigits);
 
         stringstream tempSStr;
         tempSStr << convertData;
 
-        strs << convertData;
+        //科学计数法转换
+        string tempStr = scientificToDefault(tempSStr.str());
+        strs << tempStr;
 
-        if(tempSStr.str().find('.') == string::npos){
+        auto dotIndex = tempStr.find('.');
+        if(dotIndex == string::npos){
             strs << ".";
+            dotIndex = tempStr.length() - 1;
         }
 
-        for(int i = tempSStr.str().length() - tempSStr.str().find('.') - 1; i < decimalDigits; ++i){
+        for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){
             strs << "0";
         }
         return true;
@@ -234,6 +238,40 @@ namespace engine::tools{
         //输出到终端
         cout << sstr.str() << endl;
         lck.unlock();
+    }
+
+    string LogManager::scientificToDefault(const string & source) const
+    {
+        string result = source;
+        //处理科学计数法
+        auto scientificIndex = result.find("e+");
+        if(scientificIndex != string::npos)
+        {
+            string baseNumber = result.substr(0, scientificIndex);
+            int exponential = atoi(result.substr(scientificIndex + 2).c_str());
+            auto dotIndex = baseNumber.find('.');
+            baseNumber.replace(dotIndex, dotIndex + 1, "");
+            while(baseNumber.length() < exponential + dotIndex){
+                baseNumber += "0";
+            }
+            result = baseNumber;
+        }
+
+        scientificIndex = result.find("e-");
+        if(scientificIndex != string::npos)
+        {
+            string baseNumber = result.substr(0, scientificIndex);
+            int exponential = atoi(result.substr(scientificIndex + 2).c_str());
+            auto dotIndex = baseNumber.find('.');
+            baseNumber.replace(dotIndex, dotIndex + 1, "");
+
+            string tempHead = "";
+            while((int)tempHead.length() + 1 < exponential){
+                tempHead += "0";
+            }
+            result = "0." + tempHead + baseNumber;
+        }
+        return result;
     }
 
     LogManager & Log = LogManager::create();

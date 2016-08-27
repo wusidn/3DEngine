@@ -100,7 +100,8 @@ namespace engine
                 Log.info("{0}", uuid);
                 Log.info(Uuid::create(uuid).toString());
             }
-            Log.info("1.0d / 3 = {0, F10}", 987654321.123456789d);
+            
+            Log.info("1.0d / 3 = {0, F10}", 0.0000023456789d);
             Log.debug("equal(1.0, {1, F}) = {0}", equal(1.0, (1.0f / 3.0f - 1.0f / 6.0f) * 6.0f), (1.0 / 3.0f - 1.0 / 6.0f));
 
             // UdpServer & udpServer = UdpServer::create(5432);
