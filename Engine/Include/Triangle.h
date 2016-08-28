@@ -22,7 +22,6 @@ namespace engine
         ~Triangle(void){}
     private:
 
-        Vec3 _vertex_1, _vertex_2, _vertex_3;
     };
 }
 

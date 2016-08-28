@@ -13,13 +13,17 @@ namespace engine
     public:
 
     protected:
-        virtual ~Geometry();
+        virtual ~Geometry(void);
         virtual const bool init(void);
+
+        void vertexDataCount(const unsigned short count);
+        void colorDataCount(const unsigned short count);
+        void vertexIndieDataCount(const unsigned short count);
     private:
 
-        Vec3 * vertices;
+        Vec3 * vertexs;
         Vec4 * colors;
-        unsigned short * vertexIndies;
+        unsigned short * verticeIndies;
         unsigned int _vertexArrayObject, _vertexBufferObject, _indiesBufferObject;
     };
 }

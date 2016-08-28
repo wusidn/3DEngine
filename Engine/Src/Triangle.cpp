@@ -17,6 +17,7 @@ namespace engine
         if(!Geometry::init()){
             return false;
         }
+        // verticees = new Vec3[3];
         return true;
     }
 
@@ -25,9 +26,9 @@ namespace engine
         if(vertex_1 == vertex_2 || vertex_2 == vertex_3 || vertex_1 == vertex_3){
             return false;
         }
-        _vertex_1 = vertex_1;
-        _vertex_2 = vertex_2;
-        _vertex_3 = vertex_3;
+        // vertices[0] = vertex_1;
+        // vertices[1] = vertex_2;
+        // vertices[2] = vertex_3;
         return true;
     }
 }
