@@ -19,12 +19,21 @@ namespace engine
         void vertexDataCount(const unsigned short count);
         void colorDataCount(const unsigned short count);
         void vertexIndieDataCount(const unsigned short count);
+
+        const unsigned short vertexDataCount(void) const;
+        const unsigned short colorDataCount(void) const;
+        const unsigned short vertexIndieDataCount(void) const;
+
+        const Vec3 * vertexs(void) const;
+        const Vec4 * colors(void) const;
+        const unsigned short * verticeIndies(void) const;
+
+        virtual const bool render(const float dp);
     private:
 
-        Vec3 * vertexs;
-        Vec4 * colors;
-        unsigned short * verticeIndies;
-        unsigned int _vertexArrayObject, _vertexBufferObject, _indiesBufferObject;
+        Vec3 * _vertexs;
+        Vec4 * _colors;
+        unsigned short * _verticeIndies;
     };
 }
 

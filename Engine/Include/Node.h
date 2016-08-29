@@ -60,6 +60,9 @@ namespace engine
 
         //计算所有顶点的世界坐标系
         virtual const bool render(const int dp);
+
+        //绘制
+        virtual void draw(void) const;
     private:
         //父元素
         Node * _parent;

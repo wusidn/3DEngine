@@ -54,15 +54,14 @@ namespace engine
 
     const bool Appaction::init(void)
     {
-        state = runningState::stop;
         return true;
     }
 
     void Appaction::run(int argc, char ** argv)
     {
-        if(state == runningState::running){
-            return;
-        }
+        static bool running = false;
+        if(running) return;
+        running = true;
 
         glutInit(&argc, argv);
 
@@ -218,7 +217,6 @@ namespace engine
             glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)sizeof(vertices));
             glEnableVertexAttribArray(1);
 
-            
             //test end
             
     };
@@ -233,7 +231,6 @@ namespace engine
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
             
-           
             
             for(int i = 0; i < 1000000; ++i){
                 int temp = i >> 5 * 6 << 2 / 3;

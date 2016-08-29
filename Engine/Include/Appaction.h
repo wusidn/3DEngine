@@ -28,8 +28,7 @@ namespace engine
         static Appaction * instance;
         static function<void (void)> displayDelegate;
         static function<void (void)> initDelegate;
-
-        enum runningState state;
+        
     };
 }
 

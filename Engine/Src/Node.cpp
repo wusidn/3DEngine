@@ -131,7 +131,15 @@ namespace engine
 
     const bool Node::render(const int dp)
     {
+        //计算运动区间
+
+        //更新世界坐标系位置
         worldCoordinate();
         return true;
+    }
+
+    void Node::draw(void) const
+    {
+        
     }
 }

@@ -8,62 +8,86 @@ namespace engine
             return false;
         }
 
-        vertexs = colors = nullptr;
-        verticeIndies = nullptr;
+        _vertexs = _colors = nullptr;
+        _verticeIndies = nullptr;
+
         return true;
     }
 
     void Geometry::vertexDataCount(const unsigned short count)
     {
-        if(vertexs){
-            delete[] vertexs;
+        if(_vertexs){
+            delete[] _vertexs;
         }
 
         if(!count){
-            vertexs = nullptr;
+            _vertexs = nullptr;
             return;
         }
 
-        vertexs = new Vec3[count];
+        _vertexs = new Vec3[count];
     }
 
     void Geometry::colorDataCount(const unsigned short count)
     {
-        if(colors){
-            delete[] colors;
+        if(_colors){
+            delete[] _colors;
         }
 
         if(!count){
-            colors = nullptr;
+            _colors = nullptr;
             return;
         }
 
-        colors = new Vec4[count];
+        _colors = new Vec4[count];
     }
 
     void Geometry::vertexIndieDataCount(const unsigned short count)
     {
-        if(verticeIndies){
-            delete[] verticeIndies;
+        if(_verticeIndies){
+            delete[] _verticeIndies;
         }
 
         if(!count){
-            verticeIndies = nullptr;
+            _verticeIndies = nullptr;
         }
 
-        verticeIndies = new unsigned short[count];
+        _verticeIndies = new unsigned short[count];
+    }
+
+    const unsigned short Geometry::vertexDataCount(void) const
+    {
+        return sizeof(_verticeIndies) / sizeof(Vec3);
+    }
+    
+    const unsigned short Geometry::colorDataCount(void) const
+    {
+        return sizeof(_colors) / sizeof(Vec4);
+    }
+
+    const unsigned short Geometry::vertexIndieDataCount(void) const
+    {
+        return sizeof(_verticeIndies) / sizeof(unsigned short);
+    }
+
+    const bool Geometry::render(const float dp)
+    {
+        if(!Node::render(dp)){
+            return false;
+        }
+        return true;
     }
 
     Geometry::~Geometry(void)
     {
-        if(vertexs){
-            delete[] vertexs;
+        if(_vertexs){
+            delete[] _vertexs;
         }
-        if(colors){
-            delete[] colors;
+        if(_colors){
+            delete[] _colors;
         }
-        if(verticeIndies){
-            delete[] verticeIndies;
+        if(_verticeIndies){
+            delete[] _verticeIndies;
         }
     }
 }
