@@ -13,6 +13,10 @@ namespace engine
         this->a = a;
     }
 
+    ColorRGBA::ColorRGBA(const ColorRGB & copy) : ColorRGBA(copy.r, copy.g, copy.b) { }
+
+    ColorRGBA::ColorRGBA(const ColorRGBA & copy) : ColorRGBA(copy.r, copy.g, copy.b, copy.a) { }
+
     Vec4 ColorRGBA::rgba(void) const
     {
         return Vec4(r, g, b, a);

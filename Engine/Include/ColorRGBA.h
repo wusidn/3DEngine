@@ -16,6 +16,9 @@ namespace engine
         ColorRGBA(const float r, const float g, const float b);
         ColorRGBA(const float r, const float g, const float b, const float a);
 
+        ColorRGBA(const ColorRGB & copy);
+        ColorRGBA(const ColorRGBA & copy);
+
         Vec4 rgba(void) const;
         Vec4 rbga(void) const;
         Vec4 grba(void) const;

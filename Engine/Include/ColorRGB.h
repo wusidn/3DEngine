@@ -15,7 +15,6 @@ namespace engine
         ColorRGB(const float r, const float g, const float b);
 
         ColorRGB(const ColorRGB & copy);
-        ColorRGB(const Vec3 & copy);
 
         Vec3 rgb(void) const;
         Vec3 rbg(void) const;

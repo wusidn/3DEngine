@@ -6,36 +6,20 @@ using namespace std;
 
 namespace engine
 {
-    Vec3::Vec3(void) : Vec2()
-    {
-        z = 0.0f;
-    }
+    Vec3::Vec3(void) : Vec3(0.0f) { }
 
-    Vec3::Vec3(const float v) : Vec2(v)
-    {
-        z = v;
-    }
+    Vec3::Vec3(const float v) : Vec3(v, v, v) { }
 
-    Vec3::Vec3(const float x, const float y) : Vec2(x, y)
-    {
-        z = 0.0f;
-    }
+    Vec3::Vec3(const float x, const float y) : Vec3(x, y, 1.0f) { }
 
-    Vec3::Vec3(const float x, const float y, const float z) : Vec3(x, y)
+    Vec3::Vec3(const float x, const float y, const float z) : Vec2(x, y)
     {
         this->z = z; 
     }
 
-    Vec3::Vec3(const Vec2 & copy) : Vec3(copy.x, copy.y)
-    {
-    }
+    Vec3::Vec3(const Vec2 & copy) : Vec3(copy.x, copy.y) { }
 
-    Vec3::Vec3(const Vec3 & copy)
-    {
-        x = copy.x;
-        y = copy.y;
-        z = copy.z;
-    }
+    Vec3::Vec3(const Vec3 & copy) : Vec3(copy.x, copy.y, copy.z) { }
 
     const Vec3 Vec3::operator+(const Vec3 & param) const
     {

@@ -2,13 +2,9 @@
 
 namespace engine
 {
-    ColorRGB::ColorRGB(void) : ColorRGB(.0f, .0f, .0f)
-    {
-    }
+    ColorRGB::ColorRGB(void) : ColorRGB(.0f, .0f, .0f) { }
 
-    ColorRGB::ColorRGB(const float gray) : ColorRGB(gray, gray, gray)
-    {
-    }
+    ColorRGB::ColorRGB(const float gray) : ColorRGB(gray, gray, gray) { }
 
     ColorRGB::ColorRGB(const float r, const float g, const float b)
     {
@@ -16,6 +12,8 @@ namespace engine
         this->g = g;
         this->b = b;
     }
+
+    ColorRGB::ColorRGB(const ColorRGB & copy) : ColorRGB(copy.r, copy.g, copy.b) { }
 
     Vec3 ColorRGB::rgb(void) const
     {
