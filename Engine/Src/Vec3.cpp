@@ -8,7 +8,7 @@ namespace engine
 {
     Vec3::Vec3(void) : Vec2()
     {
-        z = 0;
+        z = 0.0f;
     }
 
     Vec3::Vec3(const float v) : Vec2(v)
@@ -18,7 +18,7 @@ namespace engine
 
     Vec3::Vec3(const float x, const float y) : Vec2(x, y)
     {
-        Vec3();
+        z = 0.0f;
     }
 
     Vec3::Vec3(const float x, const float y, const float z) : Vec3(x, y)
@@ -26,9 +26,8 @@ namespace engine
         this->z = z; 
     }
 
-    Vec3::Vec3(const Vec2 & copy)
+    Vec3::Vec3(const Vec2 & copy) : Vec3(copy.x, copy.y)
     {
-        Vec3(copy.x, copy.y);
     }
 
     Vec3::Vec3(const Vec3 & copy)
@@ -46,7 +45,7 @@ namespace engine
     const Vec3 & Vec3::operator+=(const Vec3 & param)
     {
         x += param.x;
-        y += param.y;const bool compare(const float & param_left, const float & param_right);
+        y += param.y;
         z += param.z;
         return *this;
     }
@@ -103,6 +102,12 @@ namespace engine
     const Vec3 operator*(const float param_left, const Vec3 & param_right)
     {
         return Vec3(param_right.x * param_left, param_right.y * param_left, param_right.z * param_left);
+    }
+
+    iostream & operator<<(iostream & _stream, const Vec3 & param)
+    {
+        _stream << "Vec3(" << param.x << ", " << param.y << ", " << param.z << ")";
+        return _stream;
     }
 
 

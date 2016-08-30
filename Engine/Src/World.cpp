@@ -4,20 +4,21 @@
 
 namespace engine
 {
-    vector<World *> World::worldPool;
 
-    const vector<World *> & World::getWorldPool()
+    vector<World *> World::_worldPool;
+
+    const vector<World *> & World::worldPool()
     {
-        return worldPool;
+        return _worldPool;
     }
 
 
     World::~World()
     {
-        auto index = std::find(worldPool.begin(), worldPool.end(), this);
-        if(index != worldPool.end())
+        auto index = std::find(_worldPool.begin(), _worldPool.end(), this);
+        if(index != _worldPool.end())
         {
-            worldPool.erase(index);
+            _worldPool.erase(index);
         }
     }
 
@@ -26,27 +27,21 @@ namespace engine
         if(!Object::init()){
             return false;
         }
-        worldPool.push_back(this);
+        _worldPool.push_back(this);
+        retain();
 
         _root = &Node::create();
         _root->retain();
+        _root->position(Vec3(.0f));
 
         return true;
     }
 
-    void World::render(void)
+    void World::render(const int dp)
     {
-        static int prevStartRenderTime = 0.0;
-        static int startRenderTime = 0.0;
-
-        startRenderTime = Zeus::getInstance().getRunningTime();
-
-        if(startRenderTime > prevStartRenderTime){
-            
+        for(auto world : _worldPool){
+            world->_root->render(dp);
         }
-
-        prevStartRenderTime = startRenderTime;
-        
     }
 
     const Node & World::root(void) const

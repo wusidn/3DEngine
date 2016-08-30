@@ -3,6 +3,9 @@
 #define __VEC2_H__
 
 #include "Struct.h"
+#include <iostream>
+
+using namespace std;
 
 namespace engine
 {
@@ -25,6 +28,7 @@ namespace engine
         const Vec2 operator/(const float param) const;
         
         friend const Vec2 operator*(const float param_left, const Vec2 & param_right);
+        friend iostream & operator<<(iostream & _stream, const Vec2 & param);
         
         //点积
         const float dot(const Vec2 & param) const;

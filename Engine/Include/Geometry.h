@@ -28,7 +28,7 @@ namespace engine
         const Vec4 * colors(void) const;
         const unsigned short * verticeIndies(void) const;
 
-        virtual const bool render(const float dp);
+        virtual const bool render(const int dp);
     private:
 
         Vec3 * _vertexs;

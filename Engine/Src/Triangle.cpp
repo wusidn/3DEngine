@@ -1,8 +1,10 @@
 #include "Triangle.h"
+#include "LogManager.h"
 
 namespace engine
 {
 
+    using namespace tools;
     Triangle & Triangle::create(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
         Triangle & result = create();
@@ -31,4 +33,14 @@ namespace engine
         // vertices[2] = vertex_3;
         return true;
     }
+
+     const bool Triangle::render(const int dp)
+     {
+         if(!Geometry::render(dp)){
+             return false;
+         }
+        //  position(position() + Vec3(1.0f, 1.0f));
+        //  Log.info("{0}", position());
+         return true;
+     }
 }

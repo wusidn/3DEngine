@@ -2,6 +2,7 @@
 #ifndef __APPACTION_H__
 #define __APPACTION_H__
 #include "Object.h"
+#include "World.h"
 #include <functional>
 
 using namespace std;
@@ -21,14 +22,17 @@ namespace engine
         virtual const bool init(void);
 
         void run(int argc, char ** argv);
+        World & screen(void);
 
-
+    protected:
+        virtual ~Appaction(void);
     private:
         CREATEFUNC(Appaction);
         static Appaction * instance;
         static function<void (void)> displayDelegate;
         static function<void (void)> initDelegate;
         
+        World * _screen;
     };
 }
 

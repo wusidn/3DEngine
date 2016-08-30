@@ -4,16 +4,7 @@
 
 namespace engine::tools{
 
-    string LogManager::_levelName[]  = {
-            "DEBUG",
-            "INFO",
-            "NOTICE",
-            "WARN",
-            "ERR",
-            "CRIT",
-            "ALERT",
-            "EMERG"
-        };
+    string LogManager::_levelName[]  = { "DEBUG", "INFO", "NOTICE", "WARN", "ERR", "CRIT", "ALERT", "EMERG" };
 
     map<string, string> LogManager::escapes;
 
@@ -25,6 +16,7 @@ namespace engine::tools{
             return false;
         }
 
+        retain();
         //初始化输出介质
         netOutPut = &UdpClient::create("192.168.1.255", 5432);
         netOutPut->retain();

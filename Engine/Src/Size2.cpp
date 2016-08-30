@@ -2,7 +2,7 @@
 
 namespace engine
 {
-    Size2::Size2(void) : Size2(0)
+    Size2::Size2(void) : Size2(0.0f)
     {
     }
     
@@ -10,10 +10,10 @@ namespace engine
     {
     }
 
-    Size2::Size2(const float _width, const float _height)
+    Size2::Size2(const float width, const float height)
     {
-        width = _width;
-        height = _height;
+        this->width = width;
+        this->height = height;
     }
 
     Size2::Size2(const Size2 & copy) : Size2(copy.width, copy.height)

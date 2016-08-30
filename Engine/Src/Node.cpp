@@ -135,6 +135,12 @@ namespace engine
 
         //更新世界坐标系位置
         worldCoordinate();
+
+        for(auto node : _chidren){
+            if(!node->render(dp)){
+                return false;
+            }
+        }
         return true;
     }
 

@@ -34,6 +34,7 @@ namespace engine
         
         //这个乘法好像没意义  暂留
         friend const Vec3 operator*(const float param_left, const Vec3 & param_right);
+        friend iostream & operator<<(iostream & _stream, const Vec3 & param);
         
         
         //点积

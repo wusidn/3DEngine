@@ -17,19 +17,20 @@
 #include "Shader.h"
 #include "ShaderProgram.h"
 #include "Size2.h"
+#include "World.h"
+#include "Triangle.h"
 
 #include <iostream>
 
 using namespace std;
 
-
 //渲染函入口
 function<void (void)> __displayDelegate;
 void displayPunc()
 {
-    if(!__displayDelegate){
-        return;
-    }
+    // if(!__displayDelegate){
+    //     return;
+    // }
     __displayDelegate();
 }
 
@@ -54,6 +55,7 @@ namespace engine
 
     const bool Appaction::init(void)
     {
+        retain();
         return true;
     }
 
@@ -90,8 +92,22 @@ namespace engine
 
     }
 
+    World & Appaction::screen(void)
+    {
+        if(!_screen){
+            _screen = &World::create();
+        }
+        return * _screen;
+    }
+
+
+    Appaction::~Appaction(void)
+    {
+        _screen->release();
+    }
 
     function<void (void)> Appaction::initDelegate = [](void){
+
             Log.info("..........................");
 
             Uuid & uuid = Uuid::create();
@@ -102,134 +118,111 @@ namespace engine
             
             Log.info("1.0d / 3 = {0, F10}", 0.0000023456789d);
             Log.debug("equal(1.0, {1, F}) = {0}", equal(1.0, (1.0f / 3.0f - 1.0f / 6.0f) * 6.0f), (1.0 / 3.0f - 1.0 / 6.0f));
-
-            // UdpServer & udpServer = UdpServer::create(5432);
-            // udpServer.recvFrom([](const struct sockaddr_in * clientInfo, const string & str){
-            //     cout << "haha: " << str << endl;
-            // });
-            
-            // File & file = File::create();
-            // file.autoRelease();
-
-            string code = File::readAllText("../CMakeLists.txt");
             
             Log.setFilterLevel(LogManager::level::DEBUG);
 
-            Log.info("Main -> Code : {0}", code);
             
             Log.info("------{0, d3}", "1.4");
             
             Log.info("Vec3(0, 1, 0).modulo() = {0}", Vec3(0, 1, 0).modulo());
             Log.info("Vec3(1, 0, 0).dot(Vec3(0, 1, 0)) = {0,-5}", Vec3(1, 0, 0).dot(Vec3(0, 1, 0)));
             Log.info("Vec4(1, 0, 0, 1).modulo() = \\\\{0 , C2 }", Vec4(1, 0, 0, 1).modulo());
-            
 
             Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
-            
-            // a->autoRelease();
-            // b->autoRelease();
 
-            // b->retain();
-            
-            // Node & item = Node::create();   
+
+            Appaction::getInstance().screen().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
             
             glClearColor(0.0, 0.0, 0.0, 1.0);
 
-                        //test start
+            Log.info("Vec3(1.0f, 1.0f) = {0}", Vec3(1.0f, 1.0f));
 
-            // 准备数据
-            const GLfloat vertices[4][2] =
-            {
-                { -0.50,  -0.50 },
-                { 0.50,   -0.50 },
-                { 0.50,   0.50 },
-                { -0.50,  0.50 }
-            };
+// {
 
-            // const GLfloat colors[] = {
-            //     1.0, 0.0, 0.0, 1.0,
-            //     0.0, 1.0, 0.0, 1.0,
-            //     0.0, 0.0, 1.0, 1.0,
-            //     1.0, 1.0, 0.0, 1.0,
-            // };
+//             //             //test start
 
-            const GLfloat colors[] = {
-                1.0, 0.0, 0.0, 1.0,
-                0.0, 1.0, 0.0, 1.0,
-                0.0, 1.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0
-            };
+//             // // 准备数据
+//             // const GLfloat vertices[4][2] =
+//             // {
+//             //     { -0.50,  -0.50 },
+//             //     { 0.50,   -0.50 },
+//             //     { 0.50,   0.50 },
+//             //     { -0.50,  0.50 }
+//             // };
 
+//             // const GLfloat colors[] = {
+//             //     1.0, 0.0, 0.0, 1.0,
+//             //     0.0, 1.0, 0.0, 1.0,
+//             //     0.0, 0.0, 1.0, 1.0,
+//             //     1.0, 1.0, 0.0, 1.0,
+//             // };
 
-
-            const GLushort vertex_indies[] = {
-                0, 1, 2, 0, 2, 3
-            };
-
-
-            //处理数据
-            glGenBuffers(1, &indiesBufferObject);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertex_indies), vertex_indies, GL_STATIC_DRAW);
-
-            glGenVertexArrays(1, &vertexArrayObject);
-            glBindVertexArray(vertexArrayObject);
-
-            glGenBuffers(1, &vertexBufferObject);
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(colors), nullptr, GL_STATIC_DRAW);
-
-
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-            glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
+//             // const GLfloat colors[] = {
+//             //     1.0, 0.0, 0.0, 1.0,
+//             //     0.0, 1.0, 0.0, 1.0,
+//             //     0.0, 1.0, 0.0, 1.0,
+//             //     1.0, 0.0, 0.0, 1.0
+//             // };
 
 
 
-            // //加载shader 
-            // Shader & defaultVertexShader = Shader::create(File::readAllText("Engine/Shader/default.vert"), ShaderType::vertex);
-            // defaultVertexShader.compile();
+//             // const GLushort vertex_indies[] = {
+//             //     0, 1, 2, 0, 2, 3
+//             // };
 
-            // Shader & defaultFragmentShader = Shader::create(File::readAllText("Engine/Shader/default.frag"), ShaderType::fragment);
-            // defaultFragmentShader.compile();
 
-            // //链接ShaderProgram
-            // ShaderProgram & defaultShaderProgram = ShaderProgram::create();
-            // defaultShaderProgram.attachShader(defaultVertexShader);
-            // defaultShaderProgram.attachShader(defaultFragmentShader);
-            // defaultShaderProgram.linkProgram();
+//             // //处理数据
+//             // glGenBuffers(1, &indiesBufferObject);
+//             // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
+//             // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertex_indies), vertex_indies, GL_STATIC_DRAW);
 
-            // //删除Shader
-            // defaultVertexShader.release();
-            // defaultFragmentShader.release();
+//             // glGenVertexArrays(1, &vertexArrayObject);
+//             // glBindVertexArray(vertexArrayObject);
 
-            //高度封装版本
-            ShaderProgram & defaultShaderProgram = ShaderProgram::create("Engine/Shader/default.vert", "Engine/Shader/default.frag");
-            if(defaultShaderProgram.fault()){
-                Log.error("defaultShaderProgram create fault");
-            }
+//             // glGenBuffers(1, &vertexBufferObject);
+//             // glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+//             // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(colors), nullptr, GL_STATIC_DRAW);
 
-            //启用着色器程序
-            defaultShaderProgram.use();
 
-            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-            glEnableVertexAttribArray(0);
+//             // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+//             // glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
 
-            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)sizeof(vertices));
-            glEnableVertexAttribArray(1);
 
-            //test end
+//             // //加载Shader
+//             // ShaderProgram & defaultShaderProgram = ShaderProgram::create("Engine/Shader/default.vert", "Engine/Shader/default.frag");
+//             // if(defaultShaderProgram.fault()){
+//             //     Log.error("defaultShaderProgram create fault");
+//             // }
+
+//             // //启用着色器程序
+//             // defaultShaderProgram.use();
+
+//             // glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+//             // glEnableVertexAttribArray(0);
+
+//             // glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)sizeof(vertices));
+//             // glEnableVertexAttribArray(1);
+
+//             //test end
+// }
             
     };
 
     function<void (void)> Appaction::displayDelegate = [](void){
 
+            static int prevDisplayTime = 0;
+            int currDisplayTime = Zeus::getInstance().getRunningTime();
+            World::render(currDisplayTime - prevDisplayTime);
+
+            prevDisplayTime = currDisplayTime;
+
             //清空画布
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glBindVertexArray(vertexArrayObject);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
+            // glBindVertexArray(vertexArrayObject);
+            // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
 
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+            // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
             
             
             for(int i = 0; i < 1000000; ++i){
@@ -240,11 +233,8 @@ namespace engine
             //垃圾回收
             Gc::getInstance().clean();
 
-            //计算fps
-            // static int prevCallTime = 0;
-            // int curTime Zeus::getRunningTime(); 
-            
             //渲染
             glutSwapBuffers();
     };
+    
 }

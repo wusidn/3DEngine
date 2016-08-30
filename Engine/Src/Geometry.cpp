@@ -70,7 +70,7 @@ namespace engine
         return sizeof(_verticeIndies) / sizeof(unsigned short);
     }
 
-    const bool Geometry::render(const float dp)
+    const bool Geometry::render(const int dp)
     {
         if(!Node::render(dp)){
             return false;

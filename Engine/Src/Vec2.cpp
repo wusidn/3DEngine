@@ -4,7 +4,7 @@
 
 namespace engine
 {        
-    Vec2::Vec2(void) : Vec2(0)
+    Vec2::Vec2(void) : Vec2(0.0f)
     {
     }
 
@@ -50,6 +50,12 @@ namespace engine
     const Vec2 operator*(const float param_left, const Vec2 & param_right)
     {
         return Vec2(param_right.x * param_left, param_right.y * param_left);
+    }
+
+    iostream & operator<<(iostream & _stream, const Vec2 & param)
+    {
+         _stream << "Vec2(" <<  param.x << ", " << param.y << ")";
+         return _stream;
     }
 
     const float Vec2::dot(const Vec2 & param) const
