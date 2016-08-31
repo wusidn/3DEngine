@@ -3,6 +3,9 @@
 #define __SIZE_H__
 
 #include "Struct.h"
+#include <iostream>
+
+using namespace std;
 
 namespace engine
 {
@@ -18,6 +21,8 @@ namespace engine
 
         const Size2 operator+(const Size2 & param) const;
         const Size2 operator-(const Size2 & param) const;
+
+        friend ostream & operator<<(ostream & _stream, const Size2 & param); 
 
         float width, height;
     };

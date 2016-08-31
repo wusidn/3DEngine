@@ -18,7 +18,7 @@ namespace engine
         Vec4(const Vec3 & copy);
         Vec4(const Vec4 & copy);
 
-        friend iostream & operator<<(iostream & _stream, const Vec4 & param);
+        friend ostream & operator<<(ostream & _stream, const Vec4 & param);
         
         ~Vec4(void); 
         

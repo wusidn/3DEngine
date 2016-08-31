@@ -4,7 +4,7 @@
 
 #include "Node.h"
 #include "Vec3.h"
-#include "Vec4.h"
+#include "ColorRGBA.h"
 
 namespace engine
 {
@@ -25,15 +25,22 @@ namespace engine
         const unsigned short vertexIndieDataCount(void) const;
 
         const Vec3 * vertexs(void) const;
-        const Vec4 * colors(void) const;
+        const ColorRGBA * colors(void) const;
         const unsigned short * verticeIndies(void) const;
+
+        void vertexData(const unsigned short index, const Vec3 & data);
+        void colorData(const unsigned short index, const ColorRGBA & data);
+        void vertexIndieData(const unsigned short index, const unsigned short data);
 
         virtual const bool render(const int dp);
     private:
 
         Vec3 * _vertexs;
-        Vec4 * _colors;
+        ColorRGBA * _colors;
         unsigned short * _verticeIndies;
+
+        unsigned short _vertexDataCount, _colorDataCount, _vertexIndieDataCount;
+        
     };
 }
 

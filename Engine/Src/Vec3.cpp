@@ -88,12 +88,11 @@ namespace engine
         return Vec3(param_right.x * param_left, param_right.y * param_left, param_right.z * param_left);
     }
 
-    iostream & operator<<(iostream & _stream, const Vec3 & param)
+    ostream & operator<<(ostream & _stream, const Vec3 & param)
     {
         _stream << "Vec3(" << param.x << ", " << param.y << ", " << param.z << ")";
         return _stream;
     }
-
 
     const float Vec3::dot(const Vec3 & param) const
     {

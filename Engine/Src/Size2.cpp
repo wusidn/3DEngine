@@ -24,4 +24,10 @@ namespace engine
         return Size2(width - param.width, height - param.height);
     }
 
+    ostream & operator<<(ostream & _stream, const Size2 & param)
+    {
+        _stream << "Szie2(" << param.width << ", " << param.height <<")";
+        return _stream;
+    }
+
 }

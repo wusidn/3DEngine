@@ -19,7 +19,7 @@ namespace engine
 
     Vec4::Vec4(const Vec4 & copy) : Vec4(copy.x, copy.y, copy.z, copy.w) { }
 
-    iostream & operator<<(iostream & _stream, const Vec4 & param)
+    ostream & operator<<(ostream & _stream, const Vec4 & param)
     {
         _stream << "Vec4(" << param.x << ", " << param.y << ", " << param.z << ", " << param.w << ")";
         return _stream;

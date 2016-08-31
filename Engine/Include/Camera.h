@@ -3,6 +3,7 @@
 #define __CAMERA_H__
 
 #include "Node.h"
+#include "Size3.h"
 
 
 namespace engine

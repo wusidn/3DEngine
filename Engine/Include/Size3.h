@@ -15,6 +15,8 @@ namespace engine
         Size3(const float _width, const float _height, const float _depth);
         Size3(const Size3 & copy);
         Size3(const Size2 & copy);
+
+        friend ostream & operator<<(ostream & _stream, const Size3 & param);
         
         float depth;
     };

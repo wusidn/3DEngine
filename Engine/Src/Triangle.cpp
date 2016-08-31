@@ -19,18 +19,20 @@ namespace engine
         if(!Geometry::init()){
             return false;
         }
-        // verticees = new Vec3[3];
+
+        vertexDataCount(3);
         return true;
     }
 
     const bool Triangle::init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
-        if(vertex_1 == vertex_2 || vertex_2 == vertex_3 || vertex_1 == vertex_3){
-            return false;
-        }
-        // vertices[0] = vertex_1;
-        // vertices[1] = vertex_2;
-        // vertices[2] = vertex_3;
+        // if(vertex_1 == vertex_2 || vertex_2 == vertex_3 || vertex_1 == vertex_3){
+        //     return false;
+        // }
+        vertexData(0, vertex_1);
+        vertexData(1, vertex_2);
+        vertexData(2, vertex_3);
+        
         return true;
     }
 

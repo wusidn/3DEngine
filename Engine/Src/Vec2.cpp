@@ -46,7 +46,7 @@ namespace engine
         return Vec2(param_right.x * param_left, param_right.y * param_left);
     }
 
-    iostream & operator<<(iostream & _stream, const Vec2 & param)
+    ostream & operator<<(ostream & _stream, const Vec2 & param)
     {
          _stream << "Vec2(" <<  param.x << ", " << param.y << ")";
          return _stream;

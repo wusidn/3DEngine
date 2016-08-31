@@ -212,7 +212,14 @@ namespace engine
 
             static int prevDisplayTime = 0;
             int currDisplayTime = Zeus::getInstance().getRunningTime();
+
+            //先执行代码（包括注册的动画、用户注册的代码）
+
+
+            //确定所有元素的位置后计算所有元素的位置
             World::render(currDisplayTime - prevDisplayTime);
+
+            //以每个视口绘制
 
             prevDisplayTime = currDisplayTime;
 
