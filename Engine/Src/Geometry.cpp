@@ -120,6 +120,19 @@ namespace engine
         *(_verticeIndies + index) = data;
     }
 
+    const Vec3 * Geometry::vertexs(void) const 
+    {
+        return _vertexs;
+    }
+    const ColorRGBA * Geometry::colors(void) const
+    {
+        return _colors;
+    }
+    const unsigned short * Geometry::verticeIndies(void) const 
+    {
+        return _verticeIndies;
+    }
+
     const bool Geometry::render(const int dp)
     {
         if(!Node::render(dp)){

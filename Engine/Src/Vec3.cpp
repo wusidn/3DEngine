@@ -10,7 +10,7 @@ namespace engine
 
     Vec3::Vec3(const float v) : Vec3(v, v, v) { }
 
-    Vec3::Vec3(const float x, const float y) : Vec3(x, y, 1.0f) { }
+    Vec3::Vec3(const float x, const float y) : Vec3(x, y, 0.0f) { }
 
     Vec3::Vec3(const float x, const float y, const float z) : Vec2(x, y)
     {

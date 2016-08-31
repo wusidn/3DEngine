@@ -32,17 +32,29 @@ namespace engine
         vertexData(0, vertex_1);
         vertexData(1, vertex_2);
         vertexData(2, vertex_3);
-        
+
         return true;
     }
 
      const bool Triangle::render(const int dp)
      {
+
+         position(position() + Vec3(1.0f, 1.0f));
+
+         Log.info("parent() = {0}", parent());
+         Log.info("position() = {0}", position());
+         Log.info("worldCoordinate() = {0}", worldCoordinate());
+
          if(!Geometry::render(dp)){
              return false;
          }
-        //  position(position() + Vec3(1.0f, 1.0f));
-        //  Log.info("{0}", position());
+
+        Log.debug("---------------------------------------");
+         for(auto i = 0; i < 3; ++i){
+             Log.info("vertex[{0}] = {1}", i, *(vertexs() + i) + worldCoordinate());
+         }
+        Log.debug("");
+        Log.debug("");
          return true;
      }
 }

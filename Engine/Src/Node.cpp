@@ -30,6 +30,10 @@ namespace engine
     void Node::append(Node & child)
     {
         _chidren.push_back(&child);
+        if(child._parent){
+            child._parent->remove(child);
+        }
+        child._parent = this;
         child.retain();
     }
 
@@ -39,6 +43,7 @@ namespace engine
         while(item != _chidren.end()){
             if(*item == &child){
                 (*item)->release();
+                (*item)->_parent = nullptr;
                 item = _chidren.erase(item);
                 continue;
             }
@@ -57,6 +62,7 @@ namespace engine
     void Node::position(const Vec3 & vSource)
     {
         _position = vSource;
+        worldCoordinateInvalid();
     }
 
     const Vec3 Node::position(void) const
@@ -67,6 +73,7 @@ namespace engine
     void Node::rotate(const Vec3 & vSource)
     {
         _rotate = vSource;
+        posterityWorldCoordinateInvalid();
     }
 
     const Vec3 Node::rotate(void) const
@@ -77,6 +84,7 @@ namespace engine
     void Node::scale(const Vec3 & vSource)
     {
         _scale = vSource;
+        posterityWorldCoordinateInvalid();
     }
 
     const Vec3 Node::scale(void) const
@@ -100,20 +108,20 @@ namespace engine
             return _worldCoordinate;
         }
 
-        Vec3 tempPosition = _position;
+        _worldCoordinate = _position;
         Node * tempNode = parent();
         if(!tempNode){
-            return 0.0f;
+            return _worldCoordinate;
         }
         //旋转
 
         //缩放
 
         //平移
-        tempPosition += tempNode->worldCoordinate();
+        _worldCoordinate += tempNode->worldCoordinate();
         //当前世界坐标有效
         _worldCoordinateInvalid = true;
-        return tempPosition;
+        return _worldCoordinate;
     }
 
     void Node::worldCoordinateInvalid(void)

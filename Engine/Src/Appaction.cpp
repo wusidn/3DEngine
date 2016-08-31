@@ -28,9 +28,9 @@ using namespace std;
 function<void (void)> __displayDelegate;
 void displayPunc()
 {
-    // if(!__displayDelegate){
-    //     return;
-    // }
+    if(!__displayDelegate){
+        return;
+    }
     __displayDelegate();
 }
 
@@ -77,13 +77,13 @@ namespace engine
             exit(EXIT_FAILURE);
         }
 
-        initDelegate();
+        _initDelegate();
 
         Zeus::getInstance().setWindowTitle("haha");
         Zeus::getInstance().fullScreen();
 
 
-        __displayDelegate = displayDelegate;
+        __displayDelegate = _displayDelegate;
         glutDisplayFunc(displayPunc);
 
         glutIdleFunc(displayPunc);
@@ -106,7 +106,7 @@ namespace engine
         _screen->release();
     }
 
-    function<void (void)> Appaction::initDelegate = [](void){
+    function<void (void)> Appaction::_initDelegate = [](void){
 
             Log.info("..........................");
 
@@ -208,7 +208,7 @@ namespace engine
             
     };
 
-    function<void (void)> Appaction::displayDelegate = [](void){
+    function<void (void)> Appaction::_displayDelegate = [](void){
 
             static int prevDisplayTime = 0;
             int currDisplayTime = Zeus::getInstance().getRunningTime();
