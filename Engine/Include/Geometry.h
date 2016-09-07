@@ -5,6 +5,7 @@
 #include "Node.h"
 #include "Vec3.h"
 #include "ColorRGBA.h"
+#include "Camera.h"
 
 namespace engine
 {
@@ -33,11 +34,14 @@ namespace engine
         void vertexIndieData(const unsigned short index, const unsigned short data);
 
         virtual const bool render(const int dp);
+        virtual const bool draw(Camera & viewPort) const;
     private:
 
         Vec3 * _vertexs;
         ColorRGBA * _colors;
         unsigned short * _verticeIndies;
+
+        Vec3 * _drawVertexs;
 
         unsigned short _vertexDataCount, _colorDataCount, _vertexIndieDataCount;
         

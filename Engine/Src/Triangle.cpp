@@ -41,20 +41,20 @@ namespace engine
 
          position(position() + Vec3(1.0f, 1.0f));
 
-         Log.info("parent() = {0}", parent());
-         Log.info("position() = {0}", position());
-         Log.info("worldCoordinate() = {0}", worldCoordinate());
+        //  Log.info("parent() = {0}", parent());
+        //  Log.info("position() = {0}", position());
+        //  Log.info("worldCoordinate() = {0}", worldCoordinate());
 
          if(!Geometry::render(dp)){
              return false;
          }
 
-        Log.debug("---------------------------------------");
-         for(auto i = 0; i < 3; ++i){
-             Log.info("vertex[{0}] = {1}", i, *(vertexs() + i) + worldCoordinate());
-         }
-        Log.debug("");
-        Log.debug("");
+        // Log.debug("---------------------------------------");
+        //  for(auto i = 0; i < 3; ++i){
+        //      Log.info("vertex[{0}] = {1}", i, *(vertexs() + i) + worldCoordinate());
+        //  }
+        // Log.debug("");
+        // Log.debug("");
          return true;
      }
 }

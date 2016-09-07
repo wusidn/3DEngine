@@ -17,7 +17,7 @@ namespace engine
         static const vector<World *> & worldPool();
 
         static void render(const int dp);
-
+        
         const Node & root(void) const;
         
         void append(Node & child);

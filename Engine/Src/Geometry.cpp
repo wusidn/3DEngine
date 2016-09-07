@@ -1,11 +1,13 @@
 #include "Geometry.h"
 #include <iostream>
 #include <cstring>
+#include "LogManager.h"
 
 using namespace std;
 
 namespace engine
 {
+    using namespace tools;
     const bool Geometry::init(void)
     {
         if(!Node::init()){
@@ -28,16 +30,20 @@ namespace engine
             delete[] _vertexs;
         }
 
+        if(_drawVertexs){
+            delete[] _drawVertexs;
+        }
+
         if(!count){
             _vertexs = nullptr;
             return;
         }
 
         _vertexs = new Vec3[count];
-        if(!_vertexs) return;
+        _drawVertexs = new Vec3[count];
+        if(!_vertexs || !_drawVertexs) return;
 
         _vertexDataCount = count;
-        memset(_vertexs, 0, sizeof(Vec3) * _vertexDataCount);
     }
 
     void Geometry::colorDataCount(const unsigned short count)
@@ -56,7 +62,6 @@ namespace engine
         if(!_colors) return;
 
         _colorDataCount = count;
-        memset(_colors, 0, sizeof(ColorRGBA) * _colorDataCount);
     }
 
     void Geometry::vertexIndieDataCount(const unsigned short count)
@@ -141,6 +146,18 @@ namespace engine
         return true;
     }
 
+    const bool Geometry::draw(Camera & viewPort) const
+    {
+        //视口坐标
+        Vec3 viewPortSpacePosition = viewPort.convertToNodeSpace(position());
+
+        for(auto i = 0; i < _vertexDataCount; ++i){
+            _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
+            Log.info("{0}", _drawVertexs[i]);
+        }
+        return true;
+    }
+
     Geometry::~Geometry(void)
     {
         if(_vertexs){
@@ -151,6 +168,9 @@ namespace engine
         }
         if(_verticeIndies){
             delete[] _verticeIndies;
+        }
+        if(_drawVertexs){
+            delete[] _drawVertexs;
         }
     }
 }

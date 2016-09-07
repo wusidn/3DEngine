@@ -152,8 +152,8 @@ namespace engine
         return true;
     }
 
-    void Node::draw(void) const
+    const bool Node::draw(Node & viewPort) const
     {
-        
+        return true;
     }
 }

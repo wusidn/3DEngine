@@ -62,7 +62,7 @@ namespace engine
         virtual const bool render(const int dp);
 
         //绘制
-        virtual void draw(void) const;
+        virtual const bool draw(Node & viewPort) const;
     private:
         //父元素
         Node * _parent;
