@@ -5,48 +5,50 @@
 #include <unistd.h>
 
 using namespace std;
-namespace engine::tools
+namespace engine
 {
-
-    UdpServer & UdpServer::create(const unsigned port, const unsigned loopInterval)
+    namespace tools
     {
-        return create("", port, loopInterval);
-    }
-
-    UdpServer & UdpServer::create(const string & address, const unsigned port, const unsigned loopInterval)
-    {
-        UdpServer * result = new UdpServer();
-        if(!result->init(address, port, loopInterval)){
-            delete result;
-            result = nullptr;
+        UdpServer & UdpServer::create(const unsigned port, const unsigned loopInterval)
+        {
+            return create("", port, loopInterval);
         }
 
-        return *result;
-    }
+        UdpServer & UdpServer::create(const string & address, const unsigned port, const unsigned loopInterval)
+        {
+            UdpServer * result = new UdpServer();
+            if(!result->init(address, port, loopInterval)){
+                delete result;
+                result = nullptr;
+            }
 
-    const bool UdpServer::init(const string & address, const unsigned port, const unsigned loopInterval)
-    {
-        if(!NetWork::init(SOCK_DGRAM)){
-            return false;
+            return *result;
         }
 
-        // //开启广播特性
-        int optval = 1;
-        setsockopt(socket_id, SOL_SOCKET, SO_BROADCAST, &optval, sizeof(int));
+        const bool UdpServer::init(const string & address, const unsigned port, const unsigned loopInterval)
+        {
+            if(!NetWork::init(SOCK_DGRAM)){
+                return false;
+            }
 
-        if(!bind(address, port)){
-            return false;
-        }
-        
-        if(!loopRecvFrom()){
-            return false;
-        }
-        
-        return true;
-    }
+            // //开启广播特性
+            int optval = 1;
+            setsockopt(socket_id, SOL_SOCKET, SO_BROADCAST, &optval, sizeof(int));
 
-    void UdpServer::recvFrom(const function<void (const struct sockaddr_in * clientInfo, const string & str)> & callBack)
-    {
-        NetWork::recvFrom(callBack);
+            if(!bind(address, port)){
+                return false;
+            }
+            
+            if(!loopRecvFrom()){
+                return false;
+            }
+            
+            return true;
+        }
+
+        void UdpServer::recvFrom(const function<void (const struct sockaddr_in * clientInfo, const string & str)> & callBack)
+        {
+            NetWork::recvFrom(callBack);
+        }
     }
 }

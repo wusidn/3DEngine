@@ -7,12 +7,15 @@
 
 using namespace std;
 
-namespace engine::tools
+namespace engine
 {
-    //计算字符串字符数 
-    const unsigned getStringLength(const string & str, const string & coding = "utf-8");
-    string wsToS(const wstring & ws);
-    wstring sTOWs(const string & s);
+    namespace tools
+    {
+        //计算字符串字符数 
+        const unsigned getStringLength(const string & str, const string & coding = "utf-8");
+        string wsToS(const wstring & ws);
+        wstring sTOWs(const string & s);
+    }
 }
 
 #endif //__TOOL_H__

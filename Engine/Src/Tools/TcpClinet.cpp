@@ -1,46 +1,47 @@
 #include "TcpClient.h"
 
-namespace engine::tools
+namespace engine
 {
-
-    TcpClient & TcpClient::create(const string & address, const unsigned port, const unsigned loopInterval)
+    namespace tools
     {
-        TcpClient & result = create();
-        result.init(address, port, loopInterval);
-        return result;
-    }
-
-    const bool TcpClient::init(void)
-    {
-        if(!NetWork::init()){
-            return false;
-        }
-        
-        return true;
-    }
-
-    const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
-    {
-        if(!connect(address, port, loopInterval)){
-            return false;
+        TcpClient & TcpClient::create(const string & address, const unsigned port, const unsigned loopInterval)
+        {
+            TcpClient & result = create();
+            result.init(address, port, loopInterval);
+            return result;
         }
 
-        return true;
-    }
+        const bool TcpClient::init(void)
+        {
+            if(!NetWork::init()){
+                return false;
+            }
+            
+            return true;
+        }
 
-    void TcpClient::close(const function<void (const int client)> & callBack)
-    {
-        NetWork::close(callBack);
-    }
+        const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
+        {
+            if(!connect(address, port, loopInterval)){
+                return false;
+            }
 
-    void TcpClient::recv(const function<void (const int client, const string & str)> & callBack)
-    {
-        NetWork::recv(callBack);
-    }
+            return true;
+        }
 
-    const bool TcpClient::send(const string & str) const
-    {
-        return NetWork::send(socket_id, str);
-    }
+        void TcpClient::close(const function<void (const int client)> & callBack)
+        {
+            NetWork::close(callBack);
+        }
 
+        void TcpClient::recv(const function<void (const int client, const string & str)> & callBack)
+        {
+            NetWork::recv(callBack);
+        }
+
+        const bool TcpClient::send(const string & str) const
+        {
+            return NetWork::send(socket_id, str);
+        }
+    }
 }

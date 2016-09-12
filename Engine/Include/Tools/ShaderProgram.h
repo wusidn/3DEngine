@@ -12,41 +12,44 @@
 
 using namespace std;
 
-namespace engine::tools
+namespace engine
 {
-    class ShaderProgram : public Object
+    namespace tools
     {
-    public:
-        CREATEFUNC(ShaderProgram);
-        static ShaderProgram & create(const list<const Shader *> & shaderList);
-        static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
-        
-        //添加shader
-        const bool attachShader(const Shader & shader) const;
-        //删除shader
-        const bool detachShader(const Shader & shader) const;
-        
-        //链接shader程序
-        const bool linkProgram(void) const;
+        class ShaderProgram : public Object
+        {
+        public:
+            CREATEFUNC(ShaderProgram);
+            static ShaderProgram & create(const list<const Shader *> & shaderList);
+            static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
+            
+            //添加shader
+            const bool attachShader(const Shader & shader) const;
+            //删除shader
+            const bool detachShader(const Shader & shader) const;
+            
+            //链接shader程序
+            const bool linkProgram(void) const;
 
-        //启用着色器
-        const bool use(void) const;
-        
-    protected:
+            //启用着色器
+            const bool use(void) const;
+            
+        protected:
 
-        ShaderProgram(void){}
-        
-        virtual const bool init(void);
-        const bool init(const list<const Shader *> & shaderList);
-        const bool init(const string & vShaderPath, const string & fShaderPath);
-        
-    private:
-        unsigned int _programId;
-        
-        //链接是否成功
-        const bool linkIsSuccessful(void) const;
+            ShaderProgram(void){}
+            
+            virtual const bool init(void);
+            const bool init(const list<const Shader *> & shaderList);
+            const bool init(const string & vShaderPath, const string & fShaderPath);
+            
+        private:
+            unsigned int _programId;
+            
+            //链接是否成功
+            const bool linkIsSuccessful(void) const;
 
-    };
+        };
+    }
 }
 
 #endif //__SHADER_PROGRAM_H__

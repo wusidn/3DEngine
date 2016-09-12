@@ -4,20 +4,23 @@
 
 #include "NetWork.h"
 
-namespace engine::tools
+namespace engine
 {
-    class UdpClient : public NetWork
+    namespace tools
     {
-    public:
-        static UdpClient & create(const string & address, const unsigned port);
-        const bool send(const string & str) const;
-    protected:
-        
-        const bool init(const string & address, const unsigned port);
+        class UdpClient : public NetWork
+        {
+        public:
+            static UdpClient & create(const string & address, const unsigned port);
+            const bool send(const string & str) const;
+        protected:
+            
+            const bool init(const string & address, const unsigned port);
 
-    private:
-        struct sockaddr_in sendToAddr;
-    };
+        private:
+            struct sockaddr_in sendToAddr;
+        };
+    }
 }
 
 #endif //__UDP_CLIENT_H__

@@ -9,25 +9,28 @@
 
 using namespace std;
 
-namespace engine::tools
+namespace engine
 {
-    class Uuid : public Object
+    namespace tools
     {
-    public:
-        CREATEFUNC(Uuid);
-        static Uuid & create(const Uuid & _uuid);
+        class Uuid : public Object
+        {
+        public:
+            CREATEFUNC(Uuid);
+            static Uuid & create(const Uuid & _uuid);
 
-        const string toString(void) const;
+            const string toString(void) const;
 
-        friend ostream & operator<<(ostream & _out, const Uuid & _uuid);
-    protected:
-        Uuid(){}
-        virtual const bool init(void);
-        virtual const bool init(const Uuid & _uuid);
-    private:
-        uuid_t data;
+            friend ostream & operator<<(ostream & _out, const Uuid & _uuid);
+        protected:
+            Uuid(){}
+            virtual const bool init(void);
+            virtual const bool init(const Uuid & _uuid);
+        private:
+            uuid_t data;
 
-    };
+        };
+    }
 }
 
 #endif //__UUID_H__

@@ -8,30 +8,33 @@
 
 using namespace std;
 
-namespace engine::tools
+namespace engine
 {
-    class File: public Object
+    namespace tools
     {
-    public:
+        class File: public Object
+        {
+        public:
 
-        //以文本格式读取所有字符
-        static string readAllText(const string & filePath);
+            //以文本格式读取所有字符
+            static string readAllText(const string & filePath);
 
-        CREATEFUNC(File);
-        static File & createWithFilePath(const string & filePath);
-    
-        const bool open(const int mode = ios::in | ios::out);
-        const bool open(const string & filePath, const int mode = ios::in | ios::out);
+            CREATEFUNC(File);
+            static File & createWithFilePath(const string & filePath);
         
-    protected:
-        virtual const bool init(void);
-        virtual const bool init(const string & filePath);
-        
-        virtual ~File(void);
-        
-    private:
-        string * _filePath;
-    };
+            const bool open(const int mode = ios::in | ios::out);
+            const bool open(const string & filePath, const int mode = ios::in | ios::out);
+            
+        protected:
+            virtual const bool init(void);
+            virtual const bool init(const string & filePath);
+            
+            virtual ~File(void);
+            
+        private:
+            string * _filePath;
+        };
+    }
 }
 
 #endif //__FILE_H__
