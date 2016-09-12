@@ -19,6 +19,7 @@
 #include "Size2.h"
 #include "World.h"
 #include "Triangle.h"
+#include "ScreenWorld.h"
 
 #include <iostream>
 
@@ -79,8 +80,8 @@ namespace engine
 
         _initDelegate();
 
-        Zeus::getInstance().setWindowTitle("haha");
-        Zeus::getInstance().fullScreen();
+        Zeus::instance().windowTitle("haha");
+        Zeus::instance().fullScreen();
 
 
         __displayDelegate = _displayDelegate;
@@ -212,15 +213,16 @@ namespace engine
     function<void (void)> Appaction::_displayDelegate = [](void){
 
             static int prevDisplayTime = 0;
-            int currDisplayTime = Zeus::getInstance().getRunningTime();
+            int currDisplayTime = Zeus::instance().runningTime();
 
             //先执行代码（包括注册的动画、用户注册的代码）
 
 
             //确定所有元素的位置后计算所有元素的位置
-            World::render(currDisplayTime - prevDisplayTime);
+            ScreenWorld::instance().render(currDisplayTime - prevDisplayTime);
 
             //以每个视口绘制
+            // ScreenWorld::instance().draw();
 
             prevDisplayTime = currDisplayTime;
 

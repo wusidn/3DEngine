@@ -15,9 +15,13 @@ namespace engine
     class Node : public Object
     {
         friend class World;
+        friend class ScreenWorld;
     public:
         
         CREATEFUNC(Node);
+
+        //根元素
+        Node & root(void);
         
         //父元素
         Node * parent(void) const;
@@ -59,11 +63,12 @@ namespace engine
         void worldCoordinateInvalid(void);
 
         //计算所有顶点的世界坐标系
-        virtual const bool render(const int dp);
+        virtual const bool render(const int td);
 
         //绘制
         virtual const bool draw(Node & viewPort) const;
     private:
+
         //父元素
         Node * _parent;
 

@@ -10,17 +10,17 @@ namespace engine
     using namespace tools;
 
     
-    Zeus * Zeus::instance = nullptr;
+    Zeus * Zeus::_instance = nullptr;
 
-    Zeus & Zeus::getInstance()
+    Zeus & Zeus::instance()
     {
 
-        if(!instance){
-            instance = &Zeus::create();
-            instance->retain();
+        if(!_instance){
+            _instance = &Zeus::create();
+            _instance->retain();
         }
 
-        return *instance;
+        return *_instance;
     }
 
     const bool Zeus::init()
@@ -32,8 +32,8 @@ namespace engine
 
         //当窗口大小发生改变
         glutReshapeFunc([](const int _width, const int _height){
-            Zeus::getInstance().windowSize.width = _width;
-            Zeus::getInstance().windowSize.height = _height;
+            Zeus::instance()._windowSize.width = _width;
+            Zeus::instance()._windowSize.height = _height;
 
             glViewport(0,0,_width,_height);
         });
@@ -42,20 +42,20 @@ namespace engine
     }
 
     //获取桌面大小
-    const Size2 Zeus::getScreenSize(void) const
+    const Size2 Zeus::screenSize(void) const
     {
         return Size2(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
     }
 
     //获取程序运行时间
-    const int Zeus::getRunningTime(void) const
+    const int Zeus::runningTime(void) const
     {
         // return (double)clock() / CLOCKS_PER_SEC * 1000;
         return glutGet(GLUT_ELAPSED_TIME);
     }
 
     //改变窗口大小
-    const Zeus & Zeus::setWindowSize(const Size2 & _size) const
+    const Zeus & Zeus::windowSize(const Size2 & _size) const
     {
 
         int width = round(_size.width);
@@ -71,9 +71,9 @@ namespace engine
     }
 
     //获取当前窗口大小
-    const Size2 Zeus::getWindowSize(void) const
+    const Size2 Zeus::windowSize(void) const
     {
-        return windowSize;
+        return _windowSize;
     }
 
     //全屏
@@ -85,14 +85,14 @@ namespace engine
     }
 
     //设置窗口标题
-    const Zeus & Zeus::setWindowTitle(const string & _title) const
+    const Zeus & Zeus::windowTitle(const string & _title) const
     {
         glutSetWindowTitle(_title.c_str());
         return *this;
     }
 
     //设置窗口位置
-    const Zeus & Zeus::setWindowPosition(const Vec2 & _position) const
+    const Zeus & Zeus::windowPosition(const Vec2 & _position) const
     {
         int x = round(_position.x);
         int y = round(_position.y);

@@ -9,13 +9,20 @@ namespace engine
     {
     public:
         static ScreenWorld & instance(void);
+
+        const Camera & screenCamera(void) const;
     protected:
-        ScreenWorld();
+        ScreenWorld(){}
         virtual ~ScreenWorld();
         virtual const bool init(void);
+
+        virtual const bool draw(void);
+        
     private:
         CREATEFUNC(ScreenWorld);
         static ScreenWorld * _instance;
+
+        Camera * _screenCamera;
     };
 }
 

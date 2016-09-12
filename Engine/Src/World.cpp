@@ -36,14 +36,7 @@ namespace engine
 
         return true;
     }
-
-    void World::render(const int dp)
-    {
-        for(auto world : _worldPool){
-            world->_root->render(dp);
-        }
-    }
-
+    
     const Node & World::root(void) const
     {
         return *_root;
@@ -58,5 +51,15 @@ namespace engine
     {
         _root->remove(child);
     }
+
+    const bool World::render(const int td)
+    {
+        return _root->render(td);
+    }
+
+     const bool World::draw(const Camera & viewPort) const
+     {
+         return true;
+     }
 
 }

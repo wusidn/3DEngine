@@ -10,10 +10,12 @@ namespace engine
 {
     class Camera : public Node
     {
+    friend class CameraOutput;
     public:
         CREATEFUNC(Camera);
     protected:
-        virtual const bool init(void); 
+        virtual const bool init(void);
+        
         virtual ~Camera(){}
     private:
         Camera(){}

@@ -3,6 +3,7 @@
 #define __WORLD_H__
 
 #include "Node.h"
+#include "Camera.h"
 #include <vector>
 
 using namespace std;
@@ -16,12 +17,15 @@ namespace engine
         CREATEFUNC(World);
         static const vector<World *> & worldPool();
 
-        static void render(const int dp);
+        // static void render(const int td);
         
         const Node & root(void) const;
         
         void append(Node & child);
         void remove(Node & child);
+
+        virtual const bool render(const int td);
+        virtual const bool draw(const Camera & viewPort) const;
         
     protected:
         World(){}

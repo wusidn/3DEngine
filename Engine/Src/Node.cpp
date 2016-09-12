@@ -1,6 +1,5 @@
 #include "Node.h"
 
-
 namespace engine
 {
     Node::Node(void)
@@ -15,6 +14,15 @@ namespace engine
         }
         worldCoordinateInvalid();
         return true;
+    }
+
+    Node & Node::root(void)
+    {
+        Node * result = this;
+        while(result->parent()){
+            result = result->parent();
+        }
+        return *result;
     }
 
     Node * Node::parent(void) const
@@ -45,7 +53,7 @@ namespace engine
                 (*item)->release();
                 (*item)->_parent = nullptr;
                 item = _chidren.erase(item);
-                continue;
+                break;
             }
             item++;
         }
@@ -137,7 +145,7 @@ namespace engine
         }
     }
 
-    const bool Node::render(const int dp)
+    const bool Node::render(const int td)
     {
         //计算运动区间
 
@@ -145,7 +153,7 @@ namespace engine
         worldCoordinate();
 
         for(auto node : _chidren){
-            if(!node->render(dp)){
+            if(!node->render(td)){
                 return false;
             }
         }
@@ -154,6 +162,11 @@ namespace engine
 
     const bool Node::draw(Node & viewPort) const
     {
+        for(auto node : _chidren){
+            if(!node->draw(viewPort)){
+                return false;
+            }
+        }
         return true;
     }
 }

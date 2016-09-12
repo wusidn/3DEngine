@@ -20,35 +20,35 @@ namespace engine
     class Zeus : public Object
     {
     public:
-        static Zeus & getInstance(void);
+        static Zeus & instance(void);
 
 
         //获取桌面大小
-        const Size2 getScreenSize(void) const; 
+        const Size2 screenSize(void) const; 
 
         //获取程序运行时间
-        const int getRunningTime(void) const;
+        const int runningTime(void) const;
         
         //改变窗口大小 (只取整数部分)
-        const Zeus & setWindowSize(const Size2 & _size) const;
+        const Zeus & windowSize(const Size2 & _size) const;
         //获取当前窗口大小
-        const Size2 getWindowSize(void) const;
+        const Size2 windowSize(void) const;
 
         //全屏
         const Zeus & fullScreen(void) const;
 
         //设置窗口标题
-        const Zeus & setWindowTitle(const string & _title) const;
+        const Zeus & windowTitle(const string & _title) const;
 
         //设置窗口位置 (只取整数部分)
-        const Zeus & setWindowPosition(const Vec2 & _position) const;
+        const Zeus & windowPosition(const Vec2 & _position) const;
 
     protected:
         CREATEFUNC(Zeus);
         virtual const bool init(void);
     private:
-        Size2 windowSize;
-        static Zeus * instance;
+        Size2 _windowSize;
+        static Zeus * _instance;
     };
 }
 

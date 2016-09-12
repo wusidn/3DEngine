@@ -1,0 +1,30 @@
+#pragma once
+#ifndef __CAMERA_OUTPUT_H__
+#define __CAMERA_OUTPUT_H__
+
+#include "Node.h"
+#include "Camera.h"
+
+namespace engine
+{
+    class CameraOutput : public Node
+    {
+    public:
+        CREATEFUNC(CameraOutput);
+
+        Camera & camera(void);
+        Camera & camera(Camera & param);
+
+    protected:
+
+        virtual const bool init(void);
+
+        virtual const bool render(const int td);
+        //绘制
+        virtual const bool draw(Node & viewPort) const;
+    private:
+        Camera * _camera;
+    };
+}
+
+#endif //__CAMERA_OUTPUT_H__
