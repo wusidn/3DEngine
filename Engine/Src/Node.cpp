@@ -1,7 +1,10 @@
 #include "Node.h"
+#include "LogManager.h"
+#include "Camera.h"
 
 namespace engine
 {
+    using namespace tools;
     Node::Node(void)
     {
         _parent = nullptr;
@@ -147,6 +150,7 @@ namespace engine
 
     const bool Node::render(const int td)
     {
+        Log.info("Node Render");
         //计算运动区间
 
         //更新世界坐标系位置
@@ -160,10 +164,12 @@ namespace engine
         return true;
     }
 
-    const bool Node::draw(Node & viewPort) const
+    const bool Node::draw(Camera & viewPort) const
     {
+        Log.info("Node Draw");
+
         for(auto node : _chidren){
-            if(!node->draw(viewPort)){
+            if(!node->draw((Camera &)viewPort)){
                 return false;
             }
         }

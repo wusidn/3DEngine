@@ -12,10 +12,12 @@ using namespace std;
 
 namespace engine
 {
+    class Camera;
     class Node : public Object
     {
         friend class World;
         friend class ScreenWorld;
+        friend class CameraOutput;
     public:
         
         CREATEFUNC(Node);
@@ -66,7 +68,7 @@ namespace engine
         virtual const bool render(const int td);
 
         //绘制
-        virtual const bool draw(Node & viewPort) const;
+        virtual const bool draw(Camera & viewPort) const;
     private:
 
         //父元素

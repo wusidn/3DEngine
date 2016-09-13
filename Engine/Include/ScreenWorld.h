@@ -7,6 +7,7 @@ namespace engine
 {
     class ScreenWorld : public World
     {
+        friend class Appaction;
     public:
         static ScreenWorld & instance(void);
 
@@ -16,6 +17,7 @@ namespace engine
         virtual ~ScreenWorld();
         virtual const bool init(void);
 
+        virtual const bool render(const int td);
         virtual const bool draw(void);
         
     private:

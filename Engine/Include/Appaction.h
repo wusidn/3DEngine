@@ -17,7 +17,7 @@ namespace engine
     class Appaction : public Object
     {
     public: 
-        static Appaction & getInstance(void);
+        static Appaction & instance(void);
 
         virtual const bool init(void);
 
@@ -28,7 +28,7 @@ namespace engine
         virtual ~Appaction(void);
     private:
         CREATEFUNC(Appaction);
-        static Appaction * instance;
+        static Appaction * _instance;
         static function<void (void)> _displayDelegate;
         static function<void (void)> _initDelegate;
         

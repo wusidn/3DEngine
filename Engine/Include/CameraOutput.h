@@ -12,8 +12,8 @@ namespace engine
     public:
         CREATEFUNC(CameraOutput);
 
-        Camera & camera(void);
-        Camera & camera(Camera & param);
+        Camera & camera(void) const;
+        void camera(Camera & linkCamera);
 
     protected:
 
@@ -21,7 +21,7 @@ namespace engine
 
         virtual const bool render(const int td);
         //绘制
-        virtual const bool draw(Node & viewPort) const;
+        virtual const bool draw(Camera & viewPort) const;
     private:
         Camera * _camera;
     };

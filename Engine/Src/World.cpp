@@ -1,10 +1,11 @@
 #include "World.h"
 #include <algorithm>
 #include <Zeus.h>
+#include "LogManager.h"
 
 namespace engine
 {
-
+    using namespace tools;
     vector<World *> World::_worldPool;
 
     const vector<World *> & World::worldPool()
@@ -51,15 +52,5 @@ namespace engine
     {
         _root->remove(child);
     }
-
-    const bool World::render(const int td)
-    {
-        return _root->render(td);
-    }
-
-     const bool World::draw(const Camera & viewPort) const
-     {
-         return true;
-     }
-
+    
 }

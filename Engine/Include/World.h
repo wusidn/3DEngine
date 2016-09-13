@@ -23,18 +23,15 @@ namespace engine
         
         void append(Node & child);
         void remove(Node & child);
-
-        virtual const bool render(const int td);
-        virtual const bool draw(const Camera & viewPort) const;
         
     protected:
         World(){}
         ~World();
         virtual const bool init();
         
+        Node * _root;
     private:
         static vector<World *> _worldPool;
-        Node * _root;
     };
 }
 

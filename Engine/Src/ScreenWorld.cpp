@@ -1,7 +1,9 @@
 #include "ScreenWorld.h"
+#include "LogManager.h"
 
 namespace engine
 {
+    using namespace tools;
     ScreenWorld * ScreenWorld::_instance = nullptr;
     ScreenWorld & ScreenWorld::instance(void)
     {
@@ -28,8 +30,18 @@ namespace engine
         return true;
     }
 
+    const bool ScreenWorld::render(const int td)
+    {
+        Log.info("ScreenWorld Render");
+
+        return _root->render(td);
+    }
+
     const bool ScreenWorld::draw(void)
     {
+
+        Log.info("ScreenWorld Draw");
+
         return root().draw(*_screenCamera);
     }
 

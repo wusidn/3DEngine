@@ -143,11 +143,19 @@ namespace engine
         if(!Node::render(dp)){
             return false;
         }
+        Log.info("Geometry Render");
         return true;
     }
 
     const bool Geometry::draw(Camera & viewPort) const
     {
+
+        if(!Node::draw(viewPort)){
+             return false;
+        }
+
+        Log.info("Geometry Draw");
+
         //视口坐标
         Vec3 viewPortSpacePosition = viewPort.convertToNodeSpace(position());
 
