@@ -32,7 +32,6 @@ namespace engine
         static function<void (void)> _displayDelegate;
         static function<void (void)> _initDelegate;
         
-        World * _screen;
     };
 }
 

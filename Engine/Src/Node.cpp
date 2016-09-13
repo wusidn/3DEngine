@@ -130,6 +130,7 @@ namespace engine
 
         //平移
         _worldCoordinate += tempNode->worldCoordinate();
+
         //当前世界坐标有效
         _worldCoordinateInvalid = true;
         return _worldCoordinate;
@@ -150,7 +151,6 @@ namespace engine
 
     const bool Node::render(const int td)
     {
-        Log.info("Node Render");
         //计算运动区间
 
         //更新世界坐标系位置
@@ -164,9 +164,8 @@ namespace engine
         return true;
     }
 
-    const bool Node::draw(Camera & viewPort) const
+    const bool Node::draw(Camera & viewPort)
     {
-        Log.info("Node Draw");
 
         for(auto node : _chidren){
             if(!node->draw((Camera &)viewPort)){

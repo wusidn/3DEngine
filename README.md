@@ -4,10 +4,9 @@
     linux３d渲染引擎(develop)
 ----
 
-##依赖(环境与库)
+##依赖
 | 名称            |版本       |作用 |
 |:--            |:--        |:--|
-|GUN GCC        |v6.1.1     |-|
 |GUN g++        |v6.1.1     |-|
 |GUN Make       | v3.81     |-|
 |CMake          |v3.4       |-|
@@ -17,11 +16,11 @@
 
 ---
 
-##硬件支持
-    OpenGL4.3+
+##硬件
+    支持OpenGL4.3+
 
 
-##相关工具
+##相关
     Visual Studio Code
     Blender
     Dia

@@ -34,7 +34,7 @@ namespace engine
         void vertexIndieData(const unsigned short index, const unsigned short data);
 
         virtual const bool render(const int dp);
-        virtual const bool draw(Camera & viewPort) const;
+        virtual const bool draw(Camera & viewPort);
     private:
 
         Vec3 * _vertexs;

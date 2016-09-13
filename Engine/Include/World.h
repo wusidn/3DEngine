@@ -19,7 +19,7 @@ namespace engine
 
         // static void render(const int td);
         
-        const Node & root(void) const;
+        Node & root(void) const;
         
         void append(Node & child);
         void remove(Node & child);

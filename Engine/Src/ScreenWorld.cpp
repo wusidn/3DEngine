@@ -32,16 +32,11 @@ namespace engine
 
     const bool ScreenWorld::render(const int td)
     {
-        Log.info("ScreenWorld Render");
-
         return _root->render(td);
     }
 
     const bool ScreenWorld::draw(void)
     {
-
-        Log.info("ScreenWorld Draw");
-
         return root().draw(*_screenCamera);
     }
 

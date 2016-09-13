@@ -28,8 +28,6 @@ namespace engine
             return false;
         }
 
-        Log.info("CameraOutput Render");
-
         if(!_camera){
             return false;
         }
@@ -37,13 +35,11 @@ namespace engine
         return camera().root().render(td);
     }
 
-    const bool CameraOutput::draw(Camera & viewPort) const
+    const bool CameraOutput::draw(Camera & viewPort)
     {
         if(!Node::draw(viewPort)){
             return false;
         }
-
-        Log.info("CameraOutput draw");
 
         if(!_camera){
             return false;

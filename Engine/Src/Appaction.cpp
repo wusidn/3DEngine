@@ -96,16 +96,13 @@ namespace engine
 
     World & Appaction::screen(void)
     {
-        if(!_screen){
-            _screen = &World::create();
-        }
-        return * _screen;
+        return ScreenWorld::instance();
     }
 
 
     Appaction::~Appaction(void)
     {
-        _screen->release();
+
     }
 
     function<void (void)> Appaction::_initDelegate = [](void){
@@ -132,7 +129,7 @@ namespace engine
 
             Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
-            ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+            // ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
             
             // for(int i = 0; i < 10; ++i){
             //     ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
@@ -141,8 +138,13 @@ namespace engine
             World & fristWorld = World::create();
             Camera & fristWorldCamera = Camera::create();
 
-            fristWorld.append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
-            fristWorld.append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+            // fristWorld.append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+            // fristWorld.append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+
+            Node & newNode = Node::create();
+            newNode.append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+            newNode.position(Vec2(50.0f, 20.0f));
+            fristWorld.append(newNode);
             fristWorld.append(fristWorldCamera);
 
             CameraOutput & fristWorldCameraOutput = CameraOutput::create();
@@ -234,11 +236,8 @@ namespace engine
             //先执行代码（包括注册的动画、用户注册的代码）
 
 
-            Log.debug("------------------------------------------------");
             //确定所有元素的位置后计算所有元素的位置
             ScreenWorld::instance().render(currDisplayTime - prevDisplayTime);
-            Log.debug("------------------------------------------------");
-            Log.debug("------------------------------------------------");
 
             //以每个视口绘制
             ScreenWorld::instance().draw();

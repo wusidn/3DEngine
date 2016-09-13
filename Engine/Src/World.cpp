@@ -38,7 +38,7 @@ namespace engine
         return true;
     }
     
-    const Node & World::root(void) const
+    Node & World::root(void) const
     {
         return *_root;
     }

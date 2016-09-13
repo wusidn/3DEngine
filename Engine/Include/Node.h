@@ -68,7 +68,7 @@ namespace engine
         virtual const bool render(const int td);
 
         //绘制
-        virtual const bool draw(Camera & viewPort) const;
+        virtual const bool draw(Camera & viewPort);
     private:
 
         //父元素
