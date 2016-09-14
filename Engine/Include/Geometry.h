@@ -6,6 +6,7 @@
 #include "Vec3.h"
 #include "ColorRGBA.h"
 #include "Camera.h"
+#include <GL/glew.h>
 
 namespace engine
 {
@@ -43,6 +44,7 @@ namespace engine
 
         Vec3 * _drawVertexs;
 
+        GLuint vertexArrayObject, vertexBufferObject, indiesBufferObject;
         unsigned short _vertexDataCount, _colorDataCount, _vertexIndieDataCount;
         
     };

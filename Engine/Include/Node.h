@@ -17,7 +17,7 @@ namespace engine
     {
         friend class World;
         friend class ScreenWorld;
-        friend class CameraOutput;
+        friend class Camera;
     public:
         
         CREATEFUNC(Node);

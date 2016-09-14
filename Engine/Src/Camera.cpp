@@ -12,4 +12,14 @@ namespace engine
         _viewportSize = Vec3(.0f);
         return true;
     }
+
+    const bool Camera::preparatory(const int td)
+    {
+        return root().render(td);
+    }
+
+    const bool Camera::photograph(void)
+    {
+        return root().draw(*this);
+    }
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include "LogManager.h"
+#include "Zeus.h"
 
 using namespace std;
 
@@ -17,6 +18,8 @@ namespace engine
         _vertexs = nullptr;
         _colors = nullptr;
         _verticeIndies = nullptr;
+
+        vertexArrayObject = vertexBufferObject = indiesBufferObject = 0;
 
         _vertexDataCount = _colorDataCount = _vertexIndieDataCount = 0;
 
@@ -42,6 +45,17 @@ namespace engine
         _vertexs = new Vec3[count];
         _drawVertexs = new Vec3[count];
         if(!_vertexs || !_drawVertexs) return;
+
+
+        //申请顶点数组对象
+        while(!vertexArrayObject){
+            glGenVertexArrays(1, &vertexArrayObject);
+        }
+
+        //申请缓存对象
+        while(!vertexBufferObject){
+            glGenBuffers(1, &vertexBufferObject);
+        }
 
         _vertexDataCount = count;
     }
@@ -78,6 +92,11 @@ namespace engine
 
         _verticeIndies = new unsigned short[count];
         if(!_verticeIndies) return;
+
+        //申请缓存对象
+        while(!indiesBufferObject){
+            glGenBuffers(1, &indiesBufferObject);
+        }
 
         _vertexIndieDataCount = count;
         memset(_verticeIndies, 0, sizeof(unsigned short) * _vertexIndieDataCount);
@@ -158,8 +177,26 @@ namespace engine
 
         for(auto i = 0; i < _vertexDataCount; ++i){
             _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
-            Log.info("{0}", _drawVertexs[i]);
+
+            _drawVertexs[i].x = (_drawVertexs[i].x - Zeus::instance().screenSize().width / 2) / Zeus::instance().screenSize().width * 2;
+            _drawVertexs[i].y = (_drawVertexs[i].y - Zeus::instance().screenSize().height / 2) / Zeus::instance().screenSize().height * 2;
+
+            Log.info("_drawVertexs[{0}] = {1}", i, _drawVertexs[i]);
         }
+
+        Log.info("-------------------------");
+        Log.info("-------------------------");
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _vertexIndieDataCount, _verticeIndies, GL_STATIC_DRAW);
+
+        glBindVertexArray(vertexArrayObject);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount + sizeof(ColorRGBA) * _colorDataCount, nullptr, GL_STATIC_DRAW);
+
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexDataCount, _drawVertexs);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount, sizeof(ColorRGBA) * _colorDataCount, _colors);
+
         return true;
     }
 

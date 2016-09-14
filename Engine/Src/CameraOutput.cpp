@@ -32,7 +32,7 @@ namespace engine
             return false;
         }
 
-        return camera().root().render(td);
+        return camera().preparatory(td);
     }
 
     const bool CameraOutput::draw(Camera & viewPort)
@@ -45,6 +45,9 @@ namespace engine
             return false;
         }
 
-        return camera().root().draw(viewPort);
+        //设置摄像机投影到gl空间的位置
+
+        //拍照
+        return camera().photograph();
     }
 }
