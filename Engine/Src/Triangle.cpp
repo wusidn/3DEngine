@@ -26,12 +26,21 @@ namespace engine
 
     const bool Triangle::init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
-        // if(vertex_1 == vertex_2 || vertex_2 == vertex_3 || vertex_1 == vertex_3){
-        //     return false;
-        // }
+        vertexDataCount(3);
+        colorDataCount(3);
+        vertexIndieDataCount(3);
+
         vertexData(0, vertex_1);
         vertexData(1, vertex_2);
         vertexData(2, vertex_3);
+
+        colorData(0, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
+        colorData(1, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
+        colorData(2, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
+
+        vertexIndieData(0, 0);
+        vertexIndieData(1, 1);
+        vertexIndieData(2, 2);
 
         return true;
     }
@@ -53,6 +62,12 @@ namespace engine
              return false;
          }
 
-         return true;
+        glBindVertexArray(vertexArrayObject());
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject());
+
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, nullptr);
+
+
+        return true;
      }
 }

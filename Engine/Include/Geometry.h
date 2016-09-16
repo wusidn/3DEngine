@@ -26,6 +26,10 @@ namespace engine
         const unsigned short colorDataCount(void) const;
         const unsigned short vertexIndieDataCount(void) const;
 
+        const GLuint vertexArrayObject(void) const;
+        const GLuint vertexBufferObject(void) const;
+        const GLuint indiesBufferObject(void) const;
+
         const Vec3 * vertexs(void) const;
         const ColorRGBA * colors(void) const;
         const unsigned short * verticeIndies(void) const;
@@ -44,7 +48,7 @@ namespace engine
 
         Vec3 * _drawVertexs;
 
-        GLuint vertexArrayObject, vertexBufferObject, indiesBufferObject;
+        GLuint _vertexArrayObject, _vertexBufferObject, _indiesBufferObject;
         unsigned short _vertexDataCount, _colorDataCount, _vertexIndieDataCount;
         
     };

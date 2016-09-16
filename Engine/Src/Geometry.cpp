@@ -19,7 +19,7 @@ namespace engine
         _colors = nullptr;
         _verticeIndies = nullptr;
 
-        vertexArrayObject = vertexBufferObject = indiesBufferObject = 0;
+        _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 
         _vertexDataCount = _colorDataCount = _vertexIndieDataCount = 0;
 
@@ -48,14 +48,22 @@ namespace engine
 
 
         //申请顶点数组对象
-        while(!vertexArrayObject){
-            glGenVertexArrays(1, &vertexArrayObject);
+        while(!_vertexArrayObject){
+            glGenVertexArrays(1, &_vertexArrayObject);
         }
 
         //申请缓存对象
-        while(!vertexBufferObject){
-            glGenBuffers(1, &vertexBufferObject);
+        while(!_vertexBufferObject){
+            glGenBuffers(1, &_vertexBufferObject);
         }
+
+        // Zeus::instance().defaultShaderProgram().use();
+
+        // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        // glEnableVertexAttribArray(0);
+
+        // glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * count));
+        // glEnableVertexAttribArray(1);
 
         _vertexDataCount = count;
     }
@@ -94,8 +102,8 @@ namespace engine
         if(!_verticeIndies) return;
 
         //申请缓存对象
-        while(!indiesBufferObject){
-            glGenBuffers(1, &indiesBufferObject);
+        while(!_indiesBufferObject){
+            glGenBuffers(1, &_indiesBufferObject);
         }
 
         _vertexIndieDataCount = count;
@@ -115,6 +123,19 @@ namespace engine
     const unsigned short Geometry::vertexIndieDataCount(void) const
     {
         return _vertexIndieDataCount;
+    }
+
+    const GLuint Geometry::vertexArrayObject(void) const
+    {
+        return _vertexArrayObject;
+    }
+    const GLuint Geometry::vertexBufferObject(void) const
+    {
+        return _vertexBufferObject;
+    }
+    const GLuint Geometry::indiesBufferObject(void) const
+    {
+        return _indiesBufferObject;
     }
 
     void Geometry::vertexData(const unsigned short index, const Vec3 & data)
@@ -178,24 +199,31 @@ namespace engine
         for(auto i = 0; i < _vertexDataCount; ++i){
             _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
 
-            _drawVertexs[i].x = (_drawVertexs[i].x - Zeus::instance().screenSize().width / 2) / Zeus::instance().screenSize().width * 2;
-            _drawVertexs[i].y = (_drawVertexs[i].y - Zeus::instance().screenSize().height / 2) / Zeus::instance().screenSize().height * 2;
 
-            Log.info("_drawVertexs[{0}] = {1}", i, _drawVertexs[i]);
+            //视口坐标转屏幕坐标  (模拟)
+            _drawVertexs[i].x = (_drawVertexs[i].x - Zeus::instance().windowSize().width / 2) / Zeus::instance().windowSize().width * 2;
+            _drawVertexs[i].y = (_drawVertexs[i].y - Zeus::instance().windowSize().height / 2) / Zeus::instance().windowSize().height * 2;
         }
 
-        Log.info("-------------------------");
-        Log.info("-------------------------");
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _vertexIndieDataCount, _verticeIndies, GL_STATIC_DRAW);
 
-        glBindVertexArray(vertexArrayObject);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount + sizeof(ColorRGBA) * _colorDataCount, nullptr, GL_STATIC_DRAW);
+        glBindVertexArray(_vertexArrayObject);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount + sizeof(ColorRGBA) * _colorDataCount, nullptr, GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexDataCount, _drawVertexs);
         glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount, sizeof(ColorRGBA) * _colorDataCount, _colors);
+
+        //启用着色器程序
+        Zeus::instance().defaultShaderProgram().use();
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * _vertexDataCount));
+        glEnableVertexAttribArray(1);
 
         return true;
     }

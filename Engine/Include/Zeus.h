@@ -7,12 +7,12 @@
 #include "Vec2.h"
 #include <string>
 #include <functional>
+#include "ShaderProgram.h"
 
 using namespace std;
-
 namespace engine
 {
-
+    using namespace tools;
     enum ZeusFunctionType{
         fullScreen, reshapeWindow
     };
@@ -42,6 +42,8 @@ namespace engine
 
         //设置窗口位置 (只取整数部分)
         const Zeus & windowPosition(const Vec2 & _position) const;
+
+        ShaderProgram & defaultShaderProgram(void);
 
     protected:
         CREATEFUNC(Zeus);

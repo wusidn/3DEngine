@@ -102,4 +102,10 @@ namespace engine
         glutPositionWindow(x, y);
         return *this;
     }
+
+    ShaderProgram & Zeus::defaultShaderProgram(void)
+    {
+            static ShaderProgram & result = ShaderProgram::create("Engine/Shader/default.vert", "Engine/Shader/default.frag");
+            return result;
+    }
 }
