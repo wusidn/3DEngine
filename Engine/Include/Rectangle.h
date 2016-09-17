@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __RECTANGLE_H__
 #define __RECTANGLE_H__
 

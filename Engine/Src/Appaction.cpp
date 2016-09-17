@@ -20,6 +20,7 @@
 #include "World.h"
 #include "Triangle.h"
 #include "Rectangle.h"
+#include "Circle.h"
 #include "ScreenWorld.h"
 #include "CameraOutput.h"
 
@@ -84,7 +85,7 @@ namespace engine
         _initDelegate();
 
         Zeus::instance().windowTitle("haha");
-        // Zeus::instance().fullScreen();
+        Zeus::instance().fullScreen();
 
 
         __displayDelegate = _displayDelegate;
@@ -138,6 +139,10 @@ namespace engine
             // ScreenWorld::instance().append(Triangle::create(Vec2(100.0f, 100.0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
 
             ScreenWorld::instance().append(Rectangle::create(100.0f));
+
+            Circle & fristCircle = Circle::create(1000.0f);
+            fristCircle.position(Vec2(Zeus::instance().screenSize().width * 0.5f, Zeus::instance().screenSize().height * 0.5f));
+            ScreenWorld::instance().append(fristCircle);
             
             // for(int i = 0; i < 10; ++i){
             //     ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));

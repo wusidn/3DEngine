@@ -28,7 +28,7 @@ namespace engine
 
         void vertex(const unsigned short index, const Vec3 & data);
         void color(const unsigned short index, const ColorRGBA & data);
-        void vertexIndie(const unsigned short index, const unsigned short data);
+        void indie(const unsigned short index, const unsigned short data);
 
         void vertexs(const Vec3 * data);
         void colors(const ColorRGBA * data);

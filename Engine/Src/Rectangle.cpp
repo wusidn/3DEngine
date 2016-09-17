@@ -20,7 +20,7 @@ namespace engine
             return false;
         }
         vertexsCount(4);
-        indiesCount(6);
+        indiesCount(4);
         return true;
     }
 
@@ -33,7 +33,7 @@ namespace engine
         ColorRGBA tempColors[4] = {ColorRGBA(1.0f, .0f, .0f), ColorRGBA(.0f, 1.0f, .0f), ColorRGBA(1.0f, .0f, .0f), ColorRGBA(.0f, 1.0f, .0f)};
         colors(tempColors);
 
-        unsigned short tempIndies[6] = {0, 1, 2, 1, 2, 3};
+        unsigned short tempIndies[4] = {0, 1, 2, 3};
         indies(tempIndies);
 
         return true;

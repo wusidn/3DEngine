@@ -159,7 +159,7 @@ namespace engine
         *(_colors + index) = data;
     }
 
-    void Geometry::vertexIndie(const unsigned short index, const unsigned short data)
+    void Geometry::indie(const unsigned short index, const unsigned short data)
     {
         if(index >= _indiesCount){
             //错误信息
