@@ -17,18 +17,20 @@ namespace engine
 
         _vertexs = nullptr;
         _colors = nullptr;
-        _verticeIndies = nullptr;
+        _indies = nullptr;
 
         _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 
-        _vertexDataCount = _colorDataCount = _vertexIndieDataCount = 0;
+        _vertexsCount = _colorsCount = _indiesCount = 0;
 
         return true;
     }
 
-    void Geometry::vertexDataCount(const unsigned short count)
+    void Geometry::vertexsCount(const unsigned short count)
     {
-        _vertexDataCount = 0;
+        colorsCount(count);
+        
+        _vertexsCount = 0;
         if(_vertexs){
             delete[] _vertexs;
         }
@@ -57,20 +59,12 @@ namespace engine
             glGenBuffers(1, &_vertexBufferObject);
         }
 
-        // Zeus::instance().defaultShaderProgram().use();
-
-        // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-        // glEnableVertexAttribArray(0);
-
-        // glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * count));
-        // glEnableVertexAttribArray(1);
-
-        _vertexDataCount = count;
+        _vertexsCount = count;
     }
 
-    void Geometry::colorDataCount(const unsigned short count)
+    void Geometry::colorsCount(const unsigned short count)
     {
-        _colorDataCount = 0;
+        _colorsCount = 0;
         if(_colors){
             delete[] _colors;
         }
@@ -83,47 +77,53 @@ namespace engine
         _colors = new ColorRGBA[count];
         if(!_colors) return;
 
-        _colorDataCount = count;
+        _colorsCount = count;
     }
 
-    void Geometry::vertexIndieDataCount(const unsigned short count)
+    void Geometry::indiesCount(const unsigned short count)
     {
-        _vertexIndieDataCount = 0;
+        _indiesCount = 0;
 
-        if(_verticeIndies){
-            delete[] _verticeIndies;
+        if(_indies){
+            delete[] _indies;
         }
 
         if(!count){
-            _verticeIndies = nullptr;
+            _indies = nullptr;
         }
 
-        _verticeIndies = new unsigned short[count];
-        if(!_verticeIndies) return;
+        _indies = new unsigned short[count];
+        if(!_indies) return;
 
         //申请缓存对象
         while(!_indiesBufferObject){
             glGenBuffers(1, &_indiesBufferObject);
         }
 
-        _vertexIndieDataCount = count;
-        memset(_verticeIndies, 0, sizeof(unsigned short) * _vertexIndieDataCount);
+        _indiesCount = count;
+        memset(_indies, 0, sizeof(unsigned short) * _indiesCount);
     }
 
-    const unsigned short Geometry::vertexDataCount(void) const
+
+
+
+    const unsigned short Geometry::vertexsCount(void) const
     {
-        return _vertexDataCount;
+        return _vertexsCount;
     }
     
-    const unsigned short Geometry::colorDataCount(void) const
+    const unsigned short Geometry::colorsCount(void) const
     {
-        return _colorDataCount;
+        return _colorsCount;
     }
 
-    const unsigned short Geometry::vertexIndieDataCount(void) const
+    const unsigned short Geometry::indiesCount(void) const
     {
-        return _vertexIndieDataCount;
+        return _indiesCount;
     }
+
+
+
 
     const GLuint Geometry::vertexArrayObject(void) const
     {
@@ -138,32 +138,68 @@ namespace engine
         return _indiesBufferObject;
     }
 
-    void Geometry::vertexData(const unsigned short index, const Vec3 & data)
+
+
+
+    void Geometry::vertex(const unsigned short index, const Vec3 & data)
     {
-        if(index >= _vertexDataCount){
+        if(index >= _vertexsCount){
             //错误信息
             return;
         }
         *(_vertexs + index) = data;
     }
 
-    void Geometry::colorData(const unsigned short index, const ColorRGBA & data)
+    void Geometry::color(const unsigned short index, const ColorRGBA & data)
     {
-        if(index >= _colorDataCount){
+        if(index >= _colorsCount){
             //错误信息
             return;
         }
         *(_colors + index) = data;
     }
 
-    void Geometry::vertexIndieData(const unsigned short index, const unsigned short data)
+    void Geometry::vertexIndie(const unsigned short index, const unsigned short data)
     {
-        if(index >= _vertexIndieDataCount){
+        if(index >= _indiesCount){
             //错误信息
             return;
         }
-        *(_verticeIndies + index) = data;
+        *(_indies + index) = data;
     }
+
+
+    void Geometry::vertexs(const Vec3 * data)
+    {
+        vertexs(data, _vertexsCount, 0);
+    }
+    
+    void Geometry::vertexs(const Vec3 * data, const unsigned short count, const unsigned short startIndex)
+    {
+        memcpy(_vertexs + startIndex, data, (_vertexsCount - startIndex) * sizeof(Vec3));
+    }
+    
+    void Geometry::colors(const ColorRGBA * data, const unsigned short count, const unsigned short startIndex )
+    {
+        memcpy(_colors + startIndex, data, (_colorsCount - startIndex) * sizeof(ColorRGBA));
+    }
+
+    void Geometry::colors(const ColorRGBA * data)
+    {
+        colors(data, _colorsCount, 0);
+    }
+
+    void Geometry::indies(const unsigned short * data, const unsigned short count, const unsigned short startIndex)
+    {
+        memcpy(_indies + startIndex, data, (_indiesCount - startIndex) * sizeof(unsigned short));
+    }
+
+    void Geometry::indies(const unsigned short * data)
+    {
+       indies(data, _indiesCount, 0);
+    }
+
+
 
     const Vec3 * Geometry::vertexs(void) const 
     {
@@ -173,10 +209,11 @@ namespace engine
     {
         return _colors;
     }
-    const unsigned short * Geometry::verticeIndies(void) const 
+    const unsigned short * Geometry::indies(void) const 
     {
-        return _verticeIndies;
+        return _indies;
     }
+
 
     const bool Geometry::render(const int dp)
     {
@@ -188,6 +225,9 @@ namespace engine
 
     const bool Geometry::draw(Camera & viewPort)
     {
+        if(!_vertexsCount){
+            return false;
+        }
 
         if(!Node::draw(viewPort)){
              return false;
@@ -196,25 +236,29 @@ namespace engine
         //视口坐标
         Vec3 viewPortSpacePosition = viewPort.convertToNodeSpace(parent() ? parent()->convertToWorldSpace(position()) : position());
 
-        for(auto i = 0; i < _vertexDataCount; ++i){
+        for(auto i = 0; i < _vertexsCount; ++i){
             _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
 
 
             //视口坐标转屏幕坐标  (模拟)
-            _drawVertexs[i].x = (_drawVertexs[i].x - Zeus::instance().windowSize().width / 2) / Zeus::instance().windowSize().width * 2;
-            _drawVertexs[i].y = (_drawVertexs[i].y - Zeus::instance().windowSize().height / 2) / Zeus::instance().windowSize().height * 2;
+            _drawVertexs[i].x = (_drawVertexs[i].x * 2 - Zeus::instance().windowSize().width) / Zeus::instance().windowSize().width;
+            _drawVertexs[i].y = (_drawVertexs[i].y * 2 - Zeus::instance().windowSize().height) / Zeus::instance().windowSize().height;
         }
 
+        if(_indiesCount){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _indiesCount, _indies, GL_STATIC_DRAW);
+        }
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _vertexIndieDataCount, _verticeIndies, GL_STATIC_DRAW);
 
         glBindVertexArray(_vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount + sizeof(ColorRGBA) * _colorDataCount, nullptr, GL_STATIC_DRAW);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexDataCount, _drawVertexs);
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexDataCount, sizeof(ColorRGBA) * _colorDataCount, _colors);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _colorsCount, nullptr, GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _drawVertexs);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _colorsCount, _colors);
+
+
 
         //启用着色器程序
         Zeus::instance().defaultShaderProgram().use();
@@ -222,7 +266,7 @@ namespace engine
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * _vertexDataCount));
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * _vertexsCount));
         glEnableVertexAttribArray(1);
 
         return true;
@@ -236,11 +280,21 @@ namespace engine
         if(_colors){
             delete[] _colors;
         }
-        if(_verticeIndies){
-            delete[] _verticeIndies;
+        if(_indies){
+            delete[] _indies;
         }
         if(_drawVertexs){
             delete[] _drawVertexs;
+        }
+
+        if(_vertexBufferObject){
+            glDeleteBuffers(1, &_vertexBufferObject);
+        }
+        if(_vertexBufferObject){
+            glDeleteBuffers(1, &_indiesBufferObject);
+        }
+        if(_vertexBufferObject){
+            glDeleteVertexArrays(1, &_vertexArrayObject);
         }
     }
 }

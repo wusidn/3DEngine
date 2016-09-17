@@ -19,6 +19,7 @@
 #include "Size2.h"
 #include "World.h"
 #include "Triangle.h"
+#include "Rectangle.h"
 #include "ScreenWorld.h"
 #include "CameraOutput.h"
 
@@ -131,6 +132,12 @@ namespace engine
             Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
             ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+
+
+            // ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+            // ScreenWorld::instance().append(Triangle::create(Vec2(100.0f, 100.0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+
+            ScreenWorld::instance().append(Rectangle::create(100.0f));
             
             // for(int i = 0; i < 10; ++i){
             //     ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
@@ -166,9 +173,9 @@ namespace engine
 
             //先执行代码（包括注册的动画、用户注册的代码）
 
-            Node & tr = *ScreenWorld::instance().root().chidren().at(0);
+            Node & tr = *ScreenWorld::instance().root().chidren().at(1);
 
-            tr.position(Vec2(Zeus::instance().windowSize().width / 2.0f, Zeus::instance().windowSize().height / 2.0f));
+            tr.position(Vec2((Zeus::instance().windowSize().width - 100) * 0.5f + cos(currDisplayTime / 1000.0f) * (Zeus::instance().windowSize().width - 100) * 0.5f, (Zeus::instance().windowSize().height - 100) * 0.5f + sin(currDisplayTime / 1000.0f) * (Zeus::instance().windowSize().height - 100) * 0.5f));
 
 
             //确定所有元素的位置后计算所有元素的位置
@@ -182,11 +189,6 @@ namespace engine
 
             prevDisplayTime = currDisplayTime;
 
-            for(int i = 0; i < 1000000; ++i){
-                int temp = i >> 5 * 6 << 2 / 3;
-                temp ++;
-            }
-            
             //垃圾回收
             Gc::getInstance().clean();
 

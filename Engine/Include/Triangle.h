@@ -10,10 +10,9 @@ namespace engine
     class Triangle: public Geometry
     {
     public:
-        CREATEFUNC(Triangle);
         static Triangle & create(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3);
     protected:
-
+        CREATEFUNC(Triangle);
         virtual const bool init(void);
         virtual const bool init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3);
 

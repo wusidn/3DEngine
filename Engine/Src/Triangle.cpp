@@ -20,35 +20,24 @@ namespace engine
             return false;
         }
 
-        vertexDataCount(3);
+        vertexsCount(3);
         return true;
     }
 
     const bool Triangle::init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
-        vertexDataCount(3);
-        colorDataCount(3);
-        vertexIndieDataCount(3);
 
-        vertexData(0, vertex_1);
-        vertexData(1, vertex_2);
-        vertexData(2, vertex_3);
+        Vec3 tempVertexs[3] = {vertex_1, vertex_2, vertex_3};
+        // ColorRGBA tempColors[3] = {ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f)};
 
-        colorData(0, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
-        colorData(1, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
-        colorData(2, ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f));
-
-        vertexIndieData(0, 0);
-        vertexIndieData(1, 1);
-        vertexIndieData(2, 2);
+        vertexs(tempVertexs);
+        // colors(tempColors);
 
         return true;
     }
 
      const bool Triangle::render(const int dp)
      {
-         position(position() + Vec3(1.0f, 1.0f));
-
          if(!Geometry::render(dp)){
              return false;
          }
@@ -63,10 +52,7 @@ namespace engine
          }
 
         glBindVertexArray(vertexArrayObject());
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject());
-
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, nullptr);
-
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         return true;
      }
