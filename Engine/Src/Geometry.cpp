@@ -18,6 +18,7 @@ namespace engine
         _vertexs = nullptr;
         _colors = nullptr;
         _indies = nullptr;
+        _drawVertexs = nullptr;
 
         _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 

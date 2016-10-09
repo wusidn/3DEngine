@@ -10,7 +10,7 @@ AUX_SOURCE_DIRECTORY(Src/Tools DIR_SRCS)
 include_directories(${PROJECT_SOURCE_DIR}/Include)
 include_directories(${PROJECT_SOURCE_DIR}/Include/Tools)
 
-#输出文件
+#生成库
 ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})
 
 #输出路径
@@ -18,6 +18,9 @@ SET(LIBRARY_OUTPUT_PATH ${ROOT}/build/bin)
 
 #链接库
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
+
+#拷贝资源
+FILE(COPY ${PROJECT_SOURCE_DIR}/Shader DESTINATION ${ROOT}/build/bin)
 
 #设置编译选项
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall")

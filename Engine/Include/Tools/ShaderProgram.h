@@ -19,7 +19,7 @@ namespace engine
         class ShaderProgram : public Object
         {
         public:
-            CREATEFUNC(ShaderProgram);
+            
             static ShaderProgram & create(const list<const Shader *> & shaderList);
             static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
             
@@ -35,6 +35,8 @@ namespace engine
             const bool use(void) const;
             
         protected:
+
+            CREATEFUNC(ShaderProgram);
 
             ShaderProgram(void){}
             

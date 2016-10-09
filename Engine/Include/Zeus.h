@@ -22,7 +22,6 @@ namespace engine
     public:
         static Zeus & instance(void);
 
-
         //获取桌面大小
         const Size2 screenSize(void) const; 
 

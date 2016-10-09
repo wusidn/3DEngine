@@ -19,13 +19,13 @@ namespace engine
             }
 
             retain();
-            //初始化输出介质
-            netOutPut = &UdpClient::create("192.168.1.255", 5432);
-            netOutPut->retain();
+            // //初始化输出介质
+            // netOutPut = &UdpClient::create("192.168.1.255", 5432);
+            // netOutPut->retain();
 
-            if(!netOutPut){
-                Log.error("UdpClient Init Error");
-            }
+            // if(!netOutPut){
+            //     Log.error("UdpClient Init Error");
+            // }
             return true;
         }
 

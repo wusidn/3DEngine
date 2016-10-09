@@ -3,8 +3,10 @@
 #define __SHADER_H__
 
 #include <string>
-#include "Object.h"
 #include <GL/glew.h>
+
+#include "Object.h"
+#include "File.h"
 
 using namespace std;
 
@@ -24,7 +26,7 @@ namespace engine
 
             friend class ShaderProgram;
             
-            CREATEFUNC(Shader);
+            static Shader & create(const enum ShaderType type);
             static Shader & create(const string & code, const enum ShaderType type);    
             
             //编译shader
@@ -35,13 +37,20 @@ namespace engine
             
         protected:
 
+            CREATEFUNC(Shader);
+
             Shader(void){}
             virtual ~Shader(void);
             virtual const bool init(void);
+            virtual const bool init(const enum ShaderType type);
             virtual const bool init(const string & code, const enum ShaderType type);
             
         private:
             GLuint _shaderId;
+
+            //ShaderTemplateCode
+            static string vertexShaderCode(void);
+            static string fragmentShaderCode(void);
             
             //编译是否成功
             const bool compileIsSuccessful(void) const;

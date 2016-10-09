@@ -1,5 +1,7 @@
 #include "Shader.h"
 #include "LogManager.h"
+#include "File.h"
+#include "Appaction.h"
 #include <cassert>
 
 using namespace std;
@@ -8,6 +10,19 @@ namespace engine
 {
     namespace tools
     {
+        Shader & Shader::create(const enum ShaderType type)
+        {
+            Shader & result = create();
+            bool shaderInit = result.init(type);
+
+            assert(shaderInit);
+
+            if(shaderInit){
+                result.initializeError(1);
+            }
+            return result;
+        }
+
         Shader & Shader::create(const string & code, const enum ShaderType type)
         {
             Shader & result = create();
@@ -30,15 +45,56 @@ namespace engine
             return true;
         }
 
-        const bool Shader::init(const string & code, const enum ShaderType type)
+        const bool Shader::init(const enum ShaderType type)
         {
 
+            string source;
             _shaderId = glCreateShader(type);
             if(glIsShader(_shaderId) != GL_TRUE){
                 return false;
             }
 
-            const GLchar * source = code.c_str();
+            switch(type)
+            {
+            case ShaderType::vertex:
+                source = vertexShaderCode();
+                break;
+            case ShaderType::fragment:
+                source = fragmentShaderCode();
+                break;
+            default:
+                Log.error("Unknown Shader Type");
+                return false;
+            }
+
+            const GLchar * p_source = source.c_str();
+            glShaderSource(_shaderId, 1, &p_source, nullptr);
+
+            return true;
+        }
+
+        const bool Shader::init(const string & code, const enum ShaderType type)
+        {
+
+            const GLchar * source = nullptr;
+            _shaderId = glCreateShader(type);
+            if(glIsShader(_shaderId) != GL_TRUE){
+                return false;
+            }
+
+            switch(type)
+            {
+            case ShaderType::vertex:
+                source = vertexShaderCode().c_str();
+                break;
+            case ShaderType::fragment:
+                source = fragmentShaderCode().c_str();
+                break;
+            default:
+                Log.error("Unknown Shader Type");
+                return false;
+            }
+             
             glShaderSource(_shaderId, 1, &source, nullptr);
 
             return true;
@@ -94,6 +150,18 @@ namespace engine
             if(glIsShader(_shaderId) == GL_TRUE){
                 glDeleteShader(_shaderId);
             }
+        }
+
+        string Shader::vertexShaderCode(void)
+        {
+            static string result = File::readAllText(Appaction::instance().appactionPath() + "Shader/template.vert");
+            return result;
+        }
+
+        string Shader::fragmentShaderCode(void)
+        {
+            static string result = File::readAllText(Appaction::instance().appactionPath() + "Shader/template.frag");
+            return result;
         }
     }
 }

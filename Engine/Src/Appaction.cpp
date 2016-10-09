@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <regex>
 
 using namespace std;
 
@@ -70,6 +71,18 @@ namespace engine
         if(running) return;
         running = true;
 
+        
+        static regex pathRegex("^([^/\\\\]*[/\\\\])+");
+        smatch searchResult;
+        string sourceAppactionPath = string(argv[0]);
+        if(regex_search(sourceAppactionPath, searchResult, pathRegex))
+        {
+            _appactionPath = string(searchResult[0]);
+        }else{
+            Log.info("Matching appactionPath Error");
+        }
+        
+        
         glutInit(&argc, argv);
 
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -95,6 +108,11 @@ namespace engine
 
         glutMainLoop();
 
+    }
+
+    string Appaction::appactionPath(void) const
+    {
+        return _appactionPath;
     }
 
     World & Appaction::screen(void)
