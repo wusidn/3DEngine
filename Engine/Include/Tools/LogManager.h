@@ -160,7 +160,7 @@ namespace engine
                     for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
 
                         placeholder temp = {
-                            .paraIndex = (unsigned)atoi(string(item->str(1)).c_str()),
+                            .paraIndex = (unsigned)atoi(item->str(1).c_str()),
                             .str = item->str(0),
                             .format = item->str(3)
                         };

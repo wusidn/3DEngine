@@ -76,7 +76,7 @@ namespace engine
         const bool Shader::init(const string & code, const enum ShaderType type)
         {
 
-            const GLchar * source = nullptr;
+            string source;
             _shaderId = glCreateShader(type);
             if(glIsShader(_shaderId) != GL_TRUE){
                 return false;
@@ -85,17 +85,41 @@ namespace engine
             switch(type)
             {
             case ShaderType::vertex:
-                source = vertexShaderCode().c_str();
+                source = vertexShaderCode();
                 break;
             case ShaderType::fragment:
-                source = fragmentShaderCode().c_str();
+                source = fragmentShaderCode();
                 break;
             default:
                 Log.error("Unknown Shader Type");
                 return false;
             }
+
+            //
+            string removeAfterCode = code;
+
+            //模板与shader组合
+            static regex searchAnnotationRegex("#[^\n]*\n|//[^\n]*\n|/\\*[\\s\\S]*?\\*/");
+            smatch searchResult;
+
+            auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
+            auto matchEnd = sregex_iterator();
+            for(auto item  = matchBegin; item != matchEnd; ++item){
+                removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
+            }
+
+            // regex_search(code, searchResult, searchAnnotationRegex);
+            // for(auto item : searchResult)
+            // {
+            //     Log.info("erase: {0}", item.str());
+            //     removeAfterCode.erase(removeAfterCode.find(item), item.str().size());
+            // }
+
+            Log.info("-----------{0}", removeAfterCode);
+
              
-            glShaderSource(_shaderId, 1, &source, nullptr);
+            const GLchar * p_source = source.c_str();
+            glShaderSource(_shaderId, 1, &p_source, nullptr);
 
             return true;
         }

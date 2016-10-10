@@ -63,8 +63,8 @@ namespace engine
         const bool ShaderProgram::init(const string & vShaderPath, const string & fShaderPath)
         {
         
-            // Shader & vertexShader = Shader::create(File::readAllText(vShaderPath), ShaderType::vertex);
-            Shader & vertexShader = Shader::create(ShaderType::vertex);
+            Shader & vertexShader = Shader::create(File::readAllText(vShaderPath), ShaderType::vertex);
+            // Shader & vertexShader = Shader::create(ShaderType::vertex);
             if(!vertexShader.compile()){
                 return false;
             }

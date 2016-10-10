@@ -7,5 +7,13 @@ out vec4 color;
 
 void main()
 {
+    //haha
+
+    /*aaa
+
+    asdsa
+
+
+    asdsa*/
     gl_Position = vPosition;
 }

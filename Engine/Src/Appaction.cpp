@@ -1,17 +1,12 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+
 #include "Appaction.h"
 #include "Gc.h"
 #include "File.h"
 #include "Node.h"
 #include "Vec4.h"
-
-#include <ctime>
-#include <unistd.h>
-#include <string.h>
-// #include <uuid/uuid.h>
-
 #include "LogManager.h"
 #include "Zeus.h"
 #include "Shader.h"
@@ -23,10 +18,6 @@
 #include "Circle.h"
 #include "ScreenWorld.h"
 #include "CameraOutput.h"
-
-#include <iostream>
-#include <cmath>
-#include <regex>
 
 using namespace std;
 
