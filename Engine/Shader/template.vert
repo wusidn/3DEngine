@@ -7,13 +7,11 @@ out vec4 color;
 
 void main()
 {
-    //haha
-
-    /*aaa
-
-    asdsa
-
-
-    asdsa*/
+    //sasdfs
+    /*sdfsdfsdf
+    sdfsdfsdf
+    sdfsdfsd*/
+    #将黑色转为白色		
+    color = vColor == vec4(.0f, .0f, .0f, 1.0f) ? vec4(1.0f, 1.0f, 1.0f, 1.0f) : vColor;
     gl_Position = vPosition;
 }
