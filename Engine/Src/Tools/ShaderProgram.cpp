@@ -63,14 +63,12 @@ namespace engine
         const bool ShaderProgram::init(const string & vShaderPath, const string & fShaderPath)
         {
         
-            Shader & vertexShader = Shader::create(File::readAllText(vShaderPath), ShaderType::vertex);
-            // Shader & vertexShader = Shader::create(ShaderType::vertex);
+            Shader & vertexShader = Shader::create("", ShaderType::vertex);
             if(!vertexShader.compile()){
                 return false;
             }
 
-            // Shader & fragmentShader = Shader::create(File::readAllText(fShaderPath), ShaderType::fragment);
-            Shader & fragmentShader = Shader::create(ShaderType::fragment);
+            Shader & fragmentShader = Shader::create("", ShaderType::fragment);
             if(!fragmentShader.compile()){
                 return false;
             }

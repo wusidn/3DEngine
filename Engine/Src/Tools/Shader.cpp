@@ -97,10 +97,11 @@ namespace engine
 
             //
             string removeAfterCode = code;
+            string mainCode = "";
+            string globalCode = "";
 
             //模板与shader组合
             static regex searchAnnotationRegex("#[^\n]*\n|//[^\n]*\n|/\\*[\\s\\S]*?\\*/");
-            smatch searchResult;
 
             auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
             auto matchEnd = sregex_iterator();
@@ -108,15 +109,30 @@ namespace engine
                 removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
             }
 
-            // regex_search(code, searchResult, searchAnnotationRegex);
-            // for(auto item : searchResult)
-            // {
-            //     Log.info("erase: {0}", item.str());
-            //     removeAfterCode.erase(removeAfterCode.find(item), item.str().size());
-            // }
+            static regex mainRegex("void\\s+main\\s*\\(\\s*\\)\\s*\\{");
+            smatch searchResult;
+            if(regex_search(removeAfterCode, searchResult, mainRegex))
+            {
+                int openLeftBraceCount = 1;
+                auto bodyIndex = removeAfterCode.find(searchResult[0].str());
+                auto contentIndex = bodyIndex + searchResult[0].str().size();
+                auto begin = removeAfterCode.begin();
+                auto i = begin + contentIndex;
+                for(; i != removeAfterCode.end() && openLeftBraceCount; ++i){
+                    if(*i == '{'){
+                        ++openLeftBraceCount;
+                    }
+                    if(*i == '}'){
+                        --openLeftBraceCount;
+                    }
+                }
+                mainCode = removeAfterCode.substr(contentIndex, i - begin - contentIndex - 1);
+                globalCode = removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
+            }
 
-            Log.info("-----------{0}", removeAfterCode);
-
+            string globalCodeKey = "#globalCode", mainCodeKey = "#mainCode";
+            source.replace(source.find(globalCodeKey), globalCodeKey.size(), globalCode);
+            source.replace(source.find(mainCodeKey), mainCodeKey.size(), mainCode);
              
             const GLchar * p_source = source.c_str();
             glShaderSource(_shaderId, 1, &p_source, nullptr);

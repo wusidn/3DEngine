@@ -5,13 +5,15 @@ layout( location = 1 ) in vec4 vColor;
 
 out vec4 color;
 
+#globalCode
+
 void main()
 {
-    //sasdfs
-    /*sdfsdfsdf
-    sdfsdfsdf
-    sdfsdfsd*/
-    #将黑色转为白色		
-    color = vColor == vec4(.0f, .0f, .0f, 1.0f) ? vec4(1.0f, 1.0f, 1.0f, 1.0f) : vColor;
+    //将黑色转为白色
+    vColor == vec4(.0f, .0f, .0f, 1.0f) ? vec4(1.0f, 1.0f, 1.0f, 1.0f) : vColor;
+    
+    #mainCode
+    
+    color = vColor;
     gl_Position = vPosition;
 }
