@@ -194,13 +194,13 @@ namespace engine
 
         string Shader::vertexShaderCode(void)
         {
-            static string result = File::readAllText(Appaction::instance().appactionPath() + "Shader/template.vert");
+            static string result = File::readAllText(Appaction::appactionPath() + "Shader/template.vert");
             return result;
         }
 
         string Shader::fragmentShaderCode(void)
         {
-            static string result = File::readAllText(Appaction::instance().appactionPath() + "Shader/template.frag");
+            static string result = File::readAllText(Appaction::appactionPath() + "Shader/template.frag");
             return result;
         }
     }

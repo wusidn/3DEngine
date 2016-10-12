@@ -18,7 +18,6 @@ namespace engine
     {
     public: 
     //function
-        static Appaction & instance(void);
 
         virtual const bool init(void);
 
@@ -26,23 +25,25 @@ namespace engine
         void run(int argc, char ** argv);
 
         //获取程序路径
-        string appactionPath(void) const;
+        static string appactionPath(void);
 
         //获取屏幕
         World & screen(void);
 
-        //attribute
-        function<void (const int dt)> onUpdate;
-
     protected:
+
+        //程序开始
+        virtual void start(void) = 0;
+
+        //每一帧
+        virtual void update(const int dt) = 0;
+
         virtual ~Appaction(void);
     private:
-        CREATEFUNC(Appaction);
+        // CREATEFUNC(Appaction);
 
-        string _appactionPath;
-        static Appaction * _instance;
-        static function<void (void)> _displayDelegate;
-        static function<void (void)> _initDelegate;
+        static string _appactionPath;
+        // static Appaction * _instance;
         
     };
 }
