@@ -17,7 +17,7 @@ namespace engine
         virtual const bool init(void);
 
         //准备
-        virtual const bool preparatory(const int td);
+        virtual const bool preparatory(const int dt);
         //拍照
         virtual const bool photograph(void);
         virtual ~Camera(){}

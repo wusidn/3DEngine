@@ -19,7 +19,7 @@ namespace engine
 
         virtual const bool init(void);
 
-        virtual const bool render(const int td);
+        virtual const bool render(const int dt);
         //绘制
         virtual const bool draw(Camera & viewPort);
     private:

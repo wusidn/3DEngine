@@ -17,6 +17,7 @@ namespace engine
     class Appaction : public Object
     {
     public: 
+    //function
         static Appaction & instance(void);
 
         virtual const bool init(void);
@@ -29,6 +30,9 @@ namespace engine
 
         //获取屏幕
         World & screen(void);
+
+        //attribute
+        function<void (const int dt)> onUpdate;
 
     protected:
         virtual ~Appaction(void);

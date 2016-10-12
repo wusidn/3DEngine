@@ -17,7 +17,7 @@ namespace engine
         virtual ~ScreenWorld();
         virtual const bool init(void);
 
-        virtual const bool render(const int td);
+        virtual const bool render(const int dt);
         virtual const bool draw(void);
         
     private:

@@ -53,6 +53,7 @@ namespace engine
     const bool Appaction::init(void)
     {
         retain();
+        onUpdate = nullptr;
         return true;
     }
 
@@ -141,17 +142,6 @@ namespace engine
 
             Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
-            ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
-
-
-            // ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
-            // ScreenWorld::instance().append(Triangle::create(Vec2(100.0f, 100.0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
-
-            ScreenWorld::instance().append(Rectangle::create(100.0f));
-
-            Circle & fristCircle = Circle::create(1000.0f);
-            fristCircle.position(Vec2(Zeus::instance().screenSize().width * 0.5f, Zeus::instance().screenSize().height * 0.5f));
-            ScreenWorld::instance().append(fristCircle);
             
             // for(int i = 0; i < 10; ++i){
             //     ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
@@ -185,12 +175,10 @@ namespace engine
             static int prevDisplayTime = 0;
             int currDisplayTime = Zeus::instance().runningTime();
 
-            //先执行代码（包括注册的动画、用户注册的代码）
+            //动画系统、计时器执行
 
-            Node & tr = *ScreenWorld::instance().root().chidren().at(1);
-
-            tr.position(Vec2((Zeus::instance().windowSize().width - 100) * 0.5f + cos(currDisplayTime / 1000.0f) * (Zeus::instance().windowSize().width - 100) * 0.5f, (Zeus::instance().windowSize().height - 100) * 0.5f + sin(currDisplayTime / 1000.0f) * (Zeus::instance().windowSize().height - 100) * 0.5f));
-
+            //执行用户代码逻辑
+            if(Appaction::instance().onUpdate) Appaction::instance().onUpdate(currDisplayTime - prevDisplayTime);
 
             //确定所有元素的位置后计算所有元素的位置
             ScreenWorld::instance().render(currDisplayTime - prevDisplayTime);

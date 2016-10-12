@@ -149,7 +149,7 @@ namespace engine
         }
     }
 
-    const bool Node::render(const int td)
+    const bool Node::render(const int dt)
     {
         //计算运动区间
 
@@ -157,7 +157,7 @@ namespace engine
         worldCoordinate();
 
         for(auto node : _chidren){
-            if(!node->render(td)){
+            if(!node->render(dt)){
                 return false;
             }
         }

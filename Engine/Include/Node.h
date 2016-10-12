@@ -65,7 +65,7 @@ namespace engine
         void worldCoordinateInvalid(void);
 
         //计算所有顶点的世界坐标系
-        virtual const bool render(const int td);
+        virtual const bool render(const int dt);
 
         //绘制
         virtual const bool draw(Camera & viewPort);

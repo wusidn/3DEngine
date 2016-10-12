@@ -3,7 +3,9 @@
 #define __IMAGE_H__
 
 #include "Object.h"
-#include <SOIL.h>
+#include <string>
+
+using namespace std;
 
 namespace engine
 {

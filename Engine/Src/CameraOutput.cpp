@@ -22,9 +22,9 @@ namespace engine
         _camera = &linkCamera;
     }
 
-    const bool CameraOutput::render(const int td)
+    const bool CameraOutput::render(const int dt)
     {
-        if(!Node::render(td)){
+        if(!Node::render(dt)){
             return false;
         }
 
@@ -32,7 +32,7 @@ namespace engine
             return false;
         }
 
-        return camera().preparatory(td);
+        return camera().preparatory(dt);
     }
 
     const bool CameraOutput::draw(Camera & viewPort)

@@ -35,9 +35,9 @@ namespace engine
         //自动管理
         void autoRelease(void);
 
-        //可用状态
+        //获取可用状态
         const bool ready(void) const;
-        //检查错误
+        //获取错误码 (0表示无错误)
         const unsigned short fault(void) const;
     protected:
         virtual const bool init(void);

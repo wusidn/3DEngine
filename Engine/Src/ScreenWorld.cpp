@@ -30,9 +30,9 @@ namespace engine
         return true;
     }
 
-    const bool ScreenWorld::render(const int td)
+    const bool ScreenWorld::render(const int dt)
     {
-        return _root->render(td);
+        return _root->render(dt);
     }
 
     const bool ScreenWorld::draw(void)

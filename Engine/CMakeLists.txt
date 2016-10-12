@@ -9,6 +9,7 @@ AUX_SOURCE_DIRECTORY(Src/Tools DIR_SRCS)
 #指定头文件路径
 include_directories(${PROJECT_SOURCE_DIR}/Include)
 include_directories(${PROJECT_SOURCE_DIR}/Include/Tools)
+include_directories(${PROJECT_SOURCE_DIR}/Library/Include)
 
 #生成库
 ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})

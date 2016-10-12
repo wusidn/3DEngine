@@ -17,7 +17,7 @@ namespace engine
         CREATEFUNC(World);
         static const vector<World *> & worldPool();
 
-        // static void render(const int td);
+        // static void render(const int dt);
         
         Node & root(void) const;
         

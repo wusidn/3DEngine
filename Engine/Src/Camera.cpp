@@ -13,9 +13,9 @@ namespace engine
         return true;
     }
 
-    const bool Camera::preparatory(const int td)
+    const bool Camera::preparatory(const int dt)
     {
-        return root().render(td);
+        return root().render(dt);
     }
 
     const bool Camera::photograph(void)
