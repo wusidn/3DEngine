@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
 
 using namespace std;
 
@@ -38,6 +39,13 @@ namespace engine
             return result;
         }
 
+        const bool File::pathIsExists(const string & path)
+        {
+            if(access(path.c_str(), 0) != -1){
+                return true;
+            }
+            return false;
+        }
 
         File & File::createWithFilePath(const string & filePath)
         {

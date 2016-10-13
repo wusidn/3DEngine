@@ -7,8 +7,7 @@
 #include "Zeus.h"
 #include "Node.h"
 #include "LogManager.h"
-
-
+#include "Image.h"
 
 #include <iostream>
 #include <cmath>
@@ -28,10 +27,13 @@ TestAppaction & TestAppaction::instance(void)
  void TestAppaction::start(void)
  {
         ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
+        ScreenWorld::instance().append(Rectangle::create(50.0f));
 
-		Circle & fristCircle = Circle::create(500.0f);
+		Circle & fristCircle = Circle::create(1000.0f);
 		fristCircle.position(Vec2(Zeus::instance().screenSize().width * 0.5f, Zeus::instance().screenSize().height * 0.5f));
 		ScreenWorld::instance().append(fristCircle);
+
+        Image::create("asds.jpg");
  }
 
  void TestAppaction::update(const int dt)

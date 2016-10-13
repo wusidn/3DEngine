@@ -23,10 +23,10 @@ namespace engine
             return result;
         }
 
-        Shader & Shader::create(const string & code, const enum ShaderType type)
+        Shader & Shader::create(const string & fileName, const enum ShaderType type)
         {
             Shader & result = create();
-            bool shaderInit = result.init(code, type);
+            bool shaderInit = result.init(fileName, type);
 
             assert(shaderInit);
 
@@ -73,8 +73,24 @@ namespace engine
             return true;
         }
 
-        const bool Shader::init(const string & code, const enum ShaderType type)
+        const bool Shader::init(const string & fileName, const enum ShaderType type)
         {
+
+            string shaderFilePath = "";
+
+            if(shaderFilePath.size() <= 0){
+                shaderFilePath = File::pathIsExists(fileName) ? fileName : "";
+            }
+
+            if(shaderFilePath.size() <= 0){
+                string tempPath = Appaction::appactionPath() + "Shader/" + fileName;
+                shaderFilePath = File::pathIsExists(tempPath) ? tempPath : "";
+            }
+
+            if(shaderFilePath.size() <= 0){
+                Log.error("Shader: [{0}] Is Not Exists!", fileName);
+                return false;
+            }
 
             string source;
             _shaderId = glCreateShader(type);
@@ -94,6 +110,8 @@ namespace engine
                 Log.error("Unknown Shader Type");
                 return false;
             }
+
+            string code = File::readAllText(shaderFilePath);
 
             //
             string removeAfterCode = code;

@@ -22,6 +22,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
 
 #拷贝资源
 FILE(COPY ${PROJECT_SOURCE_DIR}/Shader DESTINATION ${ROOT}/build/bin)
+FILE(COPY ${PROJECT_SOURCE_DIR}/Source DESTINATION ${ROOT}/build/bin)
 
 #设置编译选项
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall")

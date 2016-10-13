@@ -13,11 +13,20 @@ namespace engine
     {
     public:
         static Image & create(const string & path);
+
+        const int width(void) const;
+        const int height(void) const;
+        unsigned char * data(void) const;
+        
     protected:
         virtual const bool init(void);
         virtual const bool init(const string & path);
+        Image(){}
+        virtual ~Image(void);
     private:
         CREATEFUNC(Image);
+        int _width, _height, _n;
+        unsigned char * _data;
     };
 }
 

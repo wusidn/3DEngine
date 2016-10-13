@@ -57,18 +57,18 @@ namespace engine
                 }
             }
             
-            return true;   
+            return true;
         }
 
         const bool ShaderProgram::init(const string & vShaderPath, const string & fShaderPath)
         {
         
-            Shader & vertexShader = Shader::create("", ShaderType::vertex);
+            Shader & vertexShader = Shader::create(vShaderPath, ShaderType::vertex);
             if(!vertexShader.compile()){
                 return false;
             }
 
-            Shader & fragmentShader = Shader::create("", ShaderType::fragment);
+            Shader & fragmentShader = Shader::create(fShaderPath, ShaderType::fragment);
             if(!fragmentShader.compile()){
                 return false;
             }

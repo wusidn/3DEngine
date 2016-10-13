@@ -19,6 +19,9 @@ namespace engine
             //以文本格式读取所有字符
             static string readAllText(const string & filePath);
 
+            //判断文件夹或文件是否存在
+            static const bool pathIsExists(const string & path);
+
             CREATEFUNC(File);
             static File & createWithFilePath(const string & filePath);
         
