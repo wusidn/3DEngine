@@ -17,7 +17,12 @@ namespace engine
     Circle & Circle::create(const float r)
     {
         Circle & result = create();
-        if(!result.radius(r)){
+
+        bool circleInit = result.radius(r);
+
+        assert(circleInit);
+
+        if(!circleInit){
             result.initializeError(1);
         }
 

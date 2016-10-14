@@ -12,7 +12,11 @@ namespace engine
     {
         Image & result = create();
 
-        if(!result.init(path)){
+        bool imageInit = result.init(path);
+
+        assert(imageInit);
+
+        if(!imageInit){
             result.initializeError(1);
         }
 

@@ -12,11 +12,11 @@ namespace engine
         return true;
     }
 
-
     Camera & CameraOutput::camera(void) const
     {
         return *_camera;
     }
+    
     void CameraOutput::camera(Camera & linkCamera)
     {
         _camera = &linkCamera;

@@ -4,7 +4,9 @@
 
 #include "Object.h"
 #include "Image.h"
+
 #include <string>
+#include <GL/glew.h>
 
 using namespace std;
 
@@ -22,7 +24,7 @@ namespace engine
         virtual const bool init(const string & fileName);
         virtual const bool init(const Image & img);
     private:
-
+        GLuint _textrueId;
     };
 }
 

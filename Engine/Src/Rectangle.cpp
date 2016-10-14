@@ -7,7 +7,11 @@ namespace engine
     {
         Rectangle & result = create();
 
-        if(!result.init(_size)){
+        bool rectangleInit = result.init(_size);
+
+        assert(rectangleInit);
+
+        if(!rectangleInit){
             result.initializeError(1);
         }
 

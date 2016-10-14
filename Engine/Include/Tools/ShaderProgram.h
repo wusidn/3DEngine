@@ -22,6 +22,8 @@ namespace engine
             
             static ShaderProgram & create(const list<const Shader *> & shaderList);
             static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
+
+            static ShaderProgram & createTemplat(void);
             
             //添加shader
             const bool attachShader(const Shader & shader) const;

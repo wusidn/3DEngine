@@ -32,6 +32,11 @@ namespace engine
             return result; 
         }
 
+        ShaderProgram & ShaderProgram::createTemplat(void)
+        {
+            
+        }
+
         const bool ShaderProgram::init(void)
         {
             if(!Object::init()){

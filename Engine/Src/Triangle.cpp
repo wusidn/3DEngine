@@ -8,7 +8,12 @@ namespace engine
     Triangle & Triangle::create(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
         Triangle & result = create();
-        if(!result.init(vertex_1, vertex_2, vertex_3)){
+        
+        bool triangleInit = result.init(vertex_1, vertex_2, vertex_3);
+
+        assert(triangleInit);
+
+        if(!triangleInit){
             result.initializeError(1);
         }
         return result;
