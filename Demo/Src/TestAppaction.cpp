@@ -8,6 +8,7 @@
 #include "Node.h"
 #include "LogManager.h"
 #include "Image.h"
+#include "Textrue2D.h"
 
 #include <iostream>
 #include <cmath>
@@ -33,7 +34,7 @@ TestAppaction & TestAppaction::instance(void)
 		fristCircle.position(Vec2(Zeus::instance().screenSize().width * 0.5f, Zeus::instance().screenSize().height * 0.5f));
 		ScreenWorld::instance().append(fristCircle);
 
-        Image::create("asds.jpg");
+        Textrue2D::create("asds.jpg");
  }
 
  void TestAppaction::update(const int dt)

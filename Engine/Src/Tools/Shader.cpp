@@ -10,6 +10,10 @@ namespace engine
 {
     namespace tools
     {
+
+        string Shader::globalCodeKey = "#globalCode";
+        string Shader::mainCodeKey = "#mainCode";
+
         Shader & Shader::create(const enum ShaderType type)
         {
             Shader & result = create();
@@ -66,6 +70,9 @@ namespace engine
                 Log.error("Unknown Shader Type");
                 return false;
             }
+
+            source.replace(source.find(globalCodeKey), globalCodeKey.size(), "");
+            source.replace(source.find(mainCodeKey), mainCodeKey.size(), "");
 
             const GLchar * p_source = source.c_str();
             glShaderSource(_shaderId, 1, &p_source, nullptr);
@@ -148,7 +155,6 @@ namespace engine
                 globalCode = removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
             }
 
-            string globalCodeKey = "#globalCode", mainCodeKey = "#mainCode";
             source.replace(source.find(globalCodeKey), globalCodeKey.size(), globalCode);
             source.replace(source.find(mainCodeKey), mainCodeKey.size(), mainCode);
              

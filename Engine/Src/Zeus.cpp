@@ -105,7 +105,7 @@ namespace engine
 
     ShaderProgram & Zeus::defaultShaderProgram(void)
     {
-        static ShaderProgram & result = ShaderProgram::create("Test.vert", "Test.frag");
+        static ShaderProgram & result = ShaderProgram::create("", "");
         return result;
     }
 }

@@ -43,8 +43,8 @@ namespace engine
             ShaderProgram(void){}
             
             virtual const bool init(void);
-            const bool init(const list<const Shader *> & shaderList);
-            const bool init(const string & vShaderPath, const string & fShaderPath);
+            virtual const bool init(const list<const Shader *> & shaderList);
+            virtual const bool init(const string & vShaderPath, const string & fShaderPath);
             
         private:
             unsigned int _programId;

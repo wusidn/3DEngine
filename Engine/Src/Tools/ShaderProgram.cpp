@@ -34,7 +34,14 @@ namespace engine
 
         ShaderProgram & ShaderProgram::createTemplat(void)
         {
+            ShaderProgram & result = create();
             
+            bool shaderProgramInit = result.init("", "");
+
+            if(!shaderProgramInit){
+                result.initializeError(1);
+            }
+            return result; 
         }
 
         const bool ShaderProgram::init(void)
@@ -68,12 +75,12 @@ namespace engine
         const bool ShaderProgram::init(const string & vShaderPath, const string & fShaderPath)
         {
         
-            Shader & vertexShader = Shader::create(vShaderPath, ShaderType::vertex);
+            Shader & vertexShader = vShaderPath.size() <= 0 ? Shader::create(ShaderType::vertex) : Shader::create(vShaderPath, ShaderType::vertex);
             if(!vertexShader.compile()){
                 return false;
             }
 
-            Shader & fragmentShader = Shader::create(fShaderPath, ShaderType::fragment);
+            Shader & fragmentShader = fShaderPath.size() <= 0 ? Shader::create(ShaderType::fragment) : Shader::create(fShaderPath, ShaderType::fragment);
             if(!fragmentShader.compile()){
                 return false;
             }
@@ -88,6 +95,7 @@ namespace engine
             
             return true;
         }
+
 
         const bool ShaderProgram::attachShader(const Shader & shader) const
         {
