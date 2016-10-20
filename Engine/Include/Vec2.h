@@ -2,14 +2,14 @@
 #ifndef __VEC2_H__
 #define __VEC2_H__
 
-#include "Struct.h"
+#include "Vec.h"
 #include <iostream>
 
 using namespace std;
 
 namespace engine
 {
-    struct Vec2 : public Struct
+    struct Vec2 : public Vec
     {
     public:
         Vec2(void);

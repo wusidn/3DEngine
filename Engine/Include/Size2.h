@@ -2,14 +2,14 @@
 #ifndef __SIZE_H__
 #define __SIZE_H__
 
-#include "Struct.h"
+#include "Vec.h"
 #include <iostream>
 
 using namespace std;
 
 namespace engine
 {
-    class Size2 : public Struct
+    class Size2 : public Vec
     {
     public:
 

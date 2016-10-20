@@ -9,6 +9,7 @@
 #include "LogManager.h"
 #include "Image.h"
 #include "Textrue2D.h"
+#include "Matrix2.h"
 
 #include <iostream>
 #include <cmath>
@@ -33,6 +34,31 @@ TestAppaction & TestAppaction::instance(void)
 		Circle & fristCircle = Circle::create(1000.0f);
 		fristCircle.position(Vec2(Zeus::instance().screenSize().width * 0.5f, Zeus::instance().screenSize().height * 0.5f));
 		ScreenWorld::instance().append(fristCircle);
+
+        // Vec3 location(1.0f, 2.0f, 3.0f);
+        // Log.info("location[0] = {0}", location[0]);
+        // Log.info("location[1] = {0}", location[1]);
+        // Log.info("location[2] = {0}", location[2]);
+
+        // location[1] += 5;
+
+        // Log.info("location = {0}", location);
+
+        Matrix2 matrix(Vec2(1, 3), Vec2(2, 4));
+
+        Matrix2 matrix2(matrix);
+
+        matrix[0][0] += 2;
+
+        Log.info("matrix[0][0] = {0}", matrix[0][0]);
+        Log.info("matrix[1][1] = {0}", matrix[1][0]);
+
+        
+
+        Log.info("matrix2[0][0] = {0}", matrix2[0][0]);
+        Log.info("matrix2[1][1] = {0}", matrix2[1][0]);
+
+
 
         Textrue2D::create("asds.jpg");
  }

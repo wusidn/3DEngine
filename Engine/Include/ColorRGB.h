@@ -2,12 +2,12 @@
 #ifndef __COLOR_RGB_H__
 #define __COLOR_RGB_H__
 
-#include "Struct.h"
+#include "Vec.h"
 #include <Vec3.h>
 
 namespace engine
 {
-    class ColorRGB : public Struct
+    class ColorRGB : public Vec
     {
     public:
         ColorRGB(void);
