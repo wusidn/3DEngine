@@ -7,19 +7,46 @@
 
 namespace engine
 {
+    template<typename C, typename T, unsigned dimension>
     class Matrix : public Struct
     {
     public:
-        Vec & operator[](const unsigned int index) const;
+        T & operator[](const unsigned int index) const
+        {
+            return *(T *)(&data[index]);
+        }
+
+
+        //加法
+        C operator+(const C & param) const
+        {
+            C result;
+            for(unsigned i = 0; i < dimension; ++i)
+            {
+                result[i] = operator[](i) + param[i];
+            }
+            return result;
+        }
+
+        C & operator+=(const C & param)
+        {
+            for(unsigned i = 0; i < dimension; ++i)
+            {
+                operator[](i) += param[i];
+            }
+            return *this;
+        }
+
+        //减法
+
+
 
     protected:
-        Matrix(const unsigned int dimension);
-        ~Matrix(void);
-        
-        Vec ** _data;
+        Matrix(void){}
+        ~Matrix(void){}
 
     private:
-        Matrix(void){}
+        T data[dimension];
     };
 }
 

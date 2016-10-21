@@ -21,11 +21,19 @@ namespace engine
         
         
         //重载运算符
+        const Vec2 operator-(void) const;
+
         const Vec2 operator+(const Vec2 & param) const;
+        Vec2 & operator+=(const Vec2 & param);
+
         const Vec2 operator-(const Vec2 & param) const;
+        Vec2 & operator-=(const Vec2 & param);
         
         const Vec2 operator*(const float param) const;
+        Vec2 & operator*=(const float param);
+
         const Vec2 operator/(const float param) const;
+        Vec2 & operator/=(const float param);
         
         friend const Vec2 operator*(const float param_left, const Vec2 & param_right);
         friend ostream & operator<<(ostream & _stream, const Vec2 & param);

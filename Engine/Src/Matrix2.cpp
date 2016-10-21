@@ -4,22 +4,31 @@
 
 namespace engine
 {
-    
-    Matrix2::Matrix2(void) : Matrix(2)
+
+    Matrix2::Matrix2(void) : Matrix()
     {
-        for(int i = 0; i < 2; ++i){
-            _data[i] = &data[i];
-        }
+
+    }
+
+    Matrix2::Matrix2(const float v) : Matrix2()
+    {
+        operator[](0)[0] = v;
+        operator[](1)[1] = v;
+    }
+
+    Matrix2::Matrix2(const Vec2 & v) : Matrix2()
+    {
+        operator[](0)[0] = v[0];
+        operator[](1)[1] = v[1];
     }
 
     Matrix2::Matrix2(const Vec2 & param1, const Vec2 & param2) : Matrix2()
     {
-        data[0] = param1;
-        data[1] = param2;
+        operator[](0) = param1;
+        operator[](1) = param2;
     }
 
-    Matrix2::Matrix2(const Matrix2 & copy) : Matrix2(*(Vec2 *)&(copy[0]), *(Vec2 *)&(copy[1]))
+    Matrix2::Matrix2(const Matrix2 & copy) : Matrix2(copy[0], copy[1])
     {
-
     }
 }

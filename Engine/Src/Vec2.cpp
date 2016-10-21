@@ -21,9 +21,21 @@ namespace engine
         
     }
 
+    const Vec2 Vec2::operator-(void) const
+    {
+        return Vec2(-x, -y);
+    }
+
     const Vec2 Vec2::operator+(const Vec2 & param) const
     {
         return Vec2(x + param.x, y + param.y);
+    }
+
+    Vec2 & Vec2::operator+=(const Vec2 & param)
+    {
+        x += param.x;
+        y += param.y;
+        return *this;
     }
 
     const Vec2 Vec2::operator-(const Vec2 & param) const
@@ -31,14 +43,35 @@ namespace engine
         return Vec2(x - param.x, y - param.y);
     }
 
+    Vec2 & Vec2::operator-=(const Vec2 & param)
+    {
+        x -= param.x;
+        y -= param.y;
+        return *this;
+    }
+
     const Vec2 Vec2::operator*(const float param) const
     {
         return Vec2(x * param, y * param);
     }
 
+    Vec2 & Vec2::operator*=(const float param)
+    {
+        x *= param;
+        y *= param;
+        return *this;
+    }
+
     const Vec2 Vec2::operator/(const float param) const
     {
         return Vec2(x / param, y / param);
+    }
+
+    Vec2 & Vec2::operator/=(const float param)
+    {
+        x /= param;
+        y /= param;
+        return *this;
     }
 
     const Vec2 operator*(const float param_left, const Vec2 & param_right)
