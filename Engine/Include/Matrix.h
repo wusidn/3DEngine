@@ -16,29 +16,79 @@ namespace engine
             return *(T *)(&data[index]);
         }
 
-
-        //加法
-        C operator+(const C & param) const
+        //取反
+        C operator-(void) const
         {
             C result;
             for(unsigned i = 0; i < dimension; ++i)
             {
-                result[i] = operator[](i) + param[i];
+                result[i] = -operator[](i);
             }
             return result;
         }
 
-        C & operator+=(const C & param)
+
+        //加法
+        C operator+(const C & m) const
+        {
+            C result;
+            for(unsigned i = 0; i < dimension; ++i)
+            {
+                result[i] = operator[](i) + m[i];
+            }
+            return result;
+        }
+
+        C & operator+=(const C & m)
         {
             for(unsigned i = 0; i < dimension; ++i)
             {
-                operator[](i) += param[i];
+                operator[](i) += m[i];
             }
             return *this;
         }
 
         //减法
+        C operator-(const C & m) const
+        {
+            return operator+(-m);
+        }
 
+        C & operator-=(const C & m)
+        {
+            return operator+=(-m);
+        }
+
+        //乘法
+        T operator*(const T & v) const
+        {
+            T result;
+            for(unsigned int i = 0; i < dimension; ++i)
+            {
+                for(unsigned int n = 0; n < dimension; ++n)
+                {
+                    result[i] += v[i] * operator[](i)[n];
+                }
+            }
+            return result;
+        }
+
+
+        C operator*(const C & m) const
+        {
+            C result;
+            for(unsigned int i = 0; i < dimension; ++i)
+            {
+                for(unsigned int n = 0; n < dimension; ++n)
+                {
+                    for(unsigned int j = 0; j < dimension; ++j)
+                    {
+                        result[i][n] += operator[](i)[j] * m[j][n];
+                    }
+                }
+            }
+            return result;
+        }
 
 
     protected:
