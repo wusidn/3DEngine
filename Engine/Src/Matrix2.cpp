@@ -22,13 +22,14 @@ namespace engine
         operator[](1)[1] = v[1];
     }
 
-    Matrix2::Matrix2(const Vec2 & param1, const Vec2 & param2) : Matrix2()
+    Matrix2::Matrix2(const Vec2 & v_1, const Vec2 & v_2) : Matrix2()
     {
-        operator[](0) = param1;
-        operator[](1) = param2;
+        operator[](0) = v_1;
+        operator[](1) = v_2;
     }
 
     Matrix2::Matrix2(const Matrix2 & copy) : Matrix2(copy[0], copy[1])
     {
     }
+    
 }

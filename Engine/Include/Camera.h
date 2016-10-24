@@ -4,6 +4,7 @@
 
 #include "Node.h"
 #include "Size3.h"
+#include "Matrix4.h"
 
 
 namespace engine
@@ -13,6 +14,11 @@ namespace engine
         friend class CameraOutput;
     public:
         CREATEFUNC(Camera);
+        // static Camera & create(const Vec3 & _position, )
+        Vec3 target(void) const;
+        void target(const Vec3 & t);
+
+        //attribute
     protected:
         virtual const bool init(void);
 
@@ -20,10 +26,15 @@ namespace engine
         virtual const bool preparatory(const int dt);
         //拍照
         virtual const bool photograph(void);
+
         virtual ~Camera(){}
     private:
         Camera(){}
-        Vec3 _viewportSize;
+
+        // void calculateProjectionMatrix(void);
+        Vec3 _target, _up;
+        Matrix4 _projectionMatrix;
+        // Vec3 _viewportSize;
     };
 }
 

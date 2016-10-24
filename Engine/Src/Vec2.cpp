@@ -99,4 +99,10 @@ namespace engine
     {
         return acos(dot(param) / modulo() / param.modulo()) / PI * 180;
     }
+
+    const Vec2 Vec2::normalize(void) const
+    {
+        return operator/(modulo());
+    }
+
 }

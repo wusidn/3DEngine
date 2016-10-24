@@ -17,7 +17,7 @@ namespace engine
         virtual const bool init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3);
 
         virtual const bool render(const int dp);
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
         
         ~Triangle(void){}
     private:

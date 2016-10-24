@@ -44,7 +44,10 @@ namespace engine
         const Vec3 cross(const Vec3 & param) const;
         
         //模
-        const float modulo(void) const; 
+        const float modulo(void) const;
+
+        //标准化
+        const Vec3 normalize(void) const;
         
         float z;
     };

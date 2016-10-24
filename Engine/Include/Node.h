@@ -4,6 +4,7 @@
 
 #include "Object.h"
 #include "Vec4.h"
+#include "Matrix4.h"
 // #include "World.h"
 
 #include <vector>
@@ -68,7 +69,7 @@ namespace engine
         virtual const bool render(const int dt);
 
         //绘制
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
     private:
 
         //父元素

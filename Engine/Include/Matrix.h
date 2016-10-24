@@ -5,6 +5,10 @@
 #include "Struct.h"
 #include "Vec.h"
 
+#include <iostream>
+
+using namespace std;
+
 namespace engine
 {
     template<typename C, typename T, unsigned dimension>
@@ -88,6 +92,24 @@ namespace engine
                 }
             }
             return result;
+        }
+
+
+        friend ostream & operator<<(ostream & _stream, const Matrix & m)
+        {
+            _stream << "Matrix" << dimension << ":" << endl;
+            for(unsigned int i = 0; i < dimension; ++i)
+            {
+                _stream << "\t\t";
+                i ? _stream << "  " : _stream << "[ ";
+                for(unsigned int n = 0; n < dimension; ++n)
+                {
+                    if(n) _stream << ", ";
+                    _stream << m[i][n];
+                }
+                i >= dimension - 1 ? _stream << " ]" : _stream << endl;
+            }
+            return _stream;
         }
 
 

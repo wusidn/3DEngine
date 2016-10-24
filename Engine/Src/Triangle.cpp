@@ -50,9 +50,9 @@ namespace engine
          return true;
      }
 
-     const bool Triangle::draw(Camera & viewPort)
+     const bool Triangle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(viewPort)){
+         if(!Geometry::draw(projection)){
              return false;
          }
 

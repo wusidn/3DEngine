@@ -90,9 +90,9 @@ namespace engine
      }
 
 
-    const bool Circle::draw(Camera & viewPort)
+    const bool Circle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(viewPort)){
+         if(!Geometry::draw(projection)){
              return false;
          }
 

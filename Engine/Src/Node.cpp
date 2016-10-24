@@ -1,6 +1,6 @@
 #include "Node.h"
 #include "LogManager.h"
-#include "Camera.h"
+#include "Matrix4.h"
 
 namespace engine
 {
@@ -164,11 +164,11 @@ namespace engine
         return true;
     }
 
-    const bool Node::draw(Camera & viewPort)
+    const bool Node::draw(const Matrix4 & projection)
     {
 
         for(auto node : _chidren){
-            if(!node->draw((Camera &)viewPort)){
+            if(!node->draw(projection)){
                 return false;
             }
         }

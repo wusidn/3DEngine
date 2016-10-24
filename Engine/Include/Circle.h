@@ -25,7 +25,7 @@ namespace engine
         virtual const bool init(const float r);
 
         virtual const bool render(const int dp);
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
 
     private:
         float _radius;

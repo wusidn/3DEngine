@@ -5,7 +5,7 @@
 #include "Node.h"
 #include "Vec3.h"
 #include "ColorRGBA.h"
-#include "Camera.h"
+#include "Matrix4.h"
 #include <GL/glew.h>
 
 namespace engine
@@ -47,7 +47,7 @@ namespace engine
         const GLuint indiesBufferObject(void) const;
 
         virtual const bool render(const int dp);
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
     private:
 
         Vec3 * _vertexs;

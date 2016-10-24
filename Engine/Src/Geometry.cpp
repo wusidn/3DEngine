@@ -224,27 +224,27 @@ namespace engine
         return true;
     }
 
-    const bool Geometry::draw(Camera & viewPort)
+    const bool Geometry::draw(const Matrix4 & projection)
     {
         if(!_vertexsCount){
             return false;
         }
 
-        if(!Node::draw(viewPort)){
+        if(!Node::draw(projection)){
              return false;
         }
 
-        //视口坐标
-        Vec3 viewPortSpacePosition = viewPort.convertToNodeSpace(parent() ? parent()->convertToWorldSpace(position()) : position());
+        // //视口坐标
+        // Vec3 viewPortSpacePosition = viewPort.convertToNodeSpace(parent() ? parent()->convertToWorldSpace(position()) : position());
 
-        for(auto i = 0; i < _vertexsCount; ++i){
-            _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
+        // for(auto i = 0; i < _vertexsCount; ++i){
+        //     _drawVertexs[i] = vertexs()[i] + viewPortSpacePosition;
 
 
-            //视口坐标转屏幕坐标  (模拟)
-            _drawVertexs[i].x = (_drawVertexs[i].x * 2 - Zeus::instance().windowSize().width) / Zeus::instance().windowSize().width;
-            _drawVertexs[i].y = (_drawVertexs[i].y * 2 - Zeus::instance().windowSize().height) / Zeus::instance().windowSize().height;
-        }
+        //     //视口坐标转屏幕坐标  (模拟)
+        //     _drawVertexs[i].x = (_drawVertexs[i].x * 2 - Zeus::instance().windowSize().width) / Zeus::instance().windowSize().width;
+        //     _drawVertexs[i].y = (_drawVertexs[i].y * 2 - Zeus::instance().windowSize().height) / Zeus::instance().windowSize().height;
+        // }
 
         if(_indiesCount){
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
@@ -269,6 +269,8 @@ namespace engine
 
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * _vertexsCount));
         glEnableVertexAttribArray(1);
+
+        //设置投影矩阵
 
         return true;
     }

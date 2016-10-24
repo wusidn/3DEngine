@@ -13,8 +13,9 @@ namespace engine
         Matrix2(void);
         Matrix2(const float v);
         Matrix2(const Vec2 & v);
-        Matrix2(const Vec2 & param1, const Vec2 & param2);
+        Matrix2(const Vec2 & v1, const Vec2 & v2);
         Matrix2(const Matrix2 & copy);
+
     protected:
         // Matrix2(void){}
     private:

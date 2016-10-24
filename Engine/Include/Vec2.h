@@ -46,6 +46,9 @@ namespace engine
         
         //角度
         const float angle(const Vec2 & param) const;
+
+        //标准化
+        const Vec2 normalize(void) const;
         
         float x, y;
     };

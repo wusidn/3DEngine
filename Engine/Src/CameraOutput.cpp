@@ -35,9 +35,9 @@ namespace engine
         return camera().preparatory(dt);
     }
 
-    const bool CameraOutput::draw(Camera & viewPort)
+    const bool CameraOutput::draw(const Matrix4 & projection)
     {
-        if(!Node::draw(viewPort)){
+        if(!Node::draw(projection)){
             return false;
         }
 

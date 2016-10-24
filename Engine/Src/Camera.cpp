@@ -9,7 +9,7 @@ namespace engine
         }
 
         position(Vec3(.0f));
-        _viewportSize = Vec3(.0f);
+        // __viewportSize = Vec3(.0f);
         return true;
     }
 
@@ -20,6 +20,6 @@ namespace engine
 
     const bool Camera::photograph(void)
     {
-        return root().draw(*this);
+        return root().draw(Matrix4(1.0));
     }
 }

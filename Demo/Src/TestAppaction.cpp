@@ -10,6 +10,7 @@
 #include "Image.h"
 #include "Textrue2D.h"
 #include "Matrix2.h"
+#include "Matrix3.h"
 
 #include <iostream>
 #include <cmath>
@@ -44,11 +45,11 @@ TestAppaction & TestAppaction::instance(void)
 
         // Log.info("location = {0}", location);
 
-        Matrix2 matrix(Vec2(1, 3), Vec2(2, 4));
+        Matrix2 matrix(Vec2(1.6666, 3.152454), Vec2(2.154, 4.556));
 
         Matrix2 matrix2(matrix);
 
-        matrix[0][0] += 2;
+        matrix[0][0] += 2.356645f;
 
         Log.info("matrix[0][0] = {0}", matrix[0][0]);
         Log.info("matrix[1][1] = {0}", matrix[1][0]);
@@ -57,6 +58,11 @@ TestAppaction & TestAppaction::instance(void)
 
         Log.info("matrix2[0][0] = {0}", matrix2[0][0]);
         Log.info("matrix2[1][1] = {0}", matrix2[1][0]);
+
+        Log.info("matrix2 = {0}", matrix2);
+
+        Matrix3 matrix3(5.123456789f);
+        Log.info("matrix3 = {0}", matrix3);
 
 
 

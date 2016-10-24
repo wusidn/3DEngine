@@ -4,6 +4,7 @@
 
 #include "Node.h"
 #include "Camera.h"
+#include "Matrix4.h"
 
 namespace engine
 {
@@ -21,7 +22,7 @@ namespace engine
 
         virtual const bool render(const int dt);
         //绘制
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
     private:
         Camera * _camera;
     };

@@ -52,9 +52,9 @@ namespace engine
          return true;
      }
 
-     const bool Rectangle::draw(Camera & viewPort)
+     const bool Rectangle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(viewPort)){
+         if(!Geometry::draw(projection)){
              return false;
          }
 

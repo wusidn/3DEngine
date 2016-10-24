@@ -1,6 +1,8 @@
 #include "ScreenWorld.h"
 #include "LogManager.h"
 
+#include "Matrix4.h"
+
 namespace engine
 {
     using namespace tools;
@@ -37,7 +39,7 @@ namespace engine
 
     const bool ScreenWorld::draw(void)
     {
-        return root().draw(*_screenCamera);
+        return root().draw(Matrix4(1.0f));
     }
 
     ScreenWorld::~ScreenWorld()

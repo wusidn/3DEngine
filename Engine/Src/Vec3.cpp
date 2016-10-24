@@ -109,6 +109,11 @@ namespace engine
         return sqrt(dot(*this));
     }
 
+    const Vec3 Vec3::normalize(void) const
+    {
+        return operator/(modulo());
+    }
+
     Vec3::~Vec3(void)
     {
         

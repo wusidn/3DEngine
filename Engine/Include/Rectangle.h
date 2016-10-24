@@ -3,7 +3,7 @@
 #define __RECTANGLE_H__
 
 #include "Geometry.h"
-
+#include "Size2.h"
 
 namespace engine
 {
@@ -19,7 +19,7 @@ namespace engine
         virtual const bool init(const Size2 & _size);
 
         virtual const bool render(const int dp);
-        virtual const bool draw(Camera & viewPort);
+        virtual const bool draw(const Matrix4 & projection);
 
     private:
         Size2 _size;
