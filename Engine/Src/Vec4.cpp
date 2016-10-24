@@ -17,6 +17,11 @@ namespace engine
 
     Vec4::Vec4(const Vec3 & copy) : Vec4(copy.x, copy.y, copy.z) { }
 
+    Vec4::Vec4(const Vec3 & v, const float s) : Vec4(v)
+    {
+        w = s;
+    }
+
     Vec4::Vec4(const Vec4 & copy) : Vec4(copy.x, copy.y, copy.z, copy.w) { }
 
     ostream & operator<<(ostream & _stream, const Vec4 & param)
