@@ -105,12 +105,12 @@ namespace engine
 
     const Vec3 Node::convertToWorldSpace(const Vec3 & vSource)
     {
-        return worldCoordinate() + (vSource - Vec3(0.0f));
+        return worldCoordinate() + vSource.convertToSize3();
     }
 
     const Vec3 Node::convertToNodeSpace(const Vec3 & vSource)
     {
-        return vSource - (worldCoordinate() - Vec3(0.0f));
+        return vSource - worldCoordinate().convertToSize3();
     }
 
     const Vec3 Node::worldCoordinate(void)
@@ -120,16 +120,22 @@ namespace engine
         }
 
         _worldCoordinate = _position;
-        Node * tempNode = parent();
-        if(!tempNode){
+        if(!_parent){
             return _worldCoordinate;
         }
-        //旋转
 
-        //缩放
+        Vec3 parentWorldCoordinate = _parent->worldCoordinate().convertToSize3();
 
-        //平移
-        _worldCoordinate += (tempNode->worldCoordinate() - Vec3(0.0f));
+        //累计旋转   //累计缩放  //累计平移(也就是父级世界坐标)
+
+        //累计旋转  × 累计缩放 ×  累计平移 × 局域坐标 = 模型世界坐标
+
+        // //旋转
+        // Matrix4 rotationMatrix = Matrix4::createRotationMatrix(_parent->rotate());
+        // //缩放
+        // Matrix4 scaleMatrix = Matrix4::createScaleMatrix(_parent->scale());
+        // //平移
+        // _worldCoordinate = rotationMatrix * scaleMatrix * (_position + _parent->worldCoordinate().convertToSize3());
 
         //当前世界坐标有效
         _worldCoordinateInvalid = true;

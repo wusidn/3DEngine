@@ -41,7 +41,7 @@ namespace engine
         
     }
 
-    Matrix4 createMoveMatrix(const Size3 & size)
+    Matrix4 Matrix4::createMoveMatrix(const Size3 & size)
     {
         static Matrix4 result(1.0f);
 
@@ -52,7 +52,7 @@ namespace engine
         return result;
     }
 
-    Matrix4 createRotationMatrix(const Vec3 & angle)
+    Matrix4 Matrix4::createRotationMatrix(const Vec3 & angle)
     {
         static Matrix4 rotationX(1.0f), rotationY(1.0f), rotationZ(1.0f);
         float x = angle.x, y = angle.y, z = angle.z;
@@ -82,7 +82,7 @@ namespace engine
         return rotationX * rotationY * rotationZ;
     }
 
-    Matrix4 createScaleMatrix(const Vec3 & scale)
+    Matrix4 Matrix4::createScaleMatrix(const Vec3 & scale)
     {
         static Matrix4 result(1.0f);
 

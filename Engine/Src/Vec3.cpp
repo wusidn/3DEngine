@@ -99,6 +99,11 @@ namespace engine
         return _stream;
     }
 
+    Size3 Vec3::convertToSize3(void) const
+    {
+        return Size3(x, y, z);
+    }
+
     const float Vec3::dot(const Vec3 & v) const
     {
         return x * v.x + y * v.y + z * v.z;

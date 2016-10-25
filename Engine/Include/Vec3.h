@@ -40,7 +40,8 @@ namespace engine
         //这个乘法好像没意义  暂留
         friend const Vec3 operator*(const float s, const Vec3 & v);
         friend ostream & operator<<(ostream & _stream, const Vec3 & v);
-        
+
+        Size3 convertToSize3(void) const;
         
         //点积
         const float dot(const Vec3 & v) const;
