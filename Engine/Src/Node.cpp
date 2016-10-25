@@ -105,12 +105,12 @@ namespace engine
 
     const Vec3 Node::convertToWorldSpace(const Vec3 & vSource)
     {
-        return worldCoordinate() + vSource;
+        return worldCoordinate() + (vSource - Vec3(0.0f));
     }
 
     const Vec3 Node::convertToNodeSpace(const Vec3 & vSource)
     {
-        return vSource - worldCoordinate();
+        return vSource - (worldCoordinate() - Vec3(0.0f));
     }
 
     const Vec3 Node::worldCoordinate(void)
@@ -129,7 +129,7 @@ namespace engine
         //缩放
 
         //平移
-        _worldCoordinate += tempNode->worldCoordinate();
+        _worldCoordinate += (tempNode->worldCoordinate() - Vec3(0.0f));
 
         //当前世界坐标有效
         _worldCoordinateInvalid = true;

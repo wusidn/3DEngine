@@ -21,55 +21,60 @@ namespace engine
 
     Vec3::Vec3(const Vec3 & copy) : Vec3(copy.x, copy.y, copy.z) { }
 
-    const Vec3 Vec3::operator+(const Vec3 & param) const
+    const Vec3 Vec3::operator+(const Size3 & offset) const
     {
-        return Vec3(x + param.x, y + param.y, z + param.z);
+        return Vec3(x + offset.width, y + offset.height, z + offset.depth);
     }
 
-    const Vec3 & Vec3::operator+=(const Vec3 & param)
+    const Vec3 & Vec3::operator+=(const Size3 & offset)
     {
-        x += param.x;
-        y += param.y;
-        z += param.z;
+        x += offset.width;
+        y += offset.height;
+        z += offset.depth;
         return *this;
     }
 
-    const Vec3 Vec3::operator-(const Vec3 & param) const
+    const Size3 Vec3::operator-(const Vec3 & v) const
     {
-        return Vec3(x - param.x, y - param.y, z - param.z);
+        return Size3(x - v.x, y - v.y, z - v.z);
     }
 
-    const Vec3 & Vec3::operator-=(const Vec3 & param)
+    const Vec3 Vec3::operator-(const Size3 & offset) const
     {
-        x -= param.x;
-        y -= param.y;
-        z -= param.z;
+        return Vec3(x - offset.width, y - offset.height, z - offset.depth);
+    }
+
+    const Vec3 & Vec3::operator-=(const Size3 & offset)
+    {
+        x -= offset.width;
+        y -= offset.height;
+        z -= offset.depth;
         return *this;
     }
 
-    const Vec3 Vec3::operator*(const float param) const
+    const Vec3 Vec3::operator*(const float s) const
     {
-        return Vec3(x * param, y * param, z * param);
+        return Vec3(x * s, y * s, z * s);
     }
 
-    const Vec3 & Vec3::operator*=(const float param)
+    const Vec3 & Vec3::operator*=(const float s)
     {
-        x *= param;
-        y *= param;
-        z *= param;
+        x *= s;
+        y *= s;
+        z *= s;
         return *this;
     }
 
-    const Vec3 Vec3::operator/(const float param) const
+    const Vec3 Vec3::operator/(const float s) const
     {
-        return Vec3(x / param, y / param, z / param);
+        return Vec3(x / s, y / s, z / s);
     }
 
-    const Vec3 & Vec3::operator/=(const float param)
+    const Vec3 & Vec3::operator/=(const float s)
     {
-        x /= param;
-        y /= param;
-        z /= param;
+        x /= s;
+        y /= s;
+        z /= s;
         return *this;
     }
 
@@ -78,30 +83,30 @@ namespace engine
         return Vec3(-x, -y, -z);
     }
 
-    const bool Vec3::operator==(const Vec3 & param) const
+    const bool Vec3::operator==(const Vec3 & v) const
     {
-        return equal(x, param.x) && equal(y, param.y) && equal(z, param.z);
+        return equal(x, v.x) && equal(y, v.y) && equal(z, v.z);
     }
 
-    const Vec3 operator*(const float param_left, const Vec3 & param_right)
+    const Vec3 operator*(const float s, const Vec3 & v)
     {
-        return Vec3(param_right.x * param_left, param_right.y * param_left, param_right.z * param_left);
+        return Vec3(v.x * s, v.y * s, v.z * s);
     }
 
-    ostream & operator<<(ostream & _stream, const Vec3 & param)
+    ostream & operator<<(ostream & _stream, const Vec3 & v)
     {
-        _stream << "Vec3(" << param.x << ", " << param.y << ", " << param.z << ")";
+        _stream << "Vec3(" << v.x << ", " << v.y << ", " << v.z << ")";
         return _stream;
     }
 
-    const float Vec3::dot(const Vec3 & param) const
+    const float Vec3::dot(const Vec3 & v) const
     {
-        return x * param.x + y * param.y + z * param.z;
+        return x * v.x + y * v.y + z * v.z;
     }
 
-    const Vec3 Vec3::cross(const Vec3 & param) const
+    const Vec3 Vec3::cross(const Vec3 & v) const
     {
-        return Vec3(y * param.z - z * param.y, z * param.x - x * param.z, x * param.y - y * param.x);
+        return Vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 
     const float Vec3::modulo(void) const

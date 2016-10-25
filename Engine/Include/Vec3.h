@@ -3,6 +3,7 @@
 #define __VEC3_H__
 
 #include "Vec2.h"
+#include "Size3.h"
 
 namespace engine
 {
@@ -20,28 +21,32 @@ namespace engine
         ~Vec3(void);
         
         //重载运算符
-        const Vec3 operator+(const Vec3 & param) const;
-        const Vec3 & operator+=(const Vec3 & param);
-        const Vec3 operator-(const Vec3 & param) const;
-        const Vec3 & operator-=(const Vec3 & param);
-        const Vec3 operator*(const float param) const;
-        const Vec3 & operator*=(const float param);
-        const Vec3 operator/(const float param) const;
-        const Vec3 & operator/=(const float param);
+        // const Vec3 operator+(const float s) const;
+        const Vec3 operator+(const Size3 & offset) const;
+        const Vec3 & operator+=(const Size3 & offset);
+        // const Vec3 operator-(const float s) const;
+        const Size3 operator-(const Vec3 & v) const;
+        const Vec3 operator-(const Size3 & offset) const;
+        const Vec3 & operator-=(const Size3 & offset);
+
+        const Vec3 operator*(const float s) const;
+        const Vec3 & operator*=(const float s);
+        const Vec3 operator/(const float s) const;
+        const Vec3 & operator/=(const float s);
 
         const Vec3 operator-(void) const;
-        const bool operator==(const Vec3 & param) const;
+        const bool operator==(const Vec3 & v) const;
         
         //这个乘法好像没意义  暂留
-        friend const Vec3 operator*(const float param_left, const Vec3 & param_right);
-        friend ostream & operator<<(ostream & _stream, const Vec3 & param);
+        friend const Vec3 operator*(const float s, const Vec3 & v);
+        friend ostream & operator<<(ostream & _stream, const Vec3 & v);
         
         
         //点积
-        const float dot(const Vec3 & param) const;
+        const float dot(const Vec3 & v) const;
         
         //叉积
-        const Vec3 cross(const Vec3 & param) const;
+        const Vec3 cross(const Vec3 & v) const;
         
         //模
         const float modulo(void) const;
