@@ -41,7 +41,7 @@ namespace engine
         
     }
 
-    Matrix4 Matrix4::createMoveMatrix(const Size3 & size)
+    Matrix4 Matrix4::createTranslationMatrix(const Size3 & size)
     {
         static Matrix4 result(1.0f);
 

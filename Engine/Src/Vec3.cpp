@@ -57,6 +57,11 @@ namespace engine
         return Vec3(x * s, y * s, z * s);
     }
 
+    const Vec3 Vec3::operator*(const Vec3 & v) const
+    {
+        return Vec3(x * v.x, y * v.y, z * v.z);
+    }
+
     const Vec3 & Vec3::operator*=(const float s)
     {
         x *= s;

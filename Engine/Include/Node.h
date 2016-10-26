@@ -42,15 +42,15 @@ namespace engine
 
         //位置
         void position(const Vec3 & vSource);
-        const Vec3 position(void) const;
+        const Vec3 & position(void) const;
 
         //旋转
         void rotate(const Vec3 & vSource);
-        const Vec3 rotate(void) const;
+        const Vec3 & rotate(void) const;
 
         //缩放
         void scale(const Vec3 & vSource);
-        const Vec3 scale(void) const;
+        const Vec3 & scale(void) const;
         
         //将当前坐标转为世界坐标
         const Vec3 convertToWorldSpace(const Vec3 & vSource);
@@ -60,10 +60,6 @@ namespace engine
     protected:
         Node(void);
         virtual const bool init(void);
-        //获取节点位置的世界坐标
-        const Vec3 worldCoordinate(void);
-        //标记世界坐标无效
-        void worldCoordinateInvalid(void);
 
         //计算所有顶点的世界坐标系
         virtual const bool render(const int dt);
@@ -78,13 +74,22 @@ namespace engine
         //子元素
         vector<Node *> _chidren;
 
-        //矩阵变换
+        //位置 旋转 缩放
         Vec3 _position, _rotate, _scale;
+
+        //累计旋转  累计缩放
+        Vec3 _accumulativeRotate, _accumulativeScale;
 
         //世界坐标
         Vec3 _worldCoordinate;
         //世界坐标是否有效
         bool _worldCoordinateInvalid;
+
+        //计算世界坐标系位置
+        const Vec3 calculateWorldCoordinate(void);
+        
+        //标记世界坐标无效
+        void worldCoordinateInvalid(void);
 
         //所有后代的世界坐标设为无效
         void posterityWorldCoordinateInvalid(void);

@@ -26,57 +26,57 @@ namespace engine
         return Vec2(-x, -y);
     }
 
-    const Vec2 Vec2::operator+(const Vec2 & param) const
+    const Vec2 Vec2::operator+(const Vec2 & v) const
     {
-        return Vec2(x + param.x, y + param.y);
+        return Vec2(x + v.x, y + v.y);
     }
 
-    Vec2 & Vec2::operator+=(const Vec2 & param)
+    Vec2 & Vec2::operator+=(const Vec2 & v)
     {
-        x += param.x;
-        y += param.y;
+        x += v.x;
+        y += v.y;
         return *this;
     }
 
-    const Vec2 Vec2::operator-(const Vec2 & param) const
+    const Vec2 Vec2::operator-(const Vec2 & v) const
     {
-        return Vec2(x - param.x, y - param.y);
+        return Vec2(x - v.x, y - v.y);
     }
 
-    Vec2 & Vec2::operator-=(const Vec2 & param)
+    Vec2 & Vec2::operator-=(const Vec2 & v)
     {
-        x -= param.x;
-        y -= param.y;
+        x -= v.x;
+        y -= v.y;
         return *this;
     }
 
-    const Vec2 Vec2::operator*(const float param) const
+    const Vec2 Vec2::operator*(const float v) const
     {
-        return Vec2(x * param, y * param);
+        return Vec2(x * v, y * v);
     }
 
-    Vec2 & Vec2::operator*=(const float param)
+    Vec2 & Vec2::operator*=(const float s)
     {
-        x *= param;
-        y *= param;
+        x *= s;
+        y *= s;
         return *this;
     }
 
-    const Vec2 Vec2::operator/(const float param) const
+    const Vec2 Vec2::operator/(const float s) const
     {
-        return Vec2(x / param, y / param);
+        return Vec2(x / s, y / s);
     }
 
-    Vec2 & Vec2::operator/=(const float param)
+    Vec2 & Vec2::operator/=(const float s)
     {
-        x /= param;
-        y /= param;
+        x /= s;
+        y /= s;
         return *this;
     }
 
-    const Vec2 operator*(const float param_left, const Vec2 & param_right)
+    const Vec2 operator*(const float s, const Vec2 & v)
     {
-        return Vec2(param_right.x * param_left, param_right.y * param_left);
+        return Vec2(v.x * s, v.y * s);
     }
 
     ostream & operator<<(ostream & _stream, const Vec2 & param)
@@ -85,9 +85,9 @@ namespace engine
          return _stream;
     }
 
-    const float Vec2::dot(const Vec2 & param) const
+    const float Vec2::dot(const Vec2 & v) const
     {
-        return x * param.x + y * param.y;
+        return x * v.x + y * v.y;
     }
 
     const float Vec2::modulo(void) const
@@ -95,9 +95,9 @@ namespace engine
         return sqrt(dot(*this));
     }
 
-    const float Vec2::angle(const Vec2 & param) const
+    const float Vec2::angle(const Vec2 & v) const
     {
-        return acos(dot(param) / modulo() / param.modulo()) / PI * 180;
+        return acos(dot(v) / modulo() / v.modulo()) / PI * 180;
     }
 
     const Vec2 Vec2::normalize(void) const

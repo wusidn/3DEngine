@@ -23,29 +23,29 @@ namespace engine
         //重载运算符
         const Vec2 operator-(void) const;
 
-        const Vec2 operator+(const Vec2 & param) const;
-        Vec2 & operator+=(const Vec2 & param);
+        const Vec2 operator+(const Vec2 & v) const;
+        Vec2 & operator+=(const Vec2 & v);
 
-        const Vec2 operator-(const Vec2 & param) const;
-        Vec2 & operator-=(const Vec2 & param);
+        const Vec2 operator-(const Vec2 & v) const;
+        Vec2 & operator-=(const Vec2 & v);
         
-        const Vec2 operator*(const float param) const;
-        Vec2 & operator*=(const float param);
+        const Vec2 operator*(const float s) const;
+        Vec2 & operator*=(const float s);
 
-        const Vec2 operator/(const float param) const;
-        Vec2 & operator/=(const float param);
+        const Vec2 operator/(const float s) const;
+        Vec2 & operator/=(const float s);
         
-        friend const Vec2 operator*(const float param_left, const Vec2 & param_right);
+        friend const Vec2 operator*(const float s, const Vec2 & v);
         friend ostream & operator<<(ostream & _stream, const Vec2 & param);
         
         //点积
-        const float dot(const Vec2 & param) const;
+        const float dot(const Vec2 & v) const;
         
         //模
         const float modulo(void) const;
         
         //角度
-        const float angle(const Vec2 & param) const;
+        const float angle(const Vec2 & v) const;
 
         //标准化
         const Vec2 normalize(void) const;

@@ -18,7 +18,7 @@ namespace engine
         Matrix4(const Vec4 & v1, const Vec4 & v2, const Vec4 & v3, const Vec4 & v4);
         Matrix4(const Matrix4 & copy);
         
-        static Matrix4 createMoveMatrix(const Size3 & size);
+        static Matrix4 createTranslationMatrix(const Size3 & size);
         static Matrix4 createRotationMatrix(const Vec3 & angle);
         static Matrix4 createScaleMatrix(const Vec3 & scale);
 

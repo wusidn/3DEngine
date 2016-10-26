@@ -30,6 +30,8 @@ namespace engine
         const Vec3 & operator-=(const Size3 & offset);
 
         const Vec3 operator*(const float s) const;
+        const Vec3 operator*(const Vec3 & v) const;
+
         const Vec3 & operator*=(const float s);
         const Vec3 operator/(const float s) const;
         const Vec3 & operator/=(const float s);

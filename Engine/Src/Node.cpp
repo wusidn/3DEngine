@@ -8,6 +8,8 @@ namespace engine
     Node::Node(void)
     {
         _parent = nullptr;
+        _scale = Vec3(1.0f);
+        _accumulativeScale = Vec3(1.0f);
     }
 
     const bool Node::init(void)
@@ -76,7 +78,7 @@ namespace engine
         worldCoordinateInvalid();
     }
 
-    const Vec3 Node::position(void) const
+    const Vec3 & Node::position(void) const
     {
         return _position;
     }
@@ -87,7 +89,7 @@ namespace engine
         posterityWorldCoordinateInvalid();
     }
 
-    const Vec3 Node::rotate(void) const
+    const Vec3 & Node::rotate(void) const
     {
         return _rotate;
     }
@@ -98,22 +100,22 @@ namespace engine
         posterityWorldCoordinateInvalid();
     }
 
-    const Vec3 Node::scale(void) const
+    const Vec3 & Node::scale(void) const
     {
         return _scale;
     }
 
     const Vec3 Node::convertToWorldSpace(const Vec3 & vSource)
     {
-        return worldCoordinate() + vSource.convertToSize3();
+        return calculateWorldCoordinate() + vSource.convertToSize3();
     }
 
     const Vec3 Node::convertToNodeSpace(const Vec3 & vSource)
     {
-        return vSource - worldCoordinate().convertToSize3();
+        return vSource - calculateWorldCoordinate().convertToSize3();
     }
 
-    const Vec3 Node::worldCoordinate(void)
+    const Vec3 Node::calculateWorldCoordinate(void)
     {
         if(_worldCoordinateInvalid){
             return _worldCoordinate;
@@ -124,18 +126,22 @@ namespace engine
             return _worldCoordinate;
         }
 
-        Vec3 parentWorldCoordinate = _parent->worldCoordinate().convertToSize3();
+        //世界坐标偏移
+        Size3 worldCoordinateOffset = _parent->calculateWorldCoordinate() - Vec3(0.0f);
 
         //累计旋转   //累计缩放  //累计平移(也就是父级世界坐标)
+        _accumulativeRotate = _parent->_accumulativeRotate + _parent->_rotate.convertToSize3();
+        _accumulativeScale = _parent->_accumulativeScale * _parent->_scale;
+
+        //旋转
+        Matrix4 rotationMatrix = Matrix4::createRotationMatrix(_accumulativeRotate);
+        //缩放
+        Matrix4 scaleMatrix = Matrix4::createScaleMatrix(_accumulativeScale);
+        //平移
+        Matrix4 translationMatrix = Matrix4::createTranslationMatrix(worldCoordinateOffset);
 
         //累计旋转  × 累计缩放 ×  累计平移 × 局域坐标 = 模型世界坐标
-
-        // //旋转
-        // Matrix4 rotationMatrix = Matrix4::createRotationMatrix(_parent->rotate());
-        // //缩放
-        // Matrix4 scaleMatrix = Matrix4::createScaleMatrix(_parent->scale());
-        // //平移
-        // _worldCoordinate = rotationMatrix * scaleMatrix * (_position + _parent->worldCoordinate().convertToSize3());
+        _worldCoordinate = rotationMatrix * scaleMatrix * translationMatrix * Vec4(_position, 1.0);
 
         //当前世界坐标有效
         _worldCoordinateInvalid = true;
@@ -160,7 +166,7 @@ namespace engine
         //计算运动区间
 
         //更新世界坐标系位置
-        worldCoordinate();
+        calculateWorldCoordinate();
 
         for(auto node : _chidren){
             if(!node->render(dt)){
