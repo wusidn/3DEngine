@@ -127,7 +127,7 @@ namespace engine
         }
 
         //世界坐标偏移
-        Size3 worldCoordinateOffset = _parent->calculateWorldCoordinate() - Vec3(0.0f);
+        Size3 worldCoordinateOffset = _parent->calculateWorldCoordinate().convertToSize3();
 
         //累计旋转   //累计缩放  //累计平移(也就是父级世界坐标)
         _accumulativeRotate = _parent->_accumulativeRotate + _parent->_rotate.convertToSize3();
@@ -159,6 +159,21 @@ namespace engine
         for(auto node : _chidren){
             node->worldCoordinateInvalid();
         }
+    }
+
+    const Size3 Node::accumulativeRotateOffset(void) const 
+    {
+        return _accumulativeRotate.convertToSize3();
+    }
+
+    const Size3 Node::accumulativeScaleOffset(void) const 
+    {
+        return _accumulativeScale.convertToSize3();
+    }
+
+    const Size3 Node::worldCoordinateOffset(void) const 
+    {
+        return _worldCoordinate.convertToSize3();
     }
 
     const bool Node::render(const int dt)

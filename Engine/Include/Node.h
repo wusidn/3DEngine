@@ -61,6 +61,10 @@ namespace engine
         Node(void);
         virtual const bool init(void);
 
+        const Size3 accumulativeRotateOffset(void) const;
+        const Size3 accumulativeScaleOffset(void) const;
+        const Size3 worldCoordinateOffset(void) const;
+
         //计算所有顶点的世界坐标系
         virtual const bool render(const int dt);
 

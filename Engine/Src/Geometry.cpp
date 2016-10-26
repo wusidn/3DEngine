@@ -236,7 +236,14 @@ namespace engine
         }
 
 
-        // Matrix4 translation = Matrix4::create(convertToWorldSpace());
+        //创建旋转  缩放  平移到世界坐标 矩阵
+        
+        //旋转
+        Matrix4 rotationMatrix = Matrix4::createRotationMatrix(rotate() + accumulativeRotateOffset());
+        //缩放
+        Matrix4 scaleMatrix = Matrix4::createScaleMatrix(scale() + accumulativeScaleOffset());
+        //平移
+        Matrix4 translationMatrix = Matrix4::createTranslationMatrix(position().convertToSize3() + worldCoordinateOffset());
 
 
         if(_indiesCount){
