@@ -5,6 +5,10 @@ layout( location = 1 ) in vec4 vColor;
 
 out vec4 color;
 
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
 #globalCode
 
 void main()
@@ -14,5 +18,5 @@ void main()
     
     #mainCode
 
-    gl_Position = vPosition;
+    gl_Position = modelMatrix * vPosition;
 }

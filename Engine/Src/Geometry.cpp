@@ -235,17 +235,6 @@ namespace engine
              return false;
         }
 
-
-        //创建旋转  缩放  平移到世界坐标 矩阵
-        
-        //旋转
-        Matrix4 rotationMatrix = Matrix4::createRotationMatrix(rotate() + accumulativeRotateOffset());
-        //缩放
-        Matrix4 scaleMatrix = Matrix4::createScaleMatrix(scale() + accumulativeScaleOffset());
-        //平移
-        Matrix4 translationMatrix = Matrix4::createTranslationMatrix(position().convertToSize3() + worldCoordinateOffset());
-
-
         if(_indiesCount){
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _indiesCount, _indies, GL_STATIC_DRAW);
@@ -260,17 +249,34 @@ namespace engine
         glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _colorsCount, _colors);
 
 
-
-        //启用着色器程序
-        Zeus::instance().defaultShaderProgram().use();
-
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
         glEnableVertexAttribArray(0);
 
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const void *)(sizeof(Vec3) * _vertexsCount));
         glEnableVertexAttribArray(1);
 
-        //设置投影矩阵
+        glBindVertexArray(0);
+
+        //启用着色器程序
+        Zeus::instance().defaultShaderProgram().use();
+
+
+        //创建旋转  缩放  平移到世界坐标 矩阵
+        //旋转
+        Matrix4 rotationMatrix = Matrix4::createRotationMatrix(rotate() + accumulativeRotateOffset());
+        //缩放
+        Matrix4 scaleMatrix = Matrix4::createScaleMatrix(scale() + accumulativeScaleOffset());
+        //平移
+        Matrix4 translationMatrix = Matrix4::createTranslationMatrix(position().convertToSize3() + worldCoordinateOffset());
+
+        //m
+        Matrix4 modelMatrix = rotationMatrix * scaleMatrix * translationMatrix;
+
+        //v 
+
+        //p
+
+
 
         return true;
     }
