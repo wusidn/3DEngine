@@ -10,6 +10,13 @@ using namespace std;
 namespace engine
 {
     using namespace tools;
+
+    const bool Geometry::bindMateria(const Materia & m)
+    {
+        _materia = &m;
+        return true;
+    }
+
     const bool Geometry::init(void)
     {
         if(!Node::init()){
@@ -17,13 +24,12 @@ namespace engine
         }
 
         _vertexs = nullptr;
-        _colors = nullptr;
         _indies = nullptr;
-        _drawVertexs = nullptr;
+        _materia = &Materia::defaultMateria();
 
         _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 
-        _vertexsCount = _colorsCount = _indiesCount = 0;
+        _vertexsCount = _indiesCount = 0;
 
         return true;
     }
@@ -37,18 +43,13 @@ namespace engine
             delete[] _vertexs;
         }
 
-        if(_drawVertexs){
-            delete[] _drawVertexs;
-        }
-
         if(!count){
             _vertexs = nullptr;
             return;
         }
 
         _vertexs = new Vec3[count];
-        _drawVertexs = new Vec3[count];
-        if(!_vertexs || !_drawVertexs) return;
+        if(!_vertexs) return;
 
 
         //申请顶点数组对象
@@ -62,24 +63,6 @@ namespace engine
         }
 
         _vertexsCount = count;
-    }
-
-    void Geometry::colorsCount(const unsigned short count)
-    {
-        _colorsCount = 0;
-        if(_colors){
-            delete[] _colors;
-        }
-
-        if(!count){
-            _colors = nullptr;
-            return;
-        }
-
-        _colors = new ColorRGBA[count];
-        if(!_colors) return;
-
-        _colorsCount = count;
     }
 
     void Geometry::indiesCount(const unsigned short count)
@@ -112,11 +95,6 @@ namespace engine
     const unsigned short Geometry::vertexsCount(void) const
     {
         return _vertexsCount;
-    }
-    
-    const unsigned short Geometry::colorsCount(void) const
-    {
-        return _colorsCount;
     }
 
     const unsigned short Geometry::indiesCount(void) const
@@ -152,15 +130,6 @@ namespace engine
         *(_vertexs + index) = data;
     }
 
-    void Geometry::color(const unsigned short index, const ColorRGBA & data)
-    {
-        if(index >= _colorsCount){
-            //错误信息
-            return;
-        }
-        *(_colors + index) = data;
-    }
-
     void Geometry::indie(const unsigned short index, const unsigned short data)
     {
         if(index >= _indiesCount){
@@ -180,16 +149,6 @@ namespace engine
     {
         memcpy(_vertexs + startIndex, data, (_vertexsCount - startIndex) * sizeof(Vec3));
     }
-    
-    void Geometry::colors(const ColorRGBA * data, const unsigned short count, const unsigned short startIndex )
-    {
-        memcpy(_colors + startIndex, data, (_colorsCount - startIndex) * sizeof(ColorRGBA));
-    }
-
-    void Geometry::colors(const ColorRGBA * data)
-    {
-        colors(data, _colorsCount, 0);
-    }
 
     void Geometry::indies(const unsigned short * data, const unsigned short count, const unsigned short startIndex)
     {
@@ -207,10 +166,7 @@ namespace engine
     {
         return _vertexs;
     }
-    const ColorRGBA * Geometry::colors(void) const
-    {
-        return _colors;
-    }
+
     const unsigned short * Geometry::indies(void) const 
     {
         return _indies;
@@ -244,9 +200,24 @@ namespace engine
         glBindVertexArray(_vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _colorsCount, nullptr, GL_STATIC_DRAW);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _drawVertexs);
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _colorsCount, _colors);
+        MateriaType materiaType = _materia->materiaType();
+
+        switch(materiaType)
+        {
+            case MateriaType::Purity:
+                // glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _colorsCount, nullptr, GL_STATIC_DRAW);
+                // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _vertexs);
+                // glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _colorsCount, _colors);
+            break;
+            case MateriaType::Multicolor:
+                glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _materia->colorsCount(), nullptr, GL_STATIC_DRAW);
+                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _vertexs);
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _materia->colorsCount(), _materia->colors();
+            break;
+            default:
+                Log.error("materiaType({0}) is ndefine!", materiaType);
+            return false;
+        }
 
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -286,14 +257,9 @@ namespace engine
         if(_vertexs){
             delete[] _vertexs;
         }
-        if(_colors){
-            delete[] _colors;
-        }
+        
         if(_indies){
             delete[] _indies;
-        }
-        if(_drawVertexs){
-            delete[] _drawVertexs;
         }
 
         if(_vertexBufferObject){

@@ -29,8 +29,14 @@ namespace engine
 
         Shader & Shader::create(const string & fileName, const enum ShaderType type)
         {
+            vector<string> fileList(1, fileName);
+            return create(fileList, type);
+        }
+
+        static Shader & Shader::create(const vector<string> & shaderFiles, const enum ShaderType type)
+        {
             Shader & result = create();
-            bool shaderInit = result.init(fileName, type);
+            bool shaderInit = result.init(shaderFiles, type);
 
             assert(shaderInit);
 
@@ -80,25 +86,32 @@ namespace engine
             return true;
         }
 
-        const bool Shader::init(const string & fileName, const enum ShaderType type)
+        const bool Shader::init(const vector<string> & shaderFiles, const enum ShaderType type)
         {
 
-            string shaderFilePath = "";
+            //获取每个文件的路径
+            vector<string> filePathList;
+            for(auto fileName : shaderFiles)
+            {
+                string shaderFilePath = "";
 
-            if(shaderFilePath.size() <= 0){
-                shaderFilePath = File::pathIsExists(fileName) ? fileName : "";
+                if(shaderFilePath.size() <= 0){
+                    shaderFilePath = File::pathIsExists(fileName) ? fileName : "";
+                }
+
+                if(shaderFilePath.size() <= 0){
+                    string tempPath = Appaction::appactionPath() + "Shader/" + fileName;
+                    shaderFilePath = File::pathIsExists(tempPath) ? tempPath : "";
+                }
+
+                if(shaderFilePath.size() <= 0){
+                    Log.error("Shader: [{0}] Is Not Exists!", fileName);
+                    return false;
+                }  
+                filePathList.push_back(shaderFilePath);
             }
 
-            if(shaderFilePath.size() <= 0){
-                string tempPath = Appaction::appactionPath() + "Shader/" + fileName;
-                shaderFilePath = File::pathIsExists(tempPath) ? tempPath : "";
-            }
-
-            if(shaderFilePath.size() <= 0){
-                Log.error("Shader: [{0}] Is Not Exists!", fileName);
-                return false;
-            }
-
+            //获取代码模板
             string source;
             _shaderId = glCreateShader(type);
             if(glIsShader(_shaderId) != GL_TRUE){
@@ -118,43 +131,51 @@ namespace engine
                 return false;
             }
 
-            string code = File::readAllText(shaderFilePath);
 
-            //
-            string removeAfterCode = code;
+            //代码融合
             string mainCode = "";
             string globalCode = "";
 
-            //模板与shader组合
-            static regex searchAnnotationRegex("#[^\n]*\n|//[^\n]*\n|/\\*[\\s\\S]*?\\*/");
 
-            auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
-            auto matchEnd = sregex_iterator();
-            for(auto item  = matchBegin; item != matchEnd; ++item){
-                removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
-            }
+            for(auto shaderFilePath : filePathList)
+            {                
+                string code = File::readAllText(shaderFilePath);
+                string removeAfterCode = code;
 
-            static regex mainRegex("void\\s+main\\s*\\(\\s*\\)\\s*\\{");
-            smatch searchResult;
-            if(regex_search(removeAfterCode, searchResult, mainRegex))
-            {
-                int openLeftBraceCount = 1;
-                auto bodyIndex = removeAfterCode.find(searchResult[0].str());
-                auto contentIndex = bodyIndex + searchResult[0].str().size();
-                auto begin = removeAfterCode.begin();
-                auto i = begin + contentIndex;
-                for(; i != removeAfterCode.end() && openLeftBraceCount; ++i){
-                    if(*i == '{'){
-                        ++openLeftBraceCount;
-                    }
-                    if(*i == '}'){
-                        --openLeftBraceCount;
-                    }
+                //  删除注释
+                static regex searchAnnotationRegex("#[^\n]*\n|//[^\n]*\n|/\\*[\\s\\S]*?\\*/");
+
+                auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
+                auto matchEnd = sregex_iterator();
+                for(auto item  = matchBegin; item != matchEnd; ++item){
+                    removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
                 }
-                mainCode = removeAfterCode.substr(contentIndex, i - begin - contentIndex - 1);
-                globalCode = removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
+                
+                //拆分代码块
+                static regex mainRegex("void\\s+main\\s*\\(\\s*\\)\\s*\\{");
+                smatch searchResult;
+                if(regex_search(removeAfterCode, searchResult, mainRegex))
+                {
+                    int openLeftBraceCount = 1;
+                    auto bodyIndex = removeAfterCode.find(searchResult[0].str());
+                    auto contentIndex = bodyIndex + searchResult[0].str().size();
+                    auto begin = removeAfterCode.begin();
+                    auto i = begin + contentIndex;
+                    for(; i != removeAfterCode.end() && openLeftBraceCount; ++i){
+                        if(*i == '{'){
+                            ++openLeftBraceCount;
+                        }
+                        if(*i == '}'){
+                            --openLeftBraceCount;
+                        }
+                    }
+                    mainCode += removeAfterCode.substr(contentIndex, i - begin - contentIndex - 1);
+                    globalCode += removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
+                }
+                
             }
 
+            //替换占位符
             source.replace(source.find(globalCodeKey), globalCodeKey.size(), globalCode);
             source.replace(source.find(mainCodeKey), mainCodeKey.size(), mainCode);
              

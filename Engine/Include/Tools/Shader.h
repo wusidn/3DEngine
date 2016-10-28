@@ -4,6 +4,7 @@
 
 #include <string>
 #include <GL/glew.h>
+#include <vector>
 
 #include "Object.h"
 #include "File.h"
@@ -27,8 +28,9 @@ namespace engine
             friend class ShaderProgram;
             
             static Shader & create(const enum ShaderType type);
-            static Shader & create(const string & fileName, const enum ShaderType type);    
-            
+            static Shader & create(const string & fileName, const enum ShaderType type);     
+            static Shader & create(const vector<string> & shaderFiles, const enum ShaderType type);
+
             //编译shader
             const bool compile(void) const;
             
@@ -43,7 +45,8 @@ namespace engine
             virtual ~Shader(void);
             virtual const bool init(void);
             virtual const bool init(const enum ShaderType type);
-            virtual const bool init(const string & fileName, const enum ShaderType type);
+            // virtual const bool init(const string & fileName, const enum ShaderType type);
+            virtual const bool init(const vector<string> & shaderFiles, const enum ShaderType type);
             
         private:
             GLuint _shaderId;
