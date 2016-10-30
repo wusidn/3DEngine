@@ -7,7 +7,7 @@
 
 namespace engine
 {
-    struct enum MateriaType {
+    enum MateriaType {
         //纯色
         Purity,
         //彩色
@@ -40,7 +40,7 @@ namespace engine
         ColorRGBA _color;
         ColorRGBA * _colors;
         unsigned int _colorsCount;
-        struct MateriaType _materiaType; 
+        MateriaType _materiaType; 
     };
 }
 

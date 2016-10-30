@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <string>
 #include <list>
+#include <vector>
 
 #include "Object.h"
 #include "Shader.h"
@@ -22,6 +23,7 @@ namespace engine
             
             static ShaderProgram & create(const list<const Shader *> & shaderList);
             static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
+            static ShaderProgram & create(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles);
 
             static ShaderProgram & createTemplat(void);
             

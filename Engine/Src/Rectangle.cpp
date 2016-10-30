@@ -34,9 +34,6 @@ namespace engine
         Vec3 tempVertexs[4] = {Vec3(.0f, .0f), Vec3(_size.width, .0f), Vec3(.0f, _size.height), Vec3(_size.width, _size.height)};
         vertexs(tempVertexs);
 
-        ColorRGBA tempColors[4] = {ColorRGBA(1.0f, .0f, .0f), ColorRGBA(.0f, 1.0f, .0f), ColorRGBA(1.0f, .0f, .0f), ColorRGBA(.0f, 1.0f, .0f)};
-        colors(tempColors);
-
         unsigned short tempIndies[4] = {0, 1, 2, 3};
         indies(tempIndies);
 

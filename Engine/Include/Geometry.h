@@ -14,7 +14,7 @@ namespace engine
     class Geometry : public Node
     {
     public:
-        const bool bindMateria(const Materia & m);
+        const bool bindMateria(Materia & m);
     protected:
         virtual ~Geometry(void);
         virtual const bool init(void);

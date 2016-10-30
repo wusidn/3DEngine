@@ -10,6 +10,7 @@ namespace engine
     const Materia & Materia::defaultMateria(void)
     {
         static Materia & instance = Materia::create();
+        instance.retain();
         return instance;
     }
 
@@ -26,8 +27,12 @@ namespace engine
 
     const bool Materia::init(void)
     {
+        if(!Object::init()){
+            return false;
+        }
         _materiaType = MateriaType::Purity;
-        color = ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);    
+        _color = ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+        return true;
     }
 
     const bool Materia::color(const ColorRGBA & c)
@@ -45,7 +50,7 @@ namespace engine
         return _color;
     }
 
-    const bool colors(const ColorRGBA * colors, const unsigned int count)
+    const bool Materia::colors(const ColorRGBA * colors, const unsigned int count)
     {
 
         if(!colors) return false;

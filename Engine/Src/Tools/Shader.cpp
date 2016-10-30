@@ -33,7 +33,7 @@ namespace engine
             return create(fileList, type);
         }
 
-        static Shader & Shader::create(const vector<string> & shaderFiles, const enum ShaderType type)
+        Shader & Shader::create(const vector<string> & shaderFiles, const enum ShaderType type)
         {
             Shader & result = create();
             bool shaderInit = result.init(shaderFiles, type);
@@ -178,6 +178,8 @@ namespace engine
             //替换占位符
             source.replace(source.find(globalCodeKey), globalCodeKey.size(), globalCode);
             source.replace(source.find(mainCodeKey), mainCodeKey.size(), mainCode);
+
+            Log.info("source code: {0}", source);
              
             const GLchar * p_source = source.c_str();
             glShaderSource(_shaderId, 1, &p_source, nullptr);

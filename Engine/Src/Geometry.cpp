@@ -11,7 +11,7 @@ namespace engine
 {
     using namespace tools;
 
-    const bool Geometry::bindMateria(const Materia & m)
+    const bool Geometry::bindMateria(Materia & m)
     {
         _materia = &m;
         return true;
@@ -25,7 +25,7 @@ namespace engine
 
         _vertexs = nullptr;
         _indies = nullptr;
-        _materia = &Materia::defaultMateria();
+        _materia = (engine::Materia*)&(Materia::defaultMateria());
 
         _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 
@@ -36,7 +36,6 @@ namespace engine
 
     void Geometry::vertexsCount(const unsigned short count)
     {
-        colorsCount(count);
         
         _vertexsCount = 0;
         if(_vertexs){
@@ -212,7 +211,7 @@ namespace engine
             case MateriaType::Multicolor:
                 glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _materia->colorsCount(), nullptr, GL_STATIC_DRAW);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _vertexs);
-                glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _materia->colorsCount(), _materia->colors();
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _materia->colorsCount(), _materia->colors());
             break;
             default:
                 Log.error("materiaType({0}) is ndefine!", materiaType);
