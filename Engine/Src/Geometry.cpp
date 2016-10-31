@@ -1,9 +1,13 @@
 #include "Geometry.h"
 #include <iostream>
 #include <cstring>
+#include <vector>
+
 #include "LogManager.h"
 #include "Zeus.h"
 #include "Matrix4.h"
+#include "ShaderProgram.h"
+
 
 using namespace std;
 
@@ -14,6 +18,13 @@ namespace engine
     const bool Geometry::bindMateria(Materia & m)
     {
         _materia = &m;
+        m.retain();
+
+        //更新着色器
+        if(!updateShaderProgram()){
+            return false;
+        }
+
         return true;
     }
 
@@ -26,6 +37,7 @@ namespace engine
         _vertexs = nullptr;
         _indies = nullptr;
         _materia = (engine::Materia*)&(Materia::defaultMateria());
+        updateShaderProgram();
 
         _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
 
@@ -228,7 +240,8 @@ namespace engine
         glBindVertexArray(0);
 
         //启用着色器程序
-        Zeus::instance().defaultShaderProgram().use();
+        // Zeus::instance().defaultShaderProgram().use();
+        _shaderProgram->use();
 
 
         //创建旋转  缩放  平移到世界坐标 矩阵
@@ -247,6 +260,41 @@ namespace engine
         //p
 
 
+
+        return true;
+    }
+
+    const bool Geometry::updateShaderProgram(void)
+    {
+        vector<string> vShaderFiles, fShaderFiles;
+
+        if(_materia){
+            switch(_materia->materiaType())
+            {
+                case MateriaType::Purity:
+                    vShaderFiles.push_back("MPurity.vert");
+                    fShaderFiles.push_back("MPurity.frag");
+                break;
+                default:
+                return false;
+            }
+        }
+
+        //创建新的着色器
+        ShaderProgram & newShaderProgram = ShaderProgram::create(vShaderFiles, fShaderFiles);
+        if(!newShaderProgram.ready()){
+            return false;
+        }
+        
+        //解除链接
+        if(_shaderProgram != nullptr){
+            _shaderProgram->release();
+            _shaderProgram = nullptr;
+        }
+
+        //建立新的链接
+        _shaderProgram = &newShaderProgram;
+        _shaderProgram->retain();
 
         return true;
     }

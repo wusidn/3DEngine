@@ -42,8 +42,6 @@ namespace engine
         //设置窗口位置 (只取整数部分)
         const Zeus & windowPosition(const Vec2 & _position) const;
 
-        ShaderProgram & defaultShaderProgram(void);
-
     protected:
         CREATEFUNC(Zeus);
         virtual const bool init(void);

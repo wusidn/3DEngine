@@ -5,8 +5,8 @@
 
 #include <GL/glew.h>
 #include <string>
-#include <list>
 #include <vector>
+#include <map>
 
 #include "Object.h"
 #include "Shader.h"
@@ -21,7 +21,7 @@ namespace engine
         {
         public:
             
-            static ShaderProgram & create(const list<const Shader *> & shaderList);
+            static ShaderProgram & create(const vector<const Shader *> & shaderList);
             static ShaderProgram & create(const string & vShaderPath, const string & fShaderPath);
             static ShaderProgram & create(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles);
 
@@ -45,14 +45,16 @@ namespace engine
             ShaderProgram(void){}
             
             virtual const bool init(void);
-            virtual const bool init(const list<const Shader *> & shaderList);
+            virtual const bool init(const vector<const Shader *> & shaderList);
             virtual const bool init(const string & vShaderPath, const string & fShaderPath);
+            virtual const bool init(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles);
             
         private:
             unsigned int _programId;
             
             //链接是否成功
             const bool linkIsSuccessful(void) const;
+            static map<string, ShaderProgram *> shaderProgramsPool;
 
         };
     }

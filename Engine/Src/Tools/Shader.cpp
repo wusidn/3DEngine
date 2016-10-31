@@ -21,7 +21,7 @@ namespace engine
 
             assert(shaderInit);
 
-            if(shaderInit){
+            if(!shaderInit){
                 result.initializeError(1);
             }
             return result;
@@ -40,7 +40,7 @@ namespace engine
 
             assert(shaderInit);
 
-            if(shaderInit){
+            if(!shaderInit){
                 result.initializeError(1);
             }
             return result;

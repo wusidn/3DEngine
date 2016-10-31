@@ -6,8 +6,15 @@ namespace engine
 {
     namespace tools
     {
-        ShaderProgram & ShaderProgram::create(const list<const Shader *> & shaderList)
+
+        //着色器缓存池
+        map<string, ShaderProgram *> ShaderProgram::shaderProgramsPool;
+
+        ShaderProgram & ShaderProgram::create(const vector<const Shader *> & shaderList)
         {
+
+            //* 待实现 __着色器缓存池__
+
             ShaderProgram & result = create();
             bool shaderProgramInit = result.init(shaderList);
 
@@ -21,8 +28,27 @@ namespace engine
 
         ShaderProgram & ShaderProgram::create(const string & vShaderPath, const string & fShaderPath)
         {
+
+            //* 待实现 __着色器缓存池__
+
             ShaderProgram & result = create();
             bool shaderProgramInit = result.init(vShaderPath, fShaderPath);
+
+            assert(shaderProgramInit);
+
+            if(!shaderProgramInit){
+                result.initializeError(1);
+            }
+            return result; 
+        }
+
+        ShaderProgram & ShaderProgram::create(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles)
+        {
+
+            //* 待实现 __着色器缓存池__
+
+            ShaderProgram & result = create();
+            bool shaderProgramInit = result.init(vShaderFiles, fShaderFiles);
 
             assert(shaderProgramInit);
 
@@ -57,14 +83,14 @@ namespace engine
             return true;
         }
 
-        const bool ShaderProgram::init(const list<const Shader *> & shaderList)
+        const bool ShaderProgram::init(const vector<const Shader *> & shaderList)
         {
-            for(auto item = shaderList.begin(); item != shaderList.end(); ++item){
-                if(!(*item)->compileIsSuccessful()){
+            for(auto item : shaderList){
+                if(!item->compileIsSuccessful()){
                     Log.error("ShaderProgram::init Shader Is Not Compiled!");
                     return false;
                 }
-                if(!attachShader(**item)){
+                if(!attachShader(*item)){
                     return false;
                 }
             }
@@ -93,6 +119,28 @@ namespace engine
                 return false;
             }
             
+            return true;
+        }
+
+        const bool ShaderProgram::init(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles)
+        {
+            Shader & vertexShader = vShaderFiles.size() <= 0 ? Shader::create(ShaderType::vertex) : Shader::create(vShaderFiles, ShaderType::vertex);
+            if(!vertexShader.compile()){
+                return false;
+            }
+
+            Shader & fragmentShader = fShaderFiles.size() <= 0 ? Shader::create(ShaderType::fragment) : Shader::create(fShaderFiles, ShaderType::fragment);
+            if(!fragmentShader.compile()){
+                return false;
+            }
+
+            attachShader(vertexShader);
+            attachShader(fragmentShader);
+            linkProgram();
+
+            if(!linkIsSuccessful()){
+                return false;
+            }
             return true;
         }
 

@@ -1,5 +1,6 @@
 #include "Triangle.h"
 #include "LogManager.h"
+#include "Materia.h"
 
 namespace engine
 {
@@ -32,11 +33,15 @@ namespace engine
     const bool Triangle::init(const Vec3 & vertex_1, const Vec3 & vertex_2, const Vec3 & vertex_3)
     {
 
+        Materia & materia = Materia::create();
+
+        ColorRGBA tempColors[3] = {ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f)};
+        materia.colors(tempColors, sizeof(tempColors) / sizeof(ColorRGBA));
+
+        bindMateria(materia);
         Vec3 tempVertexs[3] = {vertex_1, vertex_2, vertex_3};
-        // ColorRGBA tempColors[3] = {ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f), ColorRGBA(.2f, 1.0f, .4f, 1.0f)};
 
         vertexs(tempVertexs);
-        // colors(tempColors);
 
         return true;
     }

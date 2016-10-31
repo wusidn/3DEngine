@@ -22,6 +22,9 @@ namespace engine
         CREATEFUNC(Materia);
         static const Materia & defaultMateria(void);
 
+        static const Materia & create(const ColorRGBA & c);
+        static const Materia & create(const ColorRGBA * colors, const unsigned int count);
+
         const bool color(const ColorRGBA & c);
         const ColorRGBA & color(void) const;
         
