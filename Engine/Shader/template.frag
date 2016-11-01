@@ -4,6 +4,6 @@
 
 void main()
 {
-    #mainCode
+#mainCode
 }
 

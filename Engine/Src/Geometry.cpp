@@ -28,20 +28,25 @@ namespace engine
         return true;
     }
 
+    Geometry::Geometry(void)
+    {
+        _vertexs = nullptr;
+        _indies = nullptr;
+        _materia = nullptr;
+        _shaderProgram = nullptr;
+
+        _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
+        _vertexsCount = _indiesCount = 0;
+    }
+
     const bool Geometry::init(void)
     {
         if(!Node::init()){
             return false;
         }
 
-        _vertexs = nullptr;
-        _indies = nullptr;
         _materia = (engine::Materia*)&(Materia::defaultMateria());
         updateShaderProgram();
-
-        _vertexArrayObject = _vertexBufferObject = _indiesBufferObject = 0;
-
-        _vertexsCount = _indiesCount = 0;
 
         return true;
     }
@@ -210,6 +215,10 @@ namespace engine
 
         glBindVertexArray(_vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
+
+        if(!_materia){
+            return false;
+        }
 
         MateriaType materiaType = _materia->materiaType();
 

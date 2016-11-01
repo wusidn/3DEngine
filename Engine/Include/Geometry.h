@@ -18,6 +18,7 @@ namespace engine
     public:
         const bool bindMateria(Materia & m);
     protected:
+        Geometry(void);
         virtual ~Geometry(void);
         virtual const bool init(void);
 
