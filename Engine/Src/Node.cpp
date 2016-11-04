@@ -14,9 +14,8 @@ namespace engine
 
     const bool Node::init(void)
     {
-        if(!Object::init()){
-            return false;
-        }
+        if(!Object::init()){ return false; }
+
         worldCoordinateInvalid();
         return true;
     }
@@ -24,7 +23,8 @@ namespace engine
     Node & Node::root(void)
     {
         Node * result = this;
-        while(result->parent()){
+        while(result->parent())
+        {
             result = result->parent();
         }
         return *result;
@@ -43,9 +43,9 @@ namespace engine
     void Node::append(Node & child)
     {
         _chidren.push_back(&child);
-        if(child._parent){
-            child._parent->remove(child);
-        }
+
+        if(child._parent){ child._parent->remove(child); }
+
         child._parent = this;
         child.retain();
     }
@@ -53,20 +53,24 @@ namespace engine
     void Node::remove(Node & child)
     {
         auto item = _chidren.begin();
-        while(item != _chidren.end()){
-            if(*item == &child){
+        while(item != _chidren.end())
+        {
+            if(*item == &child)
+            {
                 (*item)->release();
                 (*item)->_parent = nullptr;
                 item = _chidren.erase(item);
                 break;
             }
+
             item++;
         }
     }
 
     void Node::clear(void)
     {
-        for(auto item  = _chidren.begin(); item != _chidren.end(); ++item){
+        for(auto item  = _chidren.begin(); item != _chidren.end(); ++item)
+        {
             (*item)->release();
         }
         _chidren.clear();
@@ -117,14 +121,10 @@ namespace engine
 
     const Vec3 Node::calculateWorldCoordinate(void)
     {
-        if(_worldCoordinateInvalid){
-            return _worldCoordinate;
-        }
+        if(_worldCoordinateInvalid){ return _worldCoordinate; }
 
         _worldCoordinate = _position;
-        if(!_parent){
-            return _worldCoordinate;
-        }
+        if(!_parent){ return _worldCoordinate; }
 
         //世界坐标偏移
         Size3 worldCoordinateOffset = _parent->calculateWorldCoordinate().convertToSize3();
@@ -156,7 +156,8 @@ namespace engine
 
     void Node::posterityWorldCoordinateInvalid(void)
     {
-        for(auto node : _chidren){
+        for(auto node : _chidren)
+        {
             node->worldCoordinateInvalid();
         }
     }
@@ -183,10 +184,9 @@ namespace engine
         //更新世界坐标系位置
         calculateWorldCoordinate();
 
-        for(auto node : _chidren){
-            if(!node->render(dt)){
-                return false;
-            }
+        for(auto node : _chidren)
+        {
+            if(!node->render(dt)){ return false; }
         }
         return true;
     }
@@ -194,10 +194,9 @@ namespace engine
     const bool Node::draw(const Matrix4 & projection)
     {
 
-        for(auto node : _chidren){
-            if(!node->draw(projection)){
-                return false;
-            }
+        for(auto node : _chidren)
+        {
+            if(!node->draw(projection)){ return false; }
         }
         return true;
     }

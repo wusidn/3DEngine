@@ -126,39 +126,42 @@ namespace engine
                 unsigned parameterCount = sizeof...(Arguments);
 
 
-                if(parameterCount){
-
+                if(parameterCount)
+                {
                     //将所有转义字符替换成　Uuid
                     
                     static regex escapeReg("\\\\.");
                     auto matchBegin = sregex_iterator(str.begin(), str.end(), escapeReg);
                     auto matchEnd = sregex_iterator();
 
-                    for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
+                    for(sregex_iterator item = matchBegin; item != matchEnd; ++item)
+                    {
                         string key = item->str();
                         auto it = escapes.find(key);
-                        if(it == escapes.end()){
+                        if(it == escapes.end())
+                        {
                             auto result = escapes.insert(pair<string, string>(key, Uuid::create().toString()));
                             assert(result.second);
                             
                             it = result.first;
                         }
-                        for(size_t found = str.find(it->first); found != string::npos; found = str.find(it->first)){
+                        for(size_t found = str.find(it->first); found != string::npos; found = str.find(it->first))
+                        {
                             str.replace(str.begin() + found, str.begin() + found + it->first.length(), it->second);
                         }
                     }
 
                     //匹配占位符:{index[:format]}
 
-                    //不提前处理转义字符　　　匹配不到时　c++ regex　会卡住
+                    //如果不提前处理转义字符　　匹配不到时　c++ regex　会卡住
                     //js 可用: /([^\\{]*(\\.)?)*({(\d)([\s]*,[\s]*(([^\\}]*(\\.)?)*))?})/ig;
                     //static regex reg("([^\\\\\\{]*(\\\\.)?)*(\\{(\\d)([\\s]*,[\\s]*(([^\\\\\\}]*(\\\\.)?)*))?\\})");
 
                     static regex reg("\\{(\\d*)\\s*(,\\s*([^\\}]*?)\\s*)?\\}");
                     matchBegin = sregex_iterator(str.begin(), str.end(), reg);
                     
-                    for(sregex_iterator item = matchBegin; item != matchEnd; ++item){
-
+                    for(sregex_iterator item = matchBegin; item != matchEnd; ++item)
+                    {
                         placeholder temp = {
                             .paraIndex = (unsigned)atoi(item->str(1).c_str()),
                             .str = item->str(0),
@@ -166,7 +169,8 @@ namespace engine
                         };
 
                         bool exist = false;
-                        for(auto item : placeholders){
+                        for(auto item : placeholders)
+                        {
                             if(item.str != temp.str) continue; 
                             exist = true;
                             break;
@@ -188,7 +192,8 @@ namespace engine
                 }
 
                 //对转义字符进行转义
-                for(auto& item : escapes){
+                for(auto& item : escapes)
+                {
                     for(size_t found = str.find(item.second); found != string::npos; found = str.find(item.second)){
                         str.replace(str.begin() + found, str.begin() + found + item.second.length(), item.first.substr(1, 1));
                     }
@@ -220,7 +225,8 @@ namespace engine
             void _replace(string & str, const vector<placeholder> & placeholders, const unsigned parameterIndex, const Argument & arg) const
             {
 
-                for(auto item : placeholders){
+                for(auto item : placeholders)
+                {
                     if(item.paraIndex != parameterIndex) continue;
 
                     for(auto index = str.find(item.str); index != string::npos; index = str.find(item.str)){
@@ -235,13 +241,13 @@ namespace engine
             {
                 stringstream strs;
                 bool needFormat = format.length() > 0;
-                if(!needFormat){
-                    strs << source;
-                }else{
+                if(needFormat)
+                {
                     stringstream ss_source;
                     ss_source << source;
                     _format_aline(strs, format, ss_source.str()) || _format_D(strs, format, ss_source.str()) || _format_C(strs, format, ss_source.str()) || _format_F(strs, format, ss_source.str());
-                }
+                    
+                } else { strs << source; }
 
                 return strs.str();;
             }

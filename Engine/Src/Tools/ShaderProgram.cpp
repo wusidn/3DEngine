@@ -20,9 +20,7 @@ namespace engine
 
             assert(shaderProgramInit);
 
-            if(!shaderProgramInit){
-                result.initializeError(1);
-            }
+            if(!shaderProgramInit){ result.initializeError(1); }
             return result;
         }
 
@@ -36,9 +34,7 @@ namespace engine
 
             assert(shaderProgramInit);
 
-            if(!shaderProgramInit){
-                result.initializeError(1);
-            }
+            if(!shaderProgramInit){ result.initializeError(1); }
             return result; 
         }
 
@@ -52,9 +48,7 @@ namespace engine
 
             assert(shaderProgramInit);
 
-            if(!shaderProgramInit){
-                result.initializeError(1);
-            }
+            if(!shaderProgramInit){ result.initializeError(1); }
             return result; 
         }
 
@@ -64,35 +58,31 @@ namespace engine
             
             bool shaderProgramInit = result.init("", "");
 
-            if(!shaderProgramInit){
-                result.initializeError(1);
-            }
+            if(!shaderProgramInit){ result.initializeError(1); }
             return result; 
         }
 
         const bool ShaderProgram::init(void)
         {
-            if(!Object::init()){
-                return false;
-            }
+            if(!Object::init()){ return false; }
+
             _programId = glCreateProgram();
-            if(glIsProgram(_programId) != GL_TRUE){
-                return false;
-            }
+            if(glIsProgram(_programId) != GL_TRUE){ return false; }
 
             return true;
         }
 
         const bool ShaderProgram::init(const vector<const Shader *> & shaderList)
         {
-            for(auto item : shaderList){
-                if(!item->compileIsSuccessful()){
+            for(auto item : shaderList)
+            {
+                if(!item->compileIsSuccessful())
+                {
                     Log.error("ShaderProgram::init Shader Is Not Compiled!");
                     return false;
                 }
-                if(!attachShader(*item)){
-                    return false;
-                }
+
+                if(!attachShader(*item)){ return false; }
             }
             
             return true;
@@ -102,22 +92,16 @@ namespace engine
         {
         
             Shader & vertexShader = vShaderPath.size() <= 0 ? Shader::create(ShaderType::vertex) : Shader::create(vShaderPath, ShaderType::vertex);
-            if(!vertexShader.compile()){
-                return false;
-            }
+            if(!vertexShader.compile()){ return false; }
 
             Shader & fragmentShader = fShaderPath.size() <= 0 ? Shader::create(ShaderType::fragment) : Shader::create(fShaderPath, ShaderType::fragment);
-            if(!fragmentShader.compile()){
-                return false;
-            }
+            if(!fragmentShader.compile()){ return false; }
 
             attachShader(vertexShader);
             attachShader(fragmentShader);
             linkProgram();
 
-            if(!linkIsSuccessful()){
-                return false;
-            }
+            if(!linkIsSuccessful()){ return false; }
             
             return true;
         }
@@ -125,30 +109,30 @@ namespace engine
         const bool ShaderProgram::init(const vector<string> & vShaderFiles, const vector<string> & fShaderFiles)
         {
             Shader & vertexShader = vShaderFiles.size() <= 0 ? Shader::create(ShaderType::vertex) : Shader::create(vShaderFiles, ShaderType::vertex);
-            if(!vertexShader.compile()){
-                return false;
-            }
+            if(!vertexShader.compile()){ return false; }
 
             Shader & fragmentShader = fShaderFiles.size() <= 0 ? Shader::create(ShaderType::fragment) : Shader::create(fShaderFiles, ShaderType::fragment);
-            if(!fragmentShader.compile()){
-                return false;
-            }
+            if(!fragmentShader.compile()){ return false; }
 
             attachShader(vertexShader);
             attachShader(fragmentShader);
             linkProgram();
 
-            if(!linkIsSuccessful()){
-                return false;
-            }
+            if(!linkIsSuccessful()){ return false; }
             return true;
+        }
+
+        ShaderProgram::ShaderProgram(void)
+        {
+            _programId = 0;
         }
 
 
         const bool ShaderProgram::attachShader(const Shader & shader) const
         {
             const unsigned int shaderId = shader.shaderId();
-            if(!shaderId){
+            if(!shaderId)
+            {
                 Log.error("# ShaderProgram::attachShader #  Shader Is Not legitimate!");
                 return false;
             }
@@ -159,7 +143,8 @@ namespace engine
         const bool ShaderProgram::detachShader(const Shader & shader) const
         {
             const unsigned int shaderId = shader.shaderId();
-            if(!shaderId){
+            if(!shaderId)
+            {
                 Log.error("# ShaderProgram::detachShader #  Shader Is Not legitimate!");
                 return false;
             }
@@ -173,15 +158,11 @@ namespace engine
 
             GLint linked;
             glGetProgramiv(_programId, GL_LINK_STATUS, &linked);
-            if(linked == GL_TRUE){
-                return true;
-            }
+            if(linked == GL_TRUE){ return true; }
 
             GLint info_len = 0;
             glGetProgramiv(_programId, GL_INFO_LOG_LENGTH, &info_len);
-            if(!info_len){
-                Log.error("# ShaderProgram::linkProgram #  Not Fined Error Info");
-            }
+            if(!info_len){ Log.error("# ShaderProgram::linkProgram #  Not Fined Error Info"); }
 
             GLchar * buff = new GLchar[info_len];
             glGetProgramInfoLog(_programId, info_len, nullptr, buff);
@@ -193,23 +174,19 @@ namespace engine
 
         const bool ShaderProgram::use(void) const
         {
-            if(!linkIsSuccessful()){
-                return false;
-            }
+            if(!linkIsSuccessful()){ return false; }
             glUseProgram(_programId);
             return true;
         }
 
         const bool ShaderProgram::linkIsSuccessful(void) const
         {
-            if(glIsProgram(_programId) != GL_TRUE){
-                return false;
-            }
+            if(glIsProgram(_programId) != GL_TRUE){ return false; }
+
             GLint linked;
             glGetProgramiv(_programId, GL_LINK_STATUS, &linked);
-            if(linked != GL_TRUE){
-                return false;
-            }
+            if(linked != GL_TRUE){ return false; }
+            
             return true;
         }
     }

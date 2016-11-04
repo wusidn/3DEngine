@@ -11,18 +11,14 @@ namespace engine
 
         assert(rectangleInit);
 
-        if(!rectangleInit){
-            result.initializeError(1);
-        }
+        if(!rectangleInit){ result.initializeError(1); }
 
         return result;
     }
 
     const bool Rectangle::init(void)
     {
-        if(!Geometry::init()){
-            return false;
-        }
+        if(!Geometry::init()){ return false; }
         vertexsCount(4);
         indiesCount(4);
         return true;
@@ -42,18 +38,14 @@ namespace engine
 
     const bool Rectangle::render(const int dp)
      {
-         if(!Geometry::render(dp)){
-             return false;
-         }
+         if(!Geometry::render(dp)){ return false; }
 
          return true;
      }
 
      const bool Rectangle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(projection)){
-             return false;
-         }
+         if(!Geometry::draw(projection)){ return false; }
 
         glBindVertexArray(vertexArrayObject());
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject());

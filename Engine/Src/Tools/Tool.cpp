@@ -11,12 +11,15 @@ namespace engine
         //返回字符串实际长度（单位是一个英文字符）
         const unsigned getStringLength(const string & str, const string & coding){
             unsigned result = 0;
-            if(coding == "utf-8"){
+            if(coding == "utf-8")
+            {
                 //根据utf-8编码规则判断一个字符占几个字节
-                for(size_t i = 0; i < str.length();){
+                for(size_t i = 0; i < str.length();)
+                {
                     int length = 0;
                     unsigned short temp = str.at(i) & 0x00FF;
-                    while((temp << length & 0x00FF) > 1 << 7){
+                    while((temp << length & 0x00FF) > 1 << 7)
+                    {
                         length ++;
                     }
                     //大于０x80的字符是中文并且占两个英文字符的宽度
@@ -24,7 +27,8 @@ namespace engine
                     length = length < 1 ? 1 : length;
                     i += length;
                 }
-            }else{
+            }else
+            {
                 //其他编码类型还没有做
                 result = str.length();
             }

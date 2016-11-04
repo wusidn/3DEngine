@@ -16,18 +16,15 @@ namespace engine
 
         assert(imageInit);
 
-        if(!imageInit){
-            result.initializeError(1);
-        }
+        if(!imageInit){ result.initializeError(1); }
 
         return result;
     }
 
     const bool Image::init(void)
     {
-        if(!Object::init()){
-            return false;
-        }
+        if(!Object::init()){ return false; }
+        
         _width = _height = _n = 0;
         _data = nullptr;
 
@@ -37,18 +34,16 @@ namespace engine
     const bool Image::init(const string & path)
     {
         
-        string checkPath = "";
+        string checkPath = File::pathIsExists(path) ? path : "";
 
-        if(checkPath.size() <= 0){
-            checkPath = File::pathIsExists(path) ? path : "";
-        }
-
-        if(checkPath.size() <= 0){
+        if(checkPath.size() <= 0)
+        {
             string temp = Appaction::appactionPath() + "Source/" + path;
             checkPath = File::pathIsExists(temp) ? temp : "";
         }
         
-        if(checkPath.size() <= 0){
+        if(checkPath.size() <= 0)
+        {
             Log.error("Path: [{0}] Is Not Exists!", path);
             return false;
         }

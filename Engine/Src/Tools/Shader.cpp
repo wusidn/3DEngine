@@ -21,9 +21,7 @@ namespace engine
 
             assert(shaderInit);
 
-            if(!shaderInit){
-                result.initializeError(1);
-            }
+            if(!shaderInit){ result.initializeError(1); }
             return result;
         }
 
@@ -40,17 +38,13 @@ namespace engine
 
             assert(shaderInit);
 
-            if(!shaderInit){
-                result.initializeError(1);
-            }
+            if(!shaderInit){ result.initializeError(1); }
             return result;
         }
 
         const bool Shader::init(void)
         {
-            if(!Object::init()){
-                return false;
-            }
+            if(!Object::init()){ return false; }
             _shaderId = 0;
             return true;
         }
@@ -60,9 +54,7 @@ namespace engine
 
             string source;
             _shaderId = glCreateShader(type);
-            if(glIsShader(_shaderId) != GL_TRUE){
-                return false;
-            }
+            if(glIsShader(_shaderId) != GL_TRUE){ return false; }
 
             switch(type)
             {
@@ -93,18 +85,16 @@ namespace engine
             vector<string> filePathList;
             for(auto fileName : shaderFiles)
             {
-                string shaderFilePath = "";
+                string shaderFilePath = File::pathIsExists(fileName) ? fileName : "";
 
-                if(shaderFilePath.size() <= 0){
-                    shaderFilePath = File::pathIsExists(fileName) ? fileName : "";
-                }
-
-                if(shaderFilePath.size() <= 0){
+                if(shaderFilePath.size() <= 0)
+                {
                     string tempPath = Appaction::appactionPath() + "Shader/" + fileName;
                     shaderFilePath = File::pathIsExists(tempPath) ? tempPath : "";
                 }
 
-                if(shaderFilePath.size() <= 0){
+                if(shaderFilePath.size() <= 0)
+                {
                     Log.error("Shader: [{0}] Is Not Exists!", fileName);
                     return false;
                 }  
@@ -114,7 +104,8 @@ namespace engine
             //获取代码模板
             string source;
             _shaderId = glCreateShader(type);
-            if(glIsShader(_shaderId) != GL_TRUE){
+            if(glIsShader(_shaderId) != GL_TRUE)
+            {
                 return false;
             }
 
@@ -147,7 +138,8 @@ namespace engine
 
                 auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
                 auto matchEnd = sregex_iterator();
-                for(auto item  = matchBegin; item != matchEnd; ++item){
+                for(auto item  = matchBegin; item != matchEnd; ++item)
+                {
                     removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
                 }
                 
@@ -161,13 +153,10 @@ namespace engine
                     auto contentIndex = bodyIndex + searchResult[0].str().size();
                     auto begin = removeAfterCode.begin();
                     auto i = begin + contentIndex;
-                    for(; i != removeAfterCode.end() && openLeftBraceCount; ++i){
-                        if(*i == '{'){
-                            ++openLeftBraceCount;
-                        }
-                        if(*i == '}'){
-                            --openLeftBraceCount;
-                        }
+                    for(; i != removeAfterCode.end() && openLeftBraceCount; ++i)
+                    {
+                        if(*i == '{'){ ++openLeftBraceCount; }
+                        if(*i == '}'){ --openLeftBraceCount; }
                     }
                     mainCode += removeAfterCode.substr(contentIndex, i - begin - contentIndex - 1);
                     globalCode += removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
@@ -187,20 +176,24 @@ namespace engine
             return true;
         }
 
+        Shader::Shader(void)
+        {
+            _shaderId = 0;
+        }
+
         const bool Shader::compile(void) const
         {
             glCompileShader(_shaderId);
 
             GLint compiled = 0;
             glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compiled);
-            if(compiled == GL_TRUE){
-                return true;
-            }
+            if(compiled == GL_TRUE){ return true; }
 
             GLint infoLen = 0;
             glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &infoLen);
 
-            if(infoLen == 0){
+            if(infoLen == 0)
+            {
                 Log.error("# Shader::compile #  Not Fined Error Info");
                 return false;
             }
@@ -216,17 +209,15 @@ namespace engine
 
         const unsigned int Shader::shaderId(void) const
         {
-            if(!compileIsSuccessful()){
-                return 0;
-            }
+            if(!compileIsSuccessful()){ return 0; }
+
             return _shaderId;
         }
 
         const bool Shader::compileIsSuccessful(void) const
         {
-            if(glIsShader(_shaderId) != GL_TRUE){
-                return false;
-            }
+            if(glIsShader(_shaderId) != GL_TRUE){ return false; }
+
             GLint compiled = 0;
             glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compiled);
             return compiled == GL_TRUE;
@@ -234,7 +225,8 @@ namespace engine
 
         Shader::~Shader(void)
         {
-            if(glIsShader(_shaderId) == GL_TRUE){
+            if(glIsShader(_shaderId) == GL_TRUE)
+            {
                 glDeleteShader(_shaderId);
             }
         }

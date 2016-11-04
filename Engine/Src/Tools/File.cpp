@@ -17,33 +17,31 @@ namespace engine
             string result;
             ifstream is(filePath);
 
-            if(!is){
+            if(!is)
+            { 
                 Log.error("# File::readAllText # filePath is not legal");
+                return result;
             }
-
-            if(is){
                 
-                is.seekg (0, is.end);
-                int length = is.tellg();
-                is.seekg (0, is.beg);
-                
-                char * temp = new char[length + 1];
-                temp[length] = 0;
-                is.read (temp,length);
-                is.close();
-                
-                result = string(temp);
-                delete temp;
-            }
+            is.seekg (0, is.end);
+            int length = is.tellg();
+            is.seekg (0, is.beg);
+            
+            char * temp = new char[length + 1];
+            temp[length] = 0;
+            is.read (temp,length);
+            is.close();
+            
+            result = string(temp);
+            delete temp;
 
             return result;
         }
 
         const bool File::pathIsExists(const string & path)
         {
-            if(access(path.c_str(), 0) != -1){
-                return true;
-            }
+            if(access(path.c_str(), 0) != -1) return true;
+
             return false;
         }
 
@@ -55,9 +53,7 @@ namespace engine
             assert(fileInit);
 
             //出错了
-            if(!fileInit){
-                result.initializeError(1);
-            }
+            if(!fileInit){ result.initializeError(1); }
 
             return result;
         }
@@ -80,10 +76,7 @@ namespace engine
 
         const bool File::open(const int mode)
         {
-            if(!this->_filePath){
-                //error
-                return false;
-            }
+            if(!this->_filePath){ return false; }
             
             return true;
         }
@@ -96,7 +89,8 @@ namespace engine
 
         File::~File(void)
         {
-            if(this->_filePath){
+            if(this->_filePath)
+            {
                 delete this->_filePath;
                 this->_filePath = nullptr;
             }

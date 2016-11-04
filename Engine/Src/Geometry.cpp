@@ -21,9 +21,7 @@ namespace engine
         m.retain();
 
         //更新着色器
-        if(!updateShaderProgram()){
-            return false;
-        }
+        if(!updateShaderProgram()){ return false; }
 
         return true;
     }
@@ -41,9 +39,7 @@ namespace engine
 
     const bool Geometry::init(void)
     {
-        if(!Node::init()){
-            return false;
-        }
+        if(!Node::init()){ return false; }
 
         _materia = (engine::Materia*)&(Materia::defaultMateria());
         updateShaderProgram();
@@ -55,26 +51,27 @@ namespace engine
     {
         
         _vertexsCount = 0;
-        if(_vertexs){
-            delete[] _vertexs;
-        }
+        if(_vertexs) { delete[] _vertexs; }
 
-        if(!count){
+        if(!count)
+        {
             _vertexs = nullptr;
             return;
         }
 
         _vertexs = new Vec3[count];
-        if(!_vertexs) return;
+        if(!_vertexs){ return; }
 
 
         //申请顶点数组对象
-        while(!_vertexArrayObject){
+        while(!_vertexArrayObject)
+        {
             glGenVertexArrays(1, &_vertexArrayObject);
         }
 
         //申请缓存对象
-        while(!_vertexBufferObject){
+        while(!_vertexBufferObject)
+        {
             glGenBuffers(1, &_vertexBufferObject);
         }
 
@@ -85,19 +82,16 @@ namespace engine
     {
         _indiesCount = 0;
 
-        if(_indies){
-            delete[] _indies;
-        }
+        if(_indies){ delete[] _indies; }
 
-        if(!count){
-            _indies = nullptr;
-        }
+        if(!count){ _indies = nullptr; }
 
         _indies = new unsigned short[count];
         if(!_indies) return;
 
         //申请缓存对象
-        while(!_indiesBufferObject){
+        while(!_indiesBufferObject)
+        {
             glGenBuffers(1, &_indiesBufferObject);
         }
 
@@ -139,7 +133,8 @@ namespace engine
 
     void Geometry::vertex(const unsigned short index, const Vec3 & data)
     {
-        if(index >= _vertexsCount){
+        if(index >= _vertexsCount)
+        {
             //错误信息
             return;
         }
@@ -148,7 +143,8 @@ namespace engine
 
     void Geometry::indie(const unsigned short index, const unsigned short data)
     {
-        if(index >= _indiesCount){
+        if(index >= _indiesCount)
+        {
             //错误信息
             return;
         }
@@ -191,23 +187,18 @@ namespace engine
 
     const bool Geometry::render(const int dp)
     {
-        if(!Node::render(dp)){
-            return false;
-        }
+        if(!Node::render(dp)){ return false; }
         return true;
     }
 
     const bool Geometry::draw(const Matrix4 & projection)
     {
-        if(!_vertexsCount){
-            return false;
-        }
+        if(!_vertexsCount){ return false; }
 
-        if(!Node::draw(projection)){
-             return false;
-        }
+        if(!Node::draw(projection)){ return false; }
 
-        if(_indiesCount){
+        if(_indiesCount)
+        {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indiesBufferObject);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _indiesCount, _indies, GL_STATIC_DRAW);
         }
@@ -216,9 +207,7 @@ namespace engine
         glBindVertexArray(_vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 
-        if(!_materia){
-            return false;
-        }
+        if(!_materia) { return false; }
 
         MateriaType materiaType = _materia->materiaType();
 
@@ -249,9 +238,7 @@ namespace engine
         glBindVertexArray(0);
 
         //启用着色器程序
-        // Zeus::instance().defaultShaderProgram().use();
-        _shaderProgram->use();
-
+        if(_shaderProgram){ _shaderProgram->use(); }
 
         //创建旋转  缩放  平移到世界坐标 矩阵
         //旋转
@@ -277,7 +264,8 @@ namespace engine
     {
         vector<string> vShaderFiles, fShaderFiles;
 
-        if(_materia){
+        if(_materia)
+        {
             switch(_materia->materiaType())
             {
                 case MateriaType::Purity:
@@ -285,47 +273,40 @@ namespace engine
                     fShaderFiles.push_back("MPurity.frag");
                 break;
                 default:
-                return false;
+                    return false;
             }
         }
 
         //创建新的着色器
         ShaderProgram & newShaderProgram = ShaderProgram::create(vShaderFiles, fShaderFiles);
-        if(!newShaderProgram.ready()){
-            return false;
-        }
+        if(!newShaderProgram.ready()){ return false; }
+        
         
         //解除链接
-        if(_shaderProgram != nullptr){
+        if(_shaderProgram != nullptr)
+        {
             _shaderProgram->release();
             _shaderProgram = nullptr;
         }
 
         //建立新的链接
         _shaderProgram = &newShaderProgram;
-        _shaderProgram->retain();
+        newShaderProgram.autoRelease();
+        newShaderProgram.retain();
 
         return true;
     }
 
     Geometry::~Geometry(void)
     {
-        if(_vertexs){
-            delete[] _vertexs;
-        }
+        if(_vertexs){ delete[] _vertexs; }
         
-        if(_indies){
-            delete[] _indies;
-        }
+        if(_indies){ delete[] _indies; }
 
-        if(_vertexBufferObject){
-            glDeleteBuffers(1, &_vertexBufferObject);
-        }
-        if(_vertexBufferObject){
-            glDeleteBuffers(1, &_indiesBufferObject);
-        }
-        if(_vertexBufferObject){
-            glDeleteVertexArrays(1, &_vertexArrayObject);
-        }
+        if(_vertexBufferObject){ glDeleteBuffers(1, &_vertexBufferObject); }
+
+        if(_vertexBufferObject){ glDeleteBuffers(1, &_indiesBufferObject); }
+
+        if(_vertexBufferObject){ glDeleteVertexArrays(1, &_vertexArrayObject); }
     }
 }

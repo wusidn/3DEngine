@@ -41,7 +41,7 @@ namespace engine
 
             CREATEFUNC(Shader);
 
-            Shader(void){}
+            Shader(void);
             virtual ~Shader(void);
             virtual const bool init(void);
             virtual const bool init(const enum ShaderType type);

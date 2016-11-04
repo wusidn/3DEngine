@@ -15,7 +15,8 @@ namespace engine
     Zeus & Zeus::instance()
     {
 
-        if(!_instance){
+        if(!_instance)
+        {
             _instance = &Zeus::create();
             _instance->retain();
         }
@@ -31,7 +32,8 @@ namespace engine
         }
 
         //当窗口大小发生改变
-        glutReshapeFunc([](const int _width, const int _height){
+        glutReshapeFunc([](const int _width, const int _height)
+        {
             Zeus::instance()._windowSize.width = _width;
             Zeus::instance()._windowSize.height = _height;
 
@@ -96,9 +98,9 @@ namespace engine
     {
         int x = round(_position.x);
         int y = round(_position.y);
-        if(x < 0 || y < 0){
-            Log.error("Zeus::setWindowPosition: x and y can not be less than zero");
-        }
+        
+        if(x < 0 || y < 0){ Log.error("Zeus::setWindowPosition: x and y can not be less than zero"); }
+
         glutPositionWindow(x, y);
         return *this;
     }

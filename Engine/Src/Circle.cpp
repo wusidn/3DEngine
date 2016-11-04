@@ -22,27 +22,21 @@ namespace engine
 
         assert(circleInit);
 
-        if(!circleInit){
-            result.initializeError(1);
-        }
+        if(!circleInit){ result.initializeError(1); }
 
         return result;
     }
 
     const bool Circle::init(void)
     {
-        if(!Geometry::init()){
-            return false;
-        }
+        if(!Geometry::init()){ return false; }
 
         return true;
     }
 
     const bool Circle::init(const float r)
     {
-        if(r <= 0.0f){
-            return false;
-        }
+        if(r <= 1.0f){ return false; }
 
         _radius = r;
         return false;
@@ -50,9 +44,7 @@ namespace engine
 
     const bool Circle::radius(const float r)
     {
-        if(r <= 0.0f){
-            return false;
-        }
+        if(r <= 1.0f){ return false; }
         _radius = r;
 
         float perimeter = 2 * PI * r;
@@ -65,7 +57,8 @@ namespace engine
         indie(0, 0);
         float intervalAngle = PI * 2 / (vertexsCount() - 1);
 
-        for(int i = 0; i < vertexsCount() - 1; ++i){
+        for(int i = 0; i < vertexsCount() - 1; ++i)
+        {
             vertex(i + 1, Vec3(_radius * cos(intervalAngle * i), _radius * sin(intervalAngle * i)));
             indie(i + 1, i + 1);
         }
@@ -82,9 +75,7 @@ namespace engine
 
     const bool Circle::render(const int dp)
      {
-         if(!Geometry::render(dp)){
-             return false;
-         }
+         if(!Geometry::render(dp)) { return false; }
 
          return true;
      }
@@ -92,9 +83,7 @@ namespace engine
 
     const bool Circle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(projection)){
-             return false;
-         }
+         if(!Geometry::draw(projection)){ return false; }
 
         glBindVertexArray(vertexArrayObject());
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiesBufferObject());

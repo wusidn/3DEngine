@@ -4,9 +4,7 @@ namespace engine
 {
     const bool Camera::init(void)
     {
-        if(!Node::init()){
-            return false;
-        }
+        if(!Node::init()){ return false; }
 
         position(Vec3(.0f));
         // __viewportSize = Vec3(.0f);

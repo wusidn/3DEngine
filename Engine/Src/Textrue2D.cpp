@@ -11,9 +11,7 @@ namespace engine
 
         assert(textrue2DInit);
 
-        if(!textrue2DInit){
-            result.initializeError(-1);
-        }
+        if(!textrue2DInit){ result.initializeError(-1); }
         
         return result;
     }
@@ -26,9 +24,7 @@ namespace engine
 
         assert(textrue2DInit);
 
-        if(!textrue2DInit){
-            result.initializeError(-1);
-        }
+        if(!textrue2DInit){ result.initializeError(-1); }
         
         return result;
     }
@@ -36,9 +32,7 @@ namespace engine
 
     const bool Textrue2D::init(void)
     {
-        if(!Object::init()){
-            return false;
-        }
+        if(!Object::init()){ return false; }
         _textrueId = 0;
         return true;
     }
@@ -47,9 +41,7 @@ namespace engine
     {
         Image & sourceImage = Image::create(fileName);
 
-        if(!init(sourceImage)){
-            return false;
-        }
+        if(!init(sourceImage)){ return false; }
 
         return true;
     }
@@ -57,9 +49,7 @@ namespace engine
      const bool Textrue2D::init(const Image & img)
      {
 
-        if(!img.ready()){
-            return false;
-        }
+        if(!img.ready()){ return false; }
 
         //创建纹理
         glGenTextures(1, &_textrueId);

@@ -14,18 +14,15 @@ namespace engine
 
         const bool LogManager::init(void)
         {
-            if(!Object::init()){
-                return false;
-            }
+            if(!Object::init()){ return false; }
 
             retain();
             //初始化输出介质
             netOutPut = &UdpClient::create("192.168.1.255", 5432);
             netOutPut->retain();
 
-            if(!netOutPut){
-                Log.error("UdpClient Init Error");
-            }
+            if(!netOutPut){ Log.error("UdpClient Init Error"); }
+
             return true;
         }
 
@@ -45,16 +42,16 @@ namespace engine
             static regex format_D("^[dD](\\d*)$");
             auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
             auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
+
+            if(matchBegin == matchEnd){ return false; }
             
             int minCount = atoi(matchBegin->str(1).c_str());
 
             static regex checkNumber("^[+-]?(\\d+(\\.\\d+)?)(e\\+\\d+)?$|^[+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?$");
             matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
-            if(matchBegin == matchEnd){
+            if(matchBegin == matchEnd)
+            {
                 error("格式化数据不匹配");
                 strs << format;
                 return true;
@@ -63,22 +60,23 @@ namespace engine
             string sourceData = matchBegin->str();
             int convertData;
             
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(','))
+            {
                 sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
             }
 
-            if(sourceData.find('.') != string::npos){
+            if(sourceData.find('.') != string::npos)
+            {
                 convertData = (int)roundf(atof(sourceData.c_str()));
-            }else{
+            }else
+            {
                 convertData = atoi(sourceData.c_str());
             }
 
             stringstream tempSStr;
             tempSStr << convertData;
 
-            for(int i = tempSStr.str().length(); i < minCount; ++i){
-                strs << "0";
-            }
+            for(int i = tempSStr.str().length(); i < minCount; ++i){ strs << "0"; }
             strs << convertData;
 
             return true;
@@ -89,19 +87,16 @@ namespace engine
             static regex format_D("^[cC](\\d*)$");
             auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
             auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
+            if(matchBegin == matchEnd){ return false; }
 
             int decimalDigits = 2;
-            if(matchBegin->str(1).length() > 0){
-                decimalDigits = atoi(matchBegin->str(1).c_str());
-            }
+            if(matchBegin->str(1).length() > 0){ decimalDigits = atoi(matchBegin->str(1).c_str()); }
 
             static regex checkNumber("^([^-+]?)([+-]?\\d+(\\.\\d+)?(e\\+\\d+)?)$|^([^-+]?)([+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e\\+\\d+)?)$");
             matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
 
-            if(matchBegin == matchEnd){
+            if(matchBegin == matchEnd)
+            {
                 error("尝试格式化失败");
                 strs << format;
                 return true;
@@ -111,7 +106,8 @@ namespace engine
 
             string sourceData = matchBegin->str(2);
 
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(','))
+            {
                 sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
             }
 
@@ -125,14 +121,13 @@ namespace engine
             strs << unit << tempStr;
 
             auto dotIndex = tempStr.find('.');
-            if(dotIndex == string::npos){
+            if(dotIndex == string::npos)
+            {
                 strs << ".";
                 dotIndex = tempStr.length() - 1;
             }
 
-            for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){
-                strs << "0";
-            }
+            for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){ strs << "0"; }
                         
             return true;
         }
@@ -142,18 +137,19 @@ namespace engine
             static regex format_D("^[fF](\\d*)$");
             auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
             auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
+
+            if(matchBegin == matchEnd){ return false; }
 
             int decimalDigits = 2;
-            if(matchBegin->str(1).length() > 0){
+            if(matchBegin->str(1).length() > 0)
+            {
                 decimalDigits = atoi(matchBegin->str(1).c_str());
             }
 
             static regex checkNumber("^([+-]?\\d+(\\.\\d+)?)(e[\\+-]\\d+)?$|^[+-]?\\d{1,3}(,\\d{3})*(\\.(\\d{3},)*\\d{1,3})?(e[\\+-]\\d+)?$");
             matchBegin = sregex_iterator(source.begin(), source.end(), checkNumber);
-            if(matchBegin == matchEnd){
+            if(matchBegin == matchEnd)
+            {
                 error("尝试格式化失败");
                 strs << format;
                 return true;
@@ -161,7 +157,8 @@ namespace engine
 
             string sourceData = matchBegin->str();
 
-            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(',')){
+            for(auto index = sourceData.find(','); index != string::npos; index = sourceData.find(','))
+            {
                 sourceData.replace(sourceData.begin() + index, sourceData.begin() + index + 1, "");
             }
 
@@ -175,14 +172,13 @@ namespace engine
             strs << tempStr;
 
             auto dotIndex = tempStr.find('.');
-            if(dotIndex == string::npos){
+            if(dotIndex == string::npos)
+            {
                 strs << ".";
                 dotIndex = tempStr.length() - 1;
             }
 
-            for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){
-                strs << "0";
-            }
+            for(int i = tempStr.length() - dotIndex - 1; i < decimalDigits; ++i){ strs << "0"; }
             return true;
         }
 
@@ -191,22 +187,24 @@ namespace engine
             static regex format_D("^([-]?)(\\d*)$");
             auto matchBegin = sregex_iterator(format.begin(), format.end(), format_D);
             auto matchEnd = sregex_iterator();
-            if(matchBegin == matchEnd){
-                return false;
-            }
+            if(matchBegin == matchEnd){ return false; }
 
             int minCount = atoi(matchBegin->str(2).c_str());
 
-            if(matchBegin->str(1).c_str() == string("-")){
-                for(int i = getStringLength(source); i < minCount; ++i){
+            if(matchBegin->str(1).c_str() == string("-"))
+            {
+                for(int i = getStringLength(source); i < minCount; ++i)
+                {
                     strs << " ";
                 }
             }
 
             strs << source;
 
-            if(matchBegin->str(1).c_str() != string("-")){
-                for(int i = getStringLength(source); i < minCount; ++i){
+            if(matchBegin->str(1).c_str() != string("-"))
+            {
+                for(int i = getStringLength(source); i < minCount; ++i)
+                {
                     strs << " ";
                 }
             }
@@ -225,7 +223,8 @@ namespace engine
 
             //有严重问题 暂时关闭网络发送功能
             // //输出到网络流
-            // if(netOutPut){
+            // if(netOutPut)
+            // {
             //     netOutPut->send(sstr.str());
             // }
 
@@ -245,7 +244,8 @@ namespace engine
                 int exponential = atoi(result.substr(scientificIndex + 2).c_str());
                 auto dotIndex = baseNumber.find('.');
                 baseNumber.replace(dotIndex, dotIndex + 1, "");
-                while(baseNumber.length() < exponential + dotIndex){
+                while(baseNumber.length() < exponential + dotIndex)
+                {
                     baseNumber += "0";
                 }
                 result = baseNumber;
@@ -260,7 +260,8 @@ namespace engine
                 baseNumber.replace(dotIndex, dotIndex + 1, "");
 
                 string tempHead = "";
-                while((int)tempHead.length() + 1 < exponential){
+                while((int)tempHead.length() + 1 < exponential)
+                {
                     tempHead += "0";
                 }
                 result = "0." + tempHead + baseNumber;

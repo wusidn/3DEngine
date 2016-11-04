@@ -10,7 +10,8 @@ namespace engine
         UdpClient & UdpClient::create(const string & address, const unsigned port)
         {
             UdpClient * result = new UdpClient();
-            if(!result->init(address, port)){
+            if(!result->init(address, port))
+            {
                 delete result;
                 result = nullptr;
             }
@@ -20,9 +21,7 @@ namespace engine
 
         const bool UdpClient::init(const string & address, const unsigned port)
         {
-            if(!NetWork::init(SOCK_DGRAM)){
-                return false;
-            }
+            if(!NetWork::init(SOCK_DGRAM)){ return false; }
 
             // //开启广播特性
             int optval = 1;
@@ -39,9 +38,7 @@ namespace engine
         const bool UdpClient::send(const string & str) const
         {
 
-            if(::sendto(socket_id, str.c_str(), str.length(), 0, (struct sockaddr * )&sendToAddr, sizeof(sendToAddr)) < 0){
-                return false;
-            }
+            if(::sendto(socket_id, str.c_str(), str.length(), 0, (struct sockaddr * )&sendToAddr, sizeof(sendToAddr)) < 0){ return false; }
 
             return true;
         }

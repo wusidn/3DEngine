@@ -25,9 +25,8 @@ using namespace std;
 function<void (void)> __displayDelegate;
 void displayPunc()
 {
-    if(!__displayDelegate){
-        return;
-    }
+    if(!__displayDelegate) return;
+
     __displayDelegate();
 }
 
@@ -39,16 +38,6 @@ GLuint indiesBufferObject;
 namespace engine
 {
     using namespace tools;
-
-    // Appaction * Appaction::_instance = nullptr; 
-
-    // Appaction & Appaction::instance(void)
-    // {
-    //     if(!_instance){
-    //         _instance = &create();
-    //     }
-    //     return *_instance;
-    // }
 
     const bool Appaction::init(void)
     {
@@ -68,13 +57,12 @@ namespace engine
         static regex pathRegex("^([^/\\\\]*[/\\\\])+");
         smatch searchResult;
         string sourceAppactionPath = string(argv[0]);
-        if(regex_search(sourceAppactionPath, searchResult, pathRegex))
+        if(!regex_search(sourceAppactionPath, searchResult, pathRegex))
         {
-            _appactionPath = string(searchResult[0]);
-        }else{
             Log.info("Matching appactionPath Error");
         }
-        
+
+        _appactionPath = string(searchResult[0]);
         
         glutInit(&argc, argv);
 
@@ -84,15 +72,14 @@ namespace engine
 
         glutCreateWindow("3DEngine");
 
-        if(glewInit()){
-            exit(EXIT_FAILURE);
-        }
+        if(glewInit()) exit(EXIT_FAILURE);
 
         Zeus::instance().windowTitle("haha");
         Zeus::instance().fullScreen();
 
         // Uuid & uuid = Uuid::create();
-        // if(uuid.ready()){
+        // if(uuid.ready())
+        // {
         //     Log.info("{0}", uuid);
         //     Log.info(Uuid::create(uuid).toString());
         // }
@@ -112,7 +99,8 @@ namespace engine
         // Log.debug("Vec3(1, 2, 3).modulo() = {0}; Vec4(1, 2, 3, 1).modulo() = {1}", Vec3(1, 2, 3).modulo(), Vec4(1, 2, 3, 1).modulo());
 
         
-        // for(int i = 0; i < 10; ++i){
+        // for(int i = 0; i < 10; ++i)
+        // {
         //     ScreenWorld::instance().append(Triangle::create(Vec2(.0f, .0f), Vec2(.0f, 100.0f), Vec2(100.0f, .0f)));
         // }
 
@@ -139,7 +127,8 @@ namespace engine
 
         start();
 
-        __displayDelegate = [this](void){
+        __displayDelegate = [this](void)
+        {
 
             static int prevDisplayTime = 0;
             int currDisplayTime = Zeus::instance().runningTime();

@@ -13,17 +13,13 @@ namespace engine
 
             assert(uuidInit);
 
-            if(!uuidInit){
-                result.initializeError(1);
-            }
+            if(!uuidInit){ result.initializeError(1); }
             return result;
         }
 
         const bool Uuid::init(void)
         {
-            if(!Object::init()){
-                return false;
-            }
+            if(!Object::init()){ return false; }
             uuid_generate(data);
             return true;
         }
@@ -38,7 +34,8 @@ namespace engine
         const string Uuid::toString(void) const
         {
             char temp[33] = {0};
-            for(unsigned i = 0; i < 16; ++i){
+            for(unsigned i = 0; i < 16; ++i)
+            {
                 sprintf(temp + 2 * i, "%02X", data[i]);
             }
             return temp;

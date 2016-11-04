@@ -19,22 +19,16 @@ namespace engine
 
         const bool TcpServer::init(void)
         {
-            if(!NetWork::init()){
-                return false;
-            }
+            if(!NetWork::init()){ return false; }
 
             return true;
         }
 
         const bool TcpServer::init(const string & address, const unsigned port, const unsigned poolSize, const unsigned loopInterval)
         {
-            if(!bind(address, port)){
-                return false;
-            }
+            if(!bind(address, port)){ return false; }
 
-            if(!listen(poolSize, loopInterval)){
-                return false;
-            }
+            if(!listen(poolSize, loopInterval)){ return false; }
 
             return true;
         }

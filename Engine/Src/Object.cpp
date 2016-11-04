@@ -37,9 +37,7 @@ namespace engine
 
     void Object::initializeError(const unsigned short errorCode)
     {
-        if(!errorCode){
-            return;
-        }
+        if(!errorCode){ return; }
         _initializeErrorCode = errorCode;
     }
 }

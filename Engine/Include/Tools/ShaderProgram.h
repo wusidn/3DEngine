@@ -42,7 +42,7 @@ namespace engine
 
             CREATEFUNC(ShaderProgram);
 
-            ShaderProgram(void){}
+            ShaderProgram(void);
             
             virtual const bool init(void);
             virtual const bool init(const vector<const Shader *> & shaderList);

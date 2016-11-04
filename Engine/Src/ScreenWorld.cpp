@@ -9,9 +9,7 @@ namespace engine
     ScreenWorld * ScreenWorld::_instance = nullptr;
     ScreenWorld & ScreenWorld::instance(void)
     {
-        if(!_instance){
-            _instance = &create();
-        }
+        if(!_instance){ _instance = &create(); }
         return *_instance;
     }
 
@@ -22,9 +20,7 @@ namespace engine
 
     const bool ScreenWorld::init(void)
     {
-        if(!World::init()){
-            return false;
-        }
+        if(!World::init()){ return false; }
 
         _screenCamera = &Camera::create();
         _screenCamera->retain();

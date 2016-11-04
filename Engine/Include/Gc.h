@@ -22,6 +22,9 @@ namespace engine
         void watch(const Object &);
     protected:
         Gc(void);
+        ~Gc(void);
+
+        void cleanAll(void);
     private:
         //对象池
         list<const Object *> * objectPool;

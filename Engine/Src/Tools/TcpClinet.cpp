@@ -13,18 +13,14 @@ namespace engine
 
         const bool TcpClient::init(void)
         {
-            if(!NetWork::init()){
-                return false;
-            }
+            if(!NetWork::init()){ return false; }
             
             return true;
         }
 
         const bool TcpClient::init(const string & address, const unsigned port, const unsigned loopInterval)
         {
-            if(!connect(address, port, loopInterval)){
-                return false;
-            }
+            if(!connect(address, port, loopInterval)){ return false; }
 
             return true;
         }

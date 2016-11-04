@@ -27,9 +27,8 @@ namespace engine
 
     const bool Materia::init(void)
     {
-        if(!Object::init()){
-            return false;
-        }
+        if(!Object::init()){ return false; }
+
         _materiaType = MateriaType::Purity;
         _color = ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
         return true;
@@ -53,8 +52,8 @@ namespace engine
     const bool Materia::colors(const ColorRGBA * colors, const unsigned int count)
     {
 
-        if(!colors) return false;
-        if(!count) return false;
+        if(!colors){ return false; }
+        if(!count){ return false; }
 
         //清除数据
         clearData();
@@ -84,7 +83,8 @@ namespace engine
 
     void Materia::clearData(void)
     {
-        if(_colors != nullptr){
+        if(_colors != nullptr)
+        {
             delete[] _colors;
             _colors = nullptr;
             _colorsCount = 0;

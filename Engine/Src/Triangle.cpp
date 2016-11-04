@@ -14,17 +14,13 @@ namespace engine
 
         assert(triangleInit);
 
-        if(!triangleInit){
-            result.initializeError(1);
-        }
+        if(!triangleInit){ result.initializeError(1); }
         return result;
     }
 
     const bool Triangle::init(void)
     {
-        if(!Geometry::init()){
-            return false;
-        }
+        if(!Geometry::init()){ return false; }
 
         vertexsCount(3);
         return true;
@@ -48,18 +44,14 @@ namespace engine
 
      const bool Triangle::render(const int dp)
      {
-         if(!Geometry::render(dp)){
-             return false;
-         }
+         if(!Geometry::render(dp)){ return false; }
 
          return true;
      }
 
      const bool Triangle::draw(const Matrix4 & projection)
      {
-         if(!Geometry::draw(projection)){
-             return false;
-         }
+         if(!Geometry::draw(projection)){ return false; }
 
         glBindVertexArray(vertexArrayObject());
         glDrawArrays(GL_TRIANGLES, 0, 3);

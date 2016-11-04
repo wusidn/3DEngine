@@ -25,9 +25,8 @@ namespace engine
 
     const bool World::init()
     {
-        if(!Object::init()){
-            return false;
-        }
+        if(!Object::init()){ return false; }
+        
         _worldPool.push_back(this);
         retain();
 
