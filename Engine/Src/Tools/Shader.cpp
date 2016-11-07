@@ -11,6 +11,7 @@ namespace engine
     namespace tools
     {
 
+        string Shader::versionKey = "#version";
         string Shader::globalCodeKey = "#globalCode";
         string Shader::mainCodeKey = "#mainCode";
 
@@ -124,6 +125,7 @@ namespace engine
 
 
             //代码融合
+            int version = 330;
             string mainCode = "";
             string globalCode = "";
 
@@ -133,12 +135,25 @@ namespace engine
                 string code = File::readAllText(shaderFilePath);
                 string removeAfterCode = code;
 
+                //获取glsl版本
+                static regex versionRegex("#version ([\\d]+) core");
+                auto matchBegin = sregex_iterator(code.begin(), code.end(), versionRegex);
+                auto matchEnd = sregex_iterator();
+                int tempVersion = version;
+                for(auto item  = matchBegin; item != matchEnd; ++item)
+                {
+                    int temp = atoi(item->str(1).c_str());
+                    if(temp <= tempVersion){ continue; }
+                    tempVersion = temp;
+                }
+
+                version = tempVersion;
+
                 //  删除注释
                 static regex searchAnnotationRegex("#[^\n]*\n|//[^\n]*\n|/\\*[\\s\\S]*?\\*/");
-
-                auto matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
-                auto matchEnd = sregex_iterator();
-                for(auto item  = matchBegin; item != matchEnd; ++item)
+                matchBegin = sregex_iterator(code.begin(), code.end(), searchAnnotationRegex);
+                
+                for(auto item = matchBegin; item != matchEnd; ++item)
                 {
                     removeAfterCode.erase(removeAfterCode.find(item->str()), item->str().size());
                 }
@@ -161,10 +176,13 @@ namespace engine
                     mainCode += removeAfterCode.substr(contentIndex, i - begin - contentIndex - 1);
                     globalCode += removeAfterCode.erase(bodyIndex, i - begin - bodyIndex);
                 }
-                
             }
 
+            stringstream sversionCode;
+            sversionCode << "#version " << version << " core";
+
             //替换占位符
+            source.replace(source.find(versionKey), versionKey.size(), sversionCode.str());
             source.replace(source.find(globalCodeKey), globalCodeKey.size(), globalCode);
             source.replace(source.find(mainCodeKey), mainCodeKey.size(), mainCode);
 

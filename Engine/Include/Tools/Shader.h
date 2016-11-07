@@ -55,7 +55,7 @@ namespace engine
             static string vertexShaderCode(void);
             static string fragmentShaderCode(void);
 
-            static string globalCodeKey, mainCodeKey;
+            static string versionKey, globalCodeKey, mainCodeKey;
             
             //编译是否成功
             const bool compileIsSuccessful(void) const;

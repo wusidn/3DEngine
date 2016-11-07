@@ -1,4 +1,4 @@
-#version 430 core
+#version
 
 layout( location = 0 ) in vec4 vPosition;
 
@@ -10,8 +10,6 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    
 #mainCode
-
     gl_Position = modelMatrix * vPosition;
 }

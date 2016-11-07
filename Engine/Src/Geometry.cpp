@@ -99,9 +99,6 @@ namespace engine
         memset(_indies, 0, sizeof(unsigned short) * _indiesCount);
     }
 
-
-
-
     const unsigned short Geometry::vertexsCount(void) const
     {
         return _vertexsCount;
@@ -111,9 +108,6 @@ namespace engine
     {
         return _indiesCount;
     }
-
-
-
 
     const GLuint Geometry::vertexArrayObject(void) const
     {
@@ -172,8 +166,6 @@ namespace engine
        indies(data, _indiesCount, 0);
     }
 
-
-
     const Vec3 * Geometry::vertexs(void) const 
     {
         return _vertexs;
@@ -184,7 +176,6 @@ namespace engine
         return _indies;
     }
 
-
     const bool Geometry::render(const int dp)
     {
         if(!Node::render(dp)){ return false; }
@@ -193,8 +184,21 @@ namespace engine
 
     const bool Geometry::draw(const Matrix4 & projection)
     {
-        if(!_vertexsCount){ return false; }
 
+        //如果没有顶点数据直接返回
+        if(!_vertexsCount){ return true; }
+
+        //如果没有bind着色器程序
+        if(!_shaderProgram)
+        { 
+            Log.error("not bind ShaderProgram!");
+            return false; 
+        }
+
+        //材质
+        if(!_materia) { return false; }
+
+        //调用Node的draw
         if(!Node::draw(projection)){ return false; }
 
         if(_indiesCount)
@@ -203,26 +207,26 @@ namespace engine
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * _indiesCount, _indies, GL_STATIC_DRAW);
         }
 
-
         glBindVertexArray(_vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
-
-        if(!_materia) { return false; }
 
         MateriaType materiaType = _materia->materiaType();
 
         switch(materiaType)
         {
             case MateriaType::Purity:
-                // glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _colorsCount, nullptr, GL_STATIC_DRAW);
-                // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _vertexs);
-                // glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _colorsCount, _colors);
+
+                _shaderProgram->uniformSet("color", _materia->color().rgba());
+                glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, _vertexs, GL_STATIC_DRAW);
             break;
+
             case MateriaType::Multicolor:
+
                 glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount + sizeof(ColorRGBA) * _materia->colorsCount(), nullptr, GL_STATIC_DRAW);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vec3) * _vertexsCount, _vertexs);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(Vec3) * _vertexsCount, sizeof(ColorRGBA) * _materia->colorsCount(), _materia->colors());
             break;
+
             default:
                 Log.error("materiaType({0}) is ndefine!", materiaType);
             return false;
@@ -238,7 +242,7 @@ namespace engine
         glBindVertexArray(0);
 
         //启用着色器程序
-        if(_shaderProgram){ _shaderProgram->use(); }
+        _shaderProgram->use();
 
         //创建旋转  缩放  平移到世界坐标 矩阵
         //旋转
@@ -251,11 +255,15 @@ namespace engine
         //m
         Matrix4 modelMatrix = rotationMatrix * scaleMatrix * translationMatrix;
 
-        //v 
+        //v
+        Matrix4 viewMatrix(1.0f);
 
         //p
+        Matrix4 projectionMatrix(1.0f);
 
-
+        _shaderProgram->uniformSet("modelMatrix", modelMatrix);
+        _shaderProgram->uniformSet("viewMatrix", viewMatrix);
+        _shaderProgram->uniformSet("projectionMatrix", projectionMatrix);
 
         return true;
     }

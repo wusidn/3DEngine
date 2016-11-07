@@ -179,6 +179,65 @@ namespace engine
             return true;
         }
 
+
+        // const unsigned short ShaderProgram::uniformSizeOf(const char * unformName) const
+        // {
+        //     if(!linkIsSuccessful()){ return false; }
+            
+        //     GLuint uboIndex = glGetUniformLocation(_programId, unformName);
+        //     if(uboIndex == GL_INVALID_INDEX){
+        //         Log.error("unifrom name is invalid");
+        //         return 0;
+        //     }
+
+        //     GLint uboSize;
+        //     GLuint uniformIndices;
+        //     glGetActiveUniformsiv((const GLuint )_programId, uboIndex, &uniformIndices, nullptr, &uboSize);
+
+        //     return (unsigned short)uboSize;
+        // }
+
+        const bool ShaderProgram::uniformSet(const char * uniformName, const float & s) const 
+        {
+            GLuint uboIndex = getUniformLocation(uniformName);
+            if(!uboIndex) return false;
+
+            glUniform1f(uboIndex, s);
+            return true;
+        }
+        const bool ShaderProgram::uniformSet(const char * uniformName, const Vec4 & v) const 
+        {
+            GLuint uboIndex = getUniformLocation(uniformName);
+            if(!uboIndex) return false;
+
+            glUniform4fv(uboIndex, 4, &v[0]);
+            return true;
+        }
+        const bool ShaderProgram::uniformSet(const char * uniformName, const Matrix4 & m) const 
+        {
+            GLuint uboIndex = getUniformLocation(uniformName);
+            if(!uboIndex) return false;
+
+            glUniformMatrix4fv(uboIndex, 16, false, &m[0][0]);
+            return true;
+        }
+
+        GLuint ShaderProgram::getUniformLocation(const char * name) const 
+        {
+            GLuint uboIndex = 0;
+
+            if(!linkIsSuccessful()){ return uboIndex; }
+            
+            uboIndex = glGetUniformLocation(_programId, name);
+            if(uboIndex == GL_INVALID_INDEX)
+            {
+                Log.error("unifrom name is invalid");
+                return uboIndex;
+            }
+
+            return uboIndex;
+        }
+
         const bool ShaderProgram::linkIsSuccessful(void) const
         {
             if(glIsProgram(_programId) != GL_TRUE){ return false; }
@@ -188,6 +247,55 @@ namespace engine
             if(linked != GL_TRUE){ return false; }
             
             return true;
+        }
+
+        const unsigned short ShaderProgram::typeSize(const GLenum type)
+        {
+            unsigned short result;
+            #define CASE(Enum, Count, Type) case Enum : result = Count * sizeof(Type); break;
+
+            switch (type) {
+                CASE(GL_FLOAT, 1, GLfloat);
+                CASE(GL_FLOAT_VEC2, 2, GLfloat);
+                CASE(GL_FLOAT_VEC3, 3, GLfloat);
+                CASE(GL_FLOAT_VEC4, 4, GLfloat);
+
+                CASE(GL_INT, 1, GLint);
+                CASE(GL_INT_VEC2, 2, GLint);
+                CASE(GL_INT_VEC3, 3, GLint);
+                CASE(GL_INT_VEC4, 4, GLint);
+
+                CASE(GL_UNSIGNED_INT, 1, GLuint);
+                CASE(GL_UNSIGNED_INT_VEC2, 2, GLuint);
+                CASE(GL_UNSIGNED_INT_VEC3, 3, GLuint);
+                CASE(GL_UNSIGNED_INT_VEC4, 4, GLuint);
+
+                CASE(GL_BOOL, 1, GLboolean);
+                CASE(GL_BOOL_VEC2, 1, GLboolean);
+                CASE(GL_BOOL_VEC3, 1, GLboolean);
+                CASE(GL_BOOL_VEC4, 1, GLboolean);
+
+                CASE(GL_FLOAT_MAT2, 4, GLfloat);
+                CASE(GL_FLOAT_MAT2x3, 6, GLfloat);
+                CASE(GL_FLOAT_MAT2x4, 8, GLfloat);
+
+                CASE(GL_FLOAT_MAT3, 9, GLfloat);
+                CASE(GL_FLOAT_MAT3x2, 6, GLfloat);
+                CASE(GL_FLOAT_MAT3x4, 12, GLfloat);
+
+                CASE(GL_FLOAT_MAT4, 16, GLfloat);
+                CASE(GL_FLOAT_MAT4x2, 8, GLfloat);
+                CASE(GL_FLOAT_MAT4x3, 12, GLfloat);
+
+             #undef CASE
+
+            default:
+                result = -1;
+                break;
+
+            }
+
+            return result;
         }
     }
 }
