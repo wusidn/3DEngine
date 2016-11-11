@@ -11,6 +11,15 @@ include_directories(${PROJECT_SOURCE_DIR}/Include)
 include_directories(${PROJECT_SOURCE_DIR}/Include/Tools)
 include_directories(${PROJECT_SOURCE_DIR}/Library/Include)
 
+find_package(OpenGL REQUIRED)  
+include_directories(${OPENGL_INCLUDE_DIR})  
+  
+find_package(GLUT REQUIRED)  
+include_directories(${GLUT_INCLUDE_DIR}) 
+
+find_package(GLEW REQUIRED)  
+include_directories(${GLEW_INCLUDE_DIR}) 
+
 #生成库
 ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})
 
@@ -18,7 +27,8 @@ ADD_LIBRARY(${PROJECT_NAME} ${DIR_SRCS})
 SET(LIBRARY_OUTPUT_PATH ${ROOT}/build/bin)
 
 #链接库
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
+#TARGET_LINK_LIBRARIES(${PROJECT_NAME} GL GLEW glut uuid pthread)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${GLUT_LIBRARY} GLEW ${OPENGL_LIBRARY} ${UUID_LIBRARY} pthread)
 
 #拷贝资源
 FILE(COPY ${PROJECT_SOURCE_DIR}/Shader DESTINATION ${ROOT}/build/bin)

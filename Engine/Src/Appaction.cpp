@@ -67,8 +67,8 @@ namespace engine
         glutInit(&argc, argv);
 
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-        glutInitContextVersion (3, 3);
-        glutInitContextProfile(GLUT_CORE_PROFILE);
+        // glutInitContextVersion (3, 3);
+        // glutInitContextProfile(GLUT_CORE_PROFILE);
         glutInitWindowSize(800, 600);
         glutInitWindowPosition(200, 100);
 

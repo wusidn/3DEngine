@@ -28,3 +28,4 @@ build/
 /tags
 .*.swp
 *.autosave
+.DS_Store
